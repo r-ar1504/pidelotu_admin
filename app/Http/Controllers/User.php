@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 
@@ -32,6 +33,9 @@ class User extends Controller
      }
  }
  public function checkNumber($number) {
-     return \App\User::where('phone','=',$number)->get();
+     // return \App\User::where('phone','=',$number)->get();
+
+     $user = DB::table('users')->where('phone','=',$number)->get();
+     return $user;
  }
 }
