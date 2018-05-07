@@ -14,9 +14,8 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+     protected $primaryKey = 'firebase_id';
+     protected $fillable = ['firebase_id', 'name', 'last_name', 'email', 'phone'];
 
     /**
      * The attributes that should be hidden for arrays.
