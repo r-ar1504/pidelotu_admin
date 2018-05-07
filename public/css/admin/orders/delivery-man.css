@@ -1,0 +1,43 @@
+.deliveryMan-img{
+  width: 8rem;
+  border-radius: 100px;
+}
+
+.far{
+  position: absolute;
+}
+
+.fas{
+  position: absolute;
+}
+
+.text-deliveryMan{
+  margin-left: 2rem;
+}
+
+p{
+  margin-bottom: 0rem;
+}
+
+.btn_msj{
+  border-radius: 2rem;
+  margin-bottom: 3rem;
+}
+
+.deleteDeliveryMan{
+  width: 2rem;
+  position: absolute;
+  left: 43rem;
+  top: -2rem;
+}
+
+.plus{
+  border-radius: 50%;
+  border: 2px solid #d3d3d3;
+  margin-right: 5px;
+  padding: 0 6px;
+}
+
+.addDeliveryMan{
+  color: #d3d3d3;
+}
