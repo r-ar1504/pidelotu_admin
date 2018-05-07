@@ -71,6 +71,13 @@ Route::prefix('restaurant')->group(function(){
   Route::post('res/{restaurant_id}/cat/{category_id}', 'RestaurantController@getCategory');//Get instance
 });
 
+/*------------------------------------------------------------------
+|   User Register From App                                         |
+------------------------------------------------------------------*/
+Route::post('/register','UserController@register');
+Route::post('/signup', 'UserController@signup');
+Route::get('/checkNumber/{number}', 'UserController@checkNumber');
+
 
 /*------------------------------------------------------------------
 |   Utility Routes                                                 |                                                                                                 |
