@@ -74,9 +74,9 @@ Route::prefix('restaurant')->group(function(){
 /*------------------------------------------------------------------
 |   User Register From App                                         |
 ------------------------------------------------------------------*/
-Route::post('/register','UserController@register');
-Route::post('/signup', 'UserController@signup');
-Route::get('/checkNumber/{number}', 'UserController@checkNumber');
+Route::post('/register','User@register');
+Route::post('/signup', 'User@signup');
+Route::get('/checkNumber/{number}', 'User@checkNumber');
 
 
 /*------------------------------------------------------------------
