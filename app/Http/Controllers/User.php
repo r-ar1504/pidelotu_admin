@@ -39,13 +39,4 @@ class User extends Controller
      return $user;
  }
 
- function checkOut(Request $req){
-   $secret = Hash::make("pidelotu123");
-     $level = new RestaurantUsers();
-     $level->email = 'admin@pidelotu.com';
-     $level->username = "admin"
-     $level->password = $secret;
-     $level->save();
- }
-
 }

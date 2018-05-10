@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <meta name="keywords" content="Exact login Form a Responsive Web Template, Bootstrap Web Templates, Flat Web Templates, Android Compatible Web Template, Smartphone Compatible Web Template, Free Webdesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
         addEventListener("load", function () {
             setTimeout(hideURLbar, 0);
@@ -41,8 +43,8 @@
 					<div class="clear"></div>
 					<div class="login-agileits-top">
 						<form action="#" method="post">
-							<input type="text" class="name" name="user name" Placeholder="Username" required=""/>
-							<input type="password" class="password" name="Password" Placeholder="Password" required=""/>
+							<input type="text" id="email" class="name" name="user name" Placeholder="Username" required=""/>
+							<input type="password" id="password" class="password" name="Password" Placeholder="Password" required=""/>
               <button type="button" id="check" name="button">Entrar</button>
 						</form>
 					</div>

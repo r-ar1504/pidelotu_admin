@@ -25,7 +25,7 @@ Route::get('/login', function(){
   return view('login');
 });
 
-Route::post('/checkOut', 'HomeController@checkOut');
+Route::post('/checkOut', 'Admin@checkOut');
 
 
 /*------------------------------------------------------------------
