@@ -15,9 +15,9 @@
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
-      <th>Nombre</th>
-      <th>Ingredientes</th>
-      <th>Total</th>
+      <th>Cliente</th>
+      <th>Fecha del pedido</th>
+      <th>Comida</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -25,7 +25,7 @@
     @foreach($orders as $order)
       <tr>
         <td>{{$order->name}}</td>
-        <td>{{$order->ingredients}}</td>
+        <td>{{$order->order_date}}</td>
         <td>{{$order->meal_name}}</td>
         <td>
           <button type="button" class="btn btn-primary" data-id="{{$order->order_id}}" id="getDelivery" name="button">Pedir Repartidor</button>

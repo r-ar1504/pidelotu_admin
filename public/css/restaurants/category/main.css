@@ -45,6 +45,7 @@ a {
 }
 
 .list-container {
+      flex-flow: row;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-flow: column;

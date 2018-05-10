@@ -261,7 +261,7 @@ class RestaurantController extends Controller
 
  function all_orders(Request $req){
 
-   $allOrders = DB::select('select orders.id as "order_id", users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id');
+   $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id');
    return view('restaurant.restaurants-orders', ['orders' => $allOrders]);
  }
 
@@ -343,15 +343,48 @@ class RestaurantController extends Controller
    }
  }
 
- function getDelivery(Request $req){
+ function getDelivery(Request $req, $id){
 
-   $data = $req->all();
+   $data = $id;
 
+   $order = DB::table('orders')->where('id', '=', $id)->get();
+   OneSignalFacade::sendNotificationToUser("Orden Entrante", "676d30df-4dd9-43d6-a0ce-2bb842d6a1c6"	, $url = null, $data = array(['id' => $id, 'user_lat' => $order->latitude, 'user_lng' => $order->longitude,'res_lat' => 25.524224, 'res_lng' => -103.415248 ]), $buttons = null, $schedule = null);
 
-   OneSignalFacade::sendNotificationToAll("Some Message", $url = null, $data = null, $buttons = null, $schedule = null);
+   return response()->json(['order' => $order]);
+}
 
-   return Response::json(array("data" => $data));
-  }
+   public function getMeals(){
+     $meals = [];
+     foreach (\App\MealCategory::where('restaurant_id','=',24)->get() as $category) {
+       $mealCategory = \App\MealCategory::find($category['id']);
+       $mealCategory->meals;
+       array_push($meals, $mealCategory);
+     }
 
+     return $meals;
+
+   }
+
+   public function saveOrder(Request $request) {
+     try {
+       \DB::table('orders')->insert([
+         'restaurant_id' => $request['restaurant_id'],
+         'meal_category_id' => $request['meal_category_id'],
+         'meal_id' => $request['meal_id'],
+         'user_id' => $request['user_id'],
+         'latitude' => $request['latitude'],
+         'longitude' => $request['longitude'],
+         'total' => $request['total']
+       ]);
+       return response('success', 200)
+               ->header('Content-Type', 'application/json');
+     }
+     catch (Exception $e) {
+       return response('error '+$e->message, 404)
+               ->header('Content-Type', 'application/json');
+     }
+
+      OneSignalFacade::sendNotificationToUser("Nueva Orden", "c7df8fc4-5cac-48c7-9541-e35dd4272a84"	, $url = null, $data = null, $buttons = null, $schedule = null);
+   }
 
 }

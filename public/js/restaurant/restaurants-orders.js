@@ -8,7 +8,7 @@ $(function(){
 
   $("body").on('click', '#getDelivery', function(){
     $.ajax({
-      url: "/getDelivery",
+      url: "/getDelivery/"+$(this).data('id'),
       type: "POST",
       data: {id: $(this).data('id')},
       headers: {
