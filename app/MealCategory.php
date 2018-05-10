@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MealCategory extends Model
 {
   protected $fillable = array('name', 'dashboard_banner', 'image', 'restaurant_id');
-
+  $table = 'meal_categories';
   /*Category Belongs To Restaurant*/
   public function restaurant(){
     return $this->belongsTo('App\Restaurant');
