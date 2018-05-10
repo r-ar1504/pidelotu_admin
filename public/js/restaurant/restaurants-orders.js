@@ -5,4 +5,17 @@ $(function(){
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
   });
+
+  $("body").on('click', '#getDelivery', function(){
+    $.ajax({
+      url: "/getDelivery",
+      type: "POST",
+      headers: {
+       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    })
+    .done(function(response){
+      
+    });
+  });
 });

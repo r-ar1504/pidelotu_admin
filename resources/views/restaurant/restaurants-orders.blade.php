@@ -15,21 +15,24 @@
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
-      <th>Firstname</th>
-      <th>Lastname</th>
-      <th>Email</th>
+      <th>Nombre</th>
+      <th>Ingredientes</th>
+      <th>Total</th>
       <th>Acciones</th>
     </tr>
   </thead>
   <tbody id="myTable">
-    <tr>
-      <td>Anja</td>
-      <td>Ravendale</td>
-      <td>a_r@test.com</td>
-      <td>
-        <button type="button" class="btn btn-danger" name="button">Eliminar</button>
-      </td>
-    </tr>
+    @foreach($orders as $order)
+      <tr>
+        <td>{{$order->name}}</td>
+        <td>{{$order->ingredients}}</td>
+        <td>{{$order->meal_name}}</td>
+        <td>
+          <button type="button" class="btn btn-primary" id="getDelivery" name="button">Pedir Repartidor</button>
+          <!-- <button type="button" class="btn btn-danger" name="button">Eliminar</button> -->
+        </td>
+      </tr>
+    @endforeach
   </tbody>
 </table>
 

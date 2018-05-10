@@ -89,6 +89,7 @@ Route::post('/signup', 'User@signup');
 Route::get('/checkNumber/{number}', 'User@checkNumber');
 Route::post('/create-meal', 'RestaurantController@createMeal');
 Route::post('/create-ingredient', 'RestaurantController@createIngredient');
+Route::post('/getDelivery', 'RestaurantController@getDelivery');
 
 
 /*------------------------------------------------------------------

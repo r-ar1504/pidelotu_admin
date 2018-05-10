@@ -20,7 +20,7 @@ $(function(){
       }
     })
     .done(function(response){
-
+      window.location.reload();
     });
 
   });

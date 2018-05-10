@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\DB;
 use Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -258,7 +259,8 @@ class RestaurantController extends Controller
  */
 
  function all_orders(Request $req){
-   return view('restaurant.restaurants-orders');
+   $allOrders = DB::select('select users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id');
+   return view('restaurant.restaurants-orders', ['orders' => $allOrders]);
  }
 
  function meals(Request $req, $id){
@@ -337,6 +339,10 @@ class RestaurantController extends Controller
    else {
      return Response::json(array("status" => "401", "data" => $validator->messages()));
    }
+ }
+
+ function getDelivery(Request $req){
+
  }
 
 
