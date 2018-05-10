@@ -28,7 +28,7 @@
         <td>{{$order->ingredients}}</td>
         <td>{{$order->meal_name}}</td>
         <td>
-          <button type="button" class="btn btn-primary" id="getDelivery" name="button">Pedir Repartidor</button>
+          <button type="button" class="btn btn-primary" data-id="{{$order->order_id}}" id="getDelivery" name="button">Pedir Repartidor</button>
           <!-- <button type="button" class="btn btn-danger" name="button">Eliminar</button> -->
         </td>
       </tr>
