@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Restaurant as Restaurant;
 use App\Categories as Categories;
 use App\deliveryMen;
+use App\Meal;
+use App\MealCategory;
+use App\Ingredient;
 /*------------------------------------------------------------------
 | Controller for Restaurant Model                                  |                                   |                                                               |
 --------------------------------------------------------------------
@@ -247,4 +250,94 @@ class RestaurantController extends Controller
       return Response::json(array("status" => "404", "data" => $delivery_man));
     }
   }
+
+
+
+/**
+ *
+ */
+
+ function all_orders(Request $req){
+   return view('restaurant.restaurants-orders');
+ }
+
+ function meals(Request $req, $id){
+   $meals = Meal::where('category_id', '=', $id)->get();
+   return view('restaurant.meals', ['meals' => $meals, 'id' => $id]);
+ }
+
+ function addMeal(Request $req, $id){
+   return view('restaurant.addMeal', ['id' => $id]);
+ }
+
+ function createMeal(Request $req){
+   $data = $req->all();
+   $validator = Validator::make($data, [
+     'description' => 'required',
+     'name' => 'required',
+     'preparation_time' => 'required'
+   ]);
+   if(!$validator->fails()){
+     try {
+        $public_path = public_path();
+        $meal = new Meal();
+        $meal->category_id = $req->id;
+        $meal->description= $req->description;
+        $meal->preparation_time = $req->preparation_time;
+        $meal->name = $req->name;
+         if(!$req->hasFile("image")){
+           $meal->image = "default.png";
+         }else{
+           $bannerFile = $req->file('image');
+           $bannerName = md5($bannerFile->getClientOriginalName()."".Carbon::now()).".".$bannerFile->getClientOriginalExtension();
+           $bannerFile->move($public_path.'/images/meals/', $bannerName);
+           $meal->image = $bannerName;
+         }
+        $meal->active = 1;
+        $meal->save();
+        return Response::json(array("status" => "200", "data" => $meal));
+      } catch (Exception $e) {
+        return Response::json(array("status" => "500", "data" => $e));
+      }
+   }
+   else {
+     return Response::json(array("status" => "401", "data" => $validator->messages()));
+   }
+ }
+
+/**
+ *
+ */
+ function ingredients(Request $req, $id){
+   $ingredients = Ingredient::where('meal_id', '=', $id)->get();
+   return view('restaurant.ingredients', ['id' => $id, 'ingredients' => $ingredients]);
+ }
+
+
+ function createIngredient(Request $req){
+   $data = $req->all();
+   $validator = Validator::make($data, [
+     'price' => 'required',
+     'name' => 'required',
+     'meal_id' => 'required'
+   ]);
+   if(!$validator->fails()){
+     try {
+        $ingredient = new Ingredient();
+        $ingredient->price = $req->price;
+        $ingredient->meal_id = $req->meal_id;
+        $ingredient->name = $req->name;
+        $ingredient->active = 1;
+        $ingredient->save();
+        return Response::json(array("status" => "200", "data" => $ingredient));
+      } catch (Exception $e) {
+        return Response::json(array("status" => "500", "data" => $e));
+      }
+   }
+   else {
+     return Response::json(array("status" => "401", "data" => $validator->messages()));
+   }
+ }
+
+
 }

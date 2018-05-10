@@ -21,6 +21,10 @@ Route::get('landing', function(){
   return view(landing);
 });
 
+Route::get('/login', function(){
+  return view('login');
+});
+
 
 /*------------------------------------------------------------------
 |   Admin Dashboard                                                |                                                                                                 |
@@ -69,6 +73,10 @@ Route::prefix('restaurant')->group(function(){
   Route::get('{restaurant_id}/add_category', 'AdminRestaurantController@addCategory');//Load Form
   Route::post('{restaurant_id}/create_category', 'AdminRestaurantController@createCategory');//Create
   Route::post('res/{restaurant_id}/cat/{category_id}', 'RestaurantController@getCategory');//Get instance
+  Route::get('all-orders', 'RestaurantController@all_orders');
+  Route::get('ingredients/{id}', 'RestaurantController@ingredients');
+  Route::get('meals/{id}', 'RestaurantController@meals');
+  Route::get('add-meal/{id}', 'RestaurantController@addMeal');
 });
 
 /*------------------------------------------------------------------
@@ -77,6 +85,8 @@ Route::prefix('restaurant')->group(function(){
 Route::post('/register','User@register');
 Route::post('/signup', 'User@signup');
 Route::get('/checkNumber/{number}', 'User@checkNumber');
+Route::post('/create-meal', 'RestaurantController@createMeal');
+Route::post('/create-ingredient', 'RestaurantController@createIngredient');
 
 
 /*------------------------------------------------------------------
