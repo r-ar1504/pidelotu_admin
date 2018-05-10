@@ -28,9 +28,9 @@
   </header><!-- Header End-->
 
   <div class="main-container">
-    <div class="left-panel-section" id="restaurantActive">
+    <div class="left-panel-section">
       <div id="button-container">
-        <div class="left-panel-element">
+        <div class="left-panel-element" id="restaurantActive">
           <img src="{{ asset('images/restaurant.png') }}" alt="restaurant" id="restaurant">
           <p>PLATILLOS</p>
         </div>
@@ -55,6 +55,17 @@
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script>
+    $(function(){
+      $("body").on('click', '#restaurantActive', function(){
+        window.location.href = '/restaurant/home/23';
+      });
+
+      $("body").on('click', '#pedidosActive', function(){
+        window.location.href = '/restaurant/all-orders';
+      });
+    });
+  </script>
 </body>
   @yield('javascript')
 

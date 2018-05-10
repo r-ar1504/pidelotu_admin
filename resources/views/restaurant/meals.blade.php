@@ -17,11 +17,11 @@
     @if(count($meals) > 0)
       @foreach($meals as $meal)
           <div class="element-card">
-            <img src="{{'/storage/restaurants/categories/'.$meal->image }}" alt="restaurant-image">
+            <img src="/images/meals{{$meal->image}}" alt="restaurant-image">
             <a href="/restaurant/ingredients/{{$meal->id}}">
             <div class="card-overlay">
               <div class="overlay-button">
-                <p>{{$meal->id}}</p>
+                <p>{{$meal->name}}</p>
               </div>
             </div>
 
@@ -41,4 +41,9 @@
 @section('javascript')
 <script type="text/javascript" src="/libs/jquery-validate/jquery.validate.min.js"></script>
 <script type="text/javascript" src="/libs/jquery-validate/bootstrap.min.js"></script>
+<script>
+  $(function(){
+    $("#restaurantActive").addClass('active');
+  });
+</script>
 @endsection

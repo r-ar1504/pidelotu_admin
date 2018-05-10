@@ -1,5 +1,7 @@
 $(function(){
 
+  $("#restaurantActive").addClass('active');
+
   $("body").on('click', '.saveIngredient', function(){
     var id =  $(this).data('id');
     let data = {

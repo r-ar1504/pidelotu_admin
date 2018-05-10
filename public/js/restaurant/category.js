@@ -3,6 +3,7 @@ var uploading_image = $('#category-photo')
 var image_input = $('#upload')
 var restaurantId =  categoryData.find('input[name="id"]').val()
 var addProducts = false
+$("#restaurantActive").addClass('active');
 
 /* Create Form Object & Send To The Server*/
 categoryData.submit(function(e){

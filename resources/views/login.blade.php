@@ -43,7 +43,7 @@
 						<form action="#" method="post">
 							<input type="text" class="name" name="user name" Placeholder="Username" required=""/>
 							<input type="password" class="password" name="Password" Placeholder="Password" required=""/>
-							<input type="submit" value="Login Now">
+              <button type="button" id="check" name="button">Entrar</button>
 						</form>
 					</div>
 					<div class="login-agileits-bottom">
@@ -62,6 +62,7 @@
 		<!-- //copyright -->
 	</div>
 	<!-- //main -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script type="text/javascript" src="/js/login.js"></script>
 </body>
 </html>

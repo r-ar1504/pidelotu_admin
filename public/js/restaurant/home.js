@@ -1,0 +1,3 @@
+$(function(){
+  $("#restaurantActive").addClass('active');
+})

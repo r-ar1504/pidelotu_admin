@@ -36,6 +36,7 @@
   </div>
 @endsection
 
-@section('js')
+@section('javascript')
 <script type="text/javascript" src="/libs/jquery-validate/jquery.validate.min.js"></script>
+<script src="/js/restaurant/home.js"></script>
 @endsection

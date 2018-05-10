@@ -203,6 +203,35 @@ ul.top-links li a {
     -ms-transition: 0.5s all;
 	font-family: 'Raleway', sans-serif;
 }
+#check{
+	font-size: 1em;
+	color: #ffffff;
+	background: #4ecafa;
+	border: 1px solid #0f9d58;
+	outline: none;
+	cursor: pointer;
+	padding: .8em 1em;
+	letter-spacing: 1px;
+	-webkit-appearance: none;
+text-transform: uppercase;
+	width: 100%;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	-ms-border-radius: 0px;
+	-o-border-radius: 0px;
+	border-radius: 0px;
+	transition: 0.5s all;
+	-webkit-transition: 0.5s all;
+	-moz-transition: 0.5s all;
+	-o-transition: 0.5s all;
+	-ms-transition: 0.5s all;
+font-family: 'Raleway', sans-serif;
+}
+#check:hover{
+	background: #333;
+	color: #fff;
+	border: 1px solid #333;
+}
 .login-form input[type="submit"]:hover {
     background: #333;
     color: #fff;

@@ -12,6 +12,10 @@
           align-items: center;
 }
 
+#button-container{
+  cursor: pointer;
+}
+
 .no-content {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -148,4 +152,3 @@ img#app-logo {
 }
 
 /*Right Panel */
-
