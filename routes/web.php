@@ -81,17 +81,14 @@ Route::prefix('restaurant')->group(function(){
   Route::get('add-meal/{id}', 'RestaurantController@addMeal');
 });
 
-Route::post('/create-meal', 'RestaurantController@createMeal');
-Route::post('/create-ingredient', 'RestaurantController@createIngredient');
-
-
 /*------------------------------------------------------------------
 |   User Register From App                                         |
 ------------------------------------------------------------------*/
 Route::post('/register','User@register');
 Route::post('/signup', 'User@signup');
 Route::get('/checkNumber/{number}', 'User@checkNumber');
-
+Route::post('/create-meal', 'RestaurantController@createMeal');
+Route::post('/create-ingredient', 'RestaurantController@createIngredient');
 
 
 /*------------------------------------------------------------------
