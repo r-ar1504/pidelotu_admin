@@ -13,6 +13,15 @@
   <link rel="stylesheet" href="css/animate.css">
 
   <link rel="icon" href="images/favicon.png">
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+  <script>
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: "baedd007-9325-4e3e-83fc-d8be136450bd",
+      });
+    });
+  </script>
 </head>
 
 <body>
@@ -73,5 +82,6 @@
     </div><!--EOS-->
 </div>
 </body>
+
 
 </html>
