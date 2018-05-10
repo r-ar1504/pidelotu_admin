@@ -84,15 +84,12 @@ class AdminRestaurantController extends Controller
 
     $image_name = 'res-'.$restaurant_id.'-cat-'.$category->id.'.'.$image->extension();
 
-    $image_path = $image->storeAs('/public/restaurants/categories', $image_name);
+    $image_path = $image->move(public_path().'/images/restaurants/categories/', $image_name);
 
-    if ( file_exists(storage_path('/app/'.$image_path))) {
       $category->dashboard_banner = $image_name;
       $category->save();
       return response()->json(['data' => $data, 'id' => $restaurant->id, 'file' => $image_path]);
-    }else{
-      return response()->json(['data' => storage_path('/app'.$image_path)]);
-    }
+
 
 
   }
