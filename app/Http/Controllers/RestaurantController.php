@@ -342,7 +342,7 @@ class RestaurantController extends Controller
  }
 
  function getDelivery(Request $req){
-
+   return "perro";
  }
 
 
