@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Meal extends Model
 {
-  protected $table = 'meals';
-  public function restaurant(){
-    return $this->belongsTo('App\MealCategory');
-  }
+   / *Meal Belongs To Category*/
+   public function category(){
+     return $this->BelongsTo('App\MealCategory');
+   }
+   /*Has Many Ingredients*/
+   public function ingredients(){
+     return $this->hasMany('App\Ingredient');
+   }
 }
