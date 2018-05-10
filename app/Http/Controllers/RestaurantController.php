@@ -260,7 +260,11 @@ class RestaurantController extends Controller
  */
 
  function all_orders(Request $req){
+<<<<<<< HEAD
    $allOrders = DB::select('select users.name, order.id as "order_id", meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id  LEFT JOIN users ON orders.user_id = users.firebase_id');
+=======
+   $allOrders = DB::select('select orders.id as "order_id", users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id');
+>>>>>>> 0ee09d1f2c1d82deba211ef861d2065e4734e86d
    return view('restaurant.restaurants-orders', ['orders' => $allOrders]);
  }
 
