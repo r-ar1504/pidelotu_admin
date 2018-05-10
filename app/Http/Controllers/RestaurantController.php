@@ -344,7 +344,7 @@ class RestaurantController extends Controller
 
  function getDelivery(Request $req){
 
-   $data = $req->all()
+   $data = $req->all();
 
 
    OneSignalFacade::sendNotificationToAll("Some Message", $url = null, $data = null, $buttons = null, $schedule = null);
