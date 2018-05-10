@@ -349,7 +349,7 @@ class RestaurantController extends Controller
 
    OneSignalFacade::sendNotificationToAll("Some Message", $url = null, $data = null, $buttons = null, $schedule = null);
 
-   return response()->json(["Data": => $data]);
+   return Response::json(array("data" => $data));
   }
 
 
