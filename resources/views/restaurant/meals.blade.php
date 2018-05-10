@@ -17,7 +17,7 @@
     @if(count($meals) > 0)
       @foreach($meals as $meal)
           <div class="element-card">
-            <img src="{{'/storage/restaurants/categories/'.$meal->image }}" alt="restaurant-image">
+            <img src="{{'/images/restaurants/categories/'.$meal->image }}" alt="restaurant-image">
             <a href="/restaurant/ingredients/{{$meal->id}}">
             <div class="card-overlay">
               <div class="overlay-button">
