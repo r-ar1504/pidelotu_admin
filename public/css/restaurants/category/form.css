@@ -20,7 +20,7 @@ form {
 }
 
 #photo-field {
-  width: 70%;
+  width: 25%;
   height: 200px;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -55,7 +55,7 @@ form {
           align-items: center;
   height: 100%;
   cursor: pointer;
-  font-size: 2rem;
+  font-size: 1rem;
   color: #fff;
   font-weight: 500;
   font-family: 'Lato', sans-serif;
@@ -182,4 +182,3 @@ input {
   height: 100%;
   position: absolute;
 }
-

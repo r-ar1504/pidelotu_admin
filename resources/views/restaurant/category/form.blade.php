@@ -19,7 +19,7 @@
       <div id="image-upload">
 
         <label for="upload">
-          <p>+ Agregar imagen de fondo</p>
+          <p>+ Agregar imagen</p>
         </label>
         <input type="file" name="image" id="upload">
 
