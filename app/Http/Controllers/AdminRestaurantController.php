@@ -77,17 +77,14 @@ class AdminRestaurantController extends Controller
     // else {
     //   return Response::json(array("status" => "401", "data" => $validator->messages()));
     // }
-    $data = $request->all();
-    $image = $request->file('image');
-    $restaurant = Restaurant::find($restaurant_id);
-    $category = $restaurant->categories()->create(['name' => $data['name']]);
-
-    $image_name = 'res-'.$restaurant_id.'-cat-'.$category->id.'.'.$image->extension();
-
-    $image_path = $image->move(public_path().'/images/restaurants/categories/', $image_name);
-
-      $category->dashboard_banner = $image_name;
-      $category->save();
+       $data = $request->all();
+       $image = $request->file('image');
+       $restaurant = Restaurant::find($restaurant_id);
+       $category = $restaurant->categories()->create(['name' => $data['name']]);
+       $image_name = 'res-'.$restaurant_id.'-cat-'.$category->id.'.'.$image->extension();
+       $image_path = $image->move(public_path().'/images/restaurants/categories/', $image_name);
+       $category->dashboard_banner = $image_name;
+       $category->save();
       return response()->json(['data' => $data, 'id' => $restaurant->id, 'file' => $image_path]);
 
 

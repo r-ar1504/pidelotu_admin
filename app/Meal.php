@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Meal extends Model
 {
-   / *Meal Belongs To Category*/
+   /*Meal Belongs To Category*/
    public function category(){
      return $this->BelongsTo('App\MealCategory');
    }
