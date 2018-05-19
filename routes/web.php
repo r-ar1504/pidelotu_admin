@@ -61,6 +61,12 @@ Route::post('/add_delivery_man', 'RestaurantController@add_delivery_man');
 Route::post('/deleteDeliveryMan', 'RestaurantController@deleteDeliveryMan');
 Route::post('/update_delivery_man', 'RestaurantController@update_delivery_man');
 Route::post('/updateRestaurant', 'RestaurantController@update_restaurant');
+
+
+
+
+
+
 /*------------------------------------------------------------------
 |   Restaurant Dashboard                                           |                                                                                                 |
 --------------------------------------------------------------------
@@ -69,6 +75,9 @@ Route::post('/updateRestaurant', 'RestaurantController@update_restaurant');
 | Create a restaurant
 | Get restaurant by @id
 ------------------------------------------------------------------*/
+
+
+
 Route::prefix('restaurant')->group(function(){
 
   Route::get('home/{restaurant_id}', 'AdminRestaurantController@getCategories');//List all
@@ -81,6 +90,8 @@ Route::prefix('restaurant')->group(function(){
   Route::get('add-meal/{id}', 'RestaurantController@addMeal');
 });
 
+
+
 /*------------------------------------------------------------------
 |   User Register From App                                         |
 ------------------------------------------------------------------*/
@@ -90,6 +101,8 @@ Route::get('/checkNumber/{number}', 'User@checkNumber');
 Route::post('/create-meal', 'RestaurantController@createMeal');
 Route::post('/create-ingredient', 'RestaurantController@createIngredient');
 Route::post('/getDelivery/{id}', 'RestaurantController@getDelivery');
+
+
 
 
 /*------------------------------------------------------------------

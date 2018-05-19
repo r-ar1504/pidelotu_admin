@@ -348,7 +348,7 @@ class RestaurantController extends Controller
    $data = $id;
 
    $order = DB::table('orders')->where('id', '=', $id)->get();
-   OneSignalFacade::sendNotificationToUser("Orden Entrante", "676d30df-4dd9-43d6-a0ce-2bb842d6a1c6"	, $url = null, $data = array(['id' => $id, 'user_lat' => $order->latitude, 'user_lng' => $order->longitude,'res_lat' => 25.524224, 'res_lng' => -103.415248 ]), $buttons = null, $schedule = null);
+   OneSignalFacade::sendNotificationToUser("Orden Entrante", "676d30df-4dd9-43d6-a0ce-2bb842d6a1c6"	, $url = null, $data = array(['id' => $id, 'user_lat' => $order->latitude, 'user_lng' => $order->longitude,'res_lat' => 25.524224, 'res_lng' => -103.415248, ]), $buttons = null, $schedule = null);
 
    return response()->json(['order' => $order]);
 }
