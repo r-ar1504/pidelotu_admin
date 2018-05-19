@@ -83,6 +83,7 @@ class AdminRestaurantController extends Controller
       // $category = $restaurant->categories()->create(['name' => $data['name']]);
       $category = DB::table('meal_categories')->insert([
         'name' => $data['name'],
+        'restaurant_id' => $restaurant->id
       ]);
       $image_name = 'res-'.$restaurant_id.'-cat-'.$category->id.'.'.$image->extension();
       $image_path = $image->move(public_path().'/images/restaurants/categories/', $image_name);
