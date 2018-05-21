@@ -77,7 +77,16 @@ class RestaurantController extends Controller
           }
          $restaurant->active = 1;
          $restaurant->save();
-         return Response::json(array("status" => "200", "data" => $restaurant));
+
+         $bnn = $req->file('ban');
+
+         $img_name = 'res-'.$restaurant->id.'-ban.'.$bnn->extension();
+
+         $img_path = $bnn->move(public_path().'/images/restaurants/banners/', $img_name);
+         $restaurant->banner = $img_name;
+
+         $restaurant->save();
+         return Response::json(array("status" => "200", "data" => $restaurant, 'bnn' => $img_name));
        } catch (Exception $e) {
          return Response::json(array("status" => "500", "data" => $e));
        }
