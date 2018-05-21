@@ -126,5 +126,6 @@ Route::get('/storage/{restaurant_id}', function($restaurant_id)
 Route::get('/getMeals','RestaurantController@getMeals');
 Route::post('/order','RestaurantController@saveOrder');
 
-Route::get('/get_restaurants', 'API@getRestaurants')
+Route::get('/get_restaurants', 'API@getRestaurants');
+Route::get('/restaurant_meals/{restaurant_id}', 'API@getRestaurantMeals');
 ?>
