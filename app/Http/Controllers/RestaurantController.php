@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Berkayk\OneSignal\OneSignalFacade;
 
+use Kozz\Laravel\Facades\Guzzle;
 /* MODELS---------------------------------------------------------*/
 use App\Restaurant as Restaurant;
 use App\Categories as Categories;
@@ -387,7 +388,20 @@ class RestaurantController extends Controller
          'created_at' $request['date']
        ]);
 
-       OneSignalFacade::sendNotificationToUser("Nueva Orden", "c7df8fc4-5cac-48c7-9541-e35dd4272a84"	, $url = null, $data = null, $buttons = null, $schedule = null);
+       $client = new \GuzzleHttp\Client();
+
+       $result = $client->post('https:/onesignal.com/api/v1/notifications', [
+         "headers" => [
+           "Content-Type" => "application/json; charset=utf-8",
+           "Authorization" => "Basic NThlYzVhZTAtNTI5OC00ODJmLTk3NDItMzI0NWNiN2ZkYzM0"
+         ],
+         "json" =>[
+           "app_id" => "baedd007-9325-4e3e-83fc-d8be136450bd",
+           "contents" => array("en" => "Nueva Orden"),
+           "headings" => array("en" => "Pedido Entrante")
+         ]
+       ])->getBody()->getContents();
+
        return response('success', 200)
                ->header('Content-Type', 'application/json');
 
