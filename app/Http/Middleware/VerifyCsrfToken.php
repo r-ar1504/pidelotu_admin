@@ -14,6 +14,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         'register',
         'signup',
-        'order'
+        'order',
+        'create_restaurant'
     ];
 }

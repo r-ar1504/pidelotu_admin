@@ -41,4 +41,14 @@
 @section('javascript')
   <script type="text/javascript" src="/js/admin/restaurants/home.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+  <script>
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: "baedd007-9325-4e3e-83fc-d8be136450bd",
+      });
+    });
+  </script>
+
 @stop
