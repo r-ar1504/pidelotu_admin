@@ -112,4 +112,6 @@ Route::get('/storage/{restaurant_id}', function($restaurant_id)
 
 Route::get('/getMeals','RestaurantController@getMeals');
 Route::post('/order','RestaurantController@saveOrder');
+
+Route::get('/get_restaurants', 'API@getRestaurants')
 ?>
