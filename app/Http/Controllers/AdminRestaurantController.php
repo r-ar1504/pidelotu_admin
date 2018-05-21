@@ -81,15 +81,20 @@ class AdminRestaurantController extends Controller
       $image = $request->file('image');
       $restaurant = Restaurant::find($restaurant_id);
       // $category = $restaurant->categories()->create(['name' => $data['name']]);
-      $category = DB::table('meal_categories')->insert([
+      $category = DB::table('meal_categories')->insertGetId([
         'name' => $data['name'],
         'restaurant_id' => $restaurant_id
       ]);
-      $image_name = 'res-'.$restaurant_id.'-cat-'.$category->id.'.'.$image->extension();
+
+      $image_name = 'res-'.$restaurant_id.'-cat-'.$category.'.'.$image->extension();
+
+      $new_category = DB::table('meal_categories')->where('id','=',$category);
       $image_path = $image->move(public_path().'/images/restaurants/categories/', $image_name);
-      $category->dashboard_banner = $image_name;
-      $category->save();
-      return response()->json(['data' => $data, 'id' => $restaurant->id, 'file' => $image_path]);
+      $new_category->update([
+        'dashboard_banner' => $image_name
+      ]);
+
+      return response()->json(['data' => $data, 'id' => $restaurant->id, 'file' => $image_path,'files' => $image_name]);
   }
 
   /*Get Category By Id*/
