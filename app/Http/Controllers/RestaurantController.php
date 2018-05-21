@@ -172,6 +172,17 @@ class RestaurantController extends Controller
     return view('admin.orders.add_deliveryMan', ['delivery_man' => $delivery_man]);
   }
 
+  public function getOrders(){
+   try {
+     $orders = DB::table('orders')->select('meal_id as id','meal_category_id as category_id','preparation_time','restaurant_id','restaurants.name as restaurant','meals.name as name','orders.created_at as date','orders.id as order_id','meals.image as image','description','price','total','status')->join('restaurants','restaurant_id','=','restaurants.id')->join('meals','meal_id','=','meals.id')->get();
+
+     return $orders;
+   }
+   catch(Exception $ex) {
+     return response()->json($ex->message);
+   }
+  }
+
   function getinfoDeliveryMan(Request $req, $delMan_id){
     $delivery_man = deliveryMen::where('id', '=', $delMan_id)->first();
     return view('admin.orders.add_deliveryMan', ['delivery_man' => $delivery_man]);
