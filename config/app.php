@@ -165,6 +165,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Berkayk\OneSignal\OneSignalServiceProvider::class,
         Kozz\Laravel\Providers\Guzzle::class,
+
         /*
          * Package Service Providers...
          */
