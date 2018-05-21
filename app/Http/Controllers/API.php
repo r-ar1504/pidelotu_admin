@@ -22,10 +22,10 @@ class API extends Controller
 
        $meals = DB::table('meals')->where('category_id', '=', $category->id)->get();
 
-       $category->meals = $meals
+       $category->meals = $meals;
     }
 
-    return response()->json(['data' => $categories ]);    
+    return $categories;
   }
 
 }
