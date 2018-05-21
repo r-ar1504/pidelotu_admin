@@ -41,8 +41,7 @@ class API extends Controller
       "json" =>[
         "app_id" => "643b522d-743e-4c85-aa8f-ff6fcc5a08b1",
         "filters" =>  array(array("field" => "tag","key" => "fireID", "relation" => "=", "value" => "FIREid")),
-        "data" => array(
-          "order" => "order_data"),
+        "data" => array(['id' => $id, 'user_lat' => $order->latitude, 'user_lng' => $order->longitude,'res_lat' => 25.524224, 'res_lng' => -103.415248, ]),
         "contents" => array("en" => "Nueva Orden"),
         "headings" => array("en" => "Pedido Entrante")
       ]
