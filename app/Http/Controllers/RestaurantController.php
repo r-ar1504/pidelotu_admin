@@ -383,17 +383,20 @@ class RestaurantController extends Controller
          'user_id' => $request['user_id'],
          'latitude' => $request['latitude'],
          'longitude' => $request['longitude'],
-         'total' => $request['total']
+         'total' => $request['total'],
+         'created_at' $request['date']
        ]);
+
+       OneSignalFacade::sendNotificationToUser("Nueva Orden", "c7df8fc4-5cac-48c7-9541-e35dd4272a84"	, $url = null, $data = null, $buttons = null, $schedule = null);
        return response('success', 200)
                ->header('Content-Type', 'application/json');
+
      }
      catch (Exception $e) {
        return response('error '+$e->message, 404)
                ->header('Content-Type', 'application/json');
      }
 
-      OneSignalFacade::sendNotificationToUser("Nueva Orden", "c7df8fc4-5cac-48c7-9541-e35dd4272a84"	, $url = null, $data = null, $buttons = null, $schedule = null);
    }
 
 }
