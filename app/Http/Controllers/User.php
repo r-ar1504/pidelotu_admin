@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class User extends Controller
 {
+
+  public function update(Request $request) {
+       return \App\User::where('firebase_id','=',$request['firebaseId'])->update(['email' => $request['email']]);
+   }
+
+   
   public function register(Request $request) {
      try {
          \App\User::create([
