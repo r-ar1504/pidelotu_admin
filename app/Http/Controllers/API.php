@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use Kozz\Laravel\Facades\Guzzle;
+
 class API extends Controller
 {
   //<!-- Get All Restaurants -->//
