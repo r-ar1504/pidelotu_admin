@@ -384,7 +384,7 @@ class RestaurantController extends Controller
          'latitude' => $request['latitude'],
          'longitude' => $request['longitude'],
          'total' => $request['total'],
-         'created_at' $request['date']
+         'created_at' => $request['date']
        ]);
 
        OneSignalFacade::sendNotificationToUser("Nueva Orden", "c7df8fc4-5cac-48c7-9541-e35dd4272a84"	, $url = null, $data = null, $buttons = null, $schedule = null);
