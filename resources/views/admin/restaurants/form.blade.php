@@ -46,6 +46,7 @@
       <div class="form-field-text">
         {!! Form::textarea('details', $restaurant->details) !!}
       </div>
+      
       <div class="field-label">
         <p>Imagen para aplicación</p>
       </div>
