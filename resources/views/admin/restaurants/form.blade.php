@@ -46,13 +46,6 @@
       <div class="form-field-text">
         {!! Form::textarea('details', $restaurant->details) !!}
       </div>
-
-      <div class="field-label">
-        <p>Imagen para aplicación</p>
-      </div>
-      <div class="form-field-text">
-        <input type="file" name="ban" id="b">
-      </div>
       <button type="button" style="margin-top: 2rem;" data-id="{{$restaurant->id}}" id="saveUpdate" name="save">Guardar cambios</button>
     </div>
     <div id="photo-field">
@@ -106,12 +99,6 @@
       </div>
       <div class="form-field-text">
         {!! Form::textarea('details') !!}
-      </div>
-      <div class="field-label">
-        <p>Imagen para aplicación</p>
-      </div>
-      <div class="form-field-text">
-        <input type="file" name="ban" id="b">
       </div>
       <button type="button" style="margin-top: 2rem;" id="save" name="save">Guardar cambios</button>
     </div>

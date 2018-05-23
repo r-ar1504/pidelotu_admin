@@ -12,8 +12,16 @@
 */
 
 Route::get('/', function () {
-    return view('landing');
+  return view('landing');
 });
+
+/*For Register*/
+Route::get('/unete-a-nosotros', function(){
+  return view('register');
+});
+
+Route::post('/registrando', 'RegisterController@register');
+/*End*/
 
 Route::get('dashboard', 'HomeController@index')->name('dashboard');
 
@@ -112,8 +120,4 @@ Route::get('/storage/{restaurant_id}', function($restaurant_id)
 
 Route::get('/getMeals','RestaurantController@getMeals');
 Route::post('/order','RestaurantController@saveOrder');
-Route::get('/orders','RestaurantController@getOrders');
-Route::post('/update','UserController@update');
-Route::get('/get_restaurants', 'API@getRestaurants');
-Route::get('/restaurant_meals/{restaurant_id}', 'API@getRestaurantMeals');
 ?>
