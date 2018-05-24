@@ -22,14 +22,15 @@ class API extends Controller
 
     foreach ($categories as $category) {
 
-       $meals = DB::table('meals')->where('category_id', '=', $category->id)->get();
+      $meals = DB::table('meals')->where('category_id', '=', $category->id)->get();
 
-       $category->meals = $meals;
+      $category->meals = $meals;
     }
 
     return $categories;
   }
 
+  //<!-- Send Notification To Delivery Man -->//
   function requestDelivery(){
     $client = new \GuzzleHttp\Client();
 
@@ -48,6 +49,30 @@ class API extends Controller
     ])->getBody()->getContents();
 
     return response()->json(['what is ' => $result]);
+  }
+
+  //<!-- Update Delivery Position -->//
+  function updateLocation(Request $request, $order_id){ 
+    $data = $request->all();
+    try{
+      $order = DB::table('orders')->where('id', '=', $order_id)->update(['delivery_longitude' => $data['latitude'], 'delivery_latitude' => $data['longitude']]);
+    }catch(Exception $e){
+      return response()->json([ 'code' => '500', 'error' => $e ]);
+    }
+    return response()->json(['code' => '200', 'message' => 'sucess', 'request_data' => $data]);
+  }
+
+  //<!-- Fetch Delivery Position -->//
+  function getDeliveryLocation(Request $request, $order_id){
+    $data = $request->all();
+    try{
+      $order = DB::table('orders')->where('id', '=', $order_id)->get();
+      $coords = [ ];
+      array_push($coords, $order->delivery_location, $order->delivery_longitude);
+    }catch(Exception $e){
+      return response()->json([ 'code' => '500', 'error' => $e ]);
+    }
+    return response()->json(['code' => '200', 'message' => 'sucess', 'request_data' => $data, 'response_data' => $coords]);
   }
 
 }
