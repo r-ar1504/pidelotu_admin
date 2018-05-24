@@ -55,7 +55,7 @@ class API extends Controller
   function updateLocation(Request $request, $order_id){ 
     $data = $request->all();
     try{
-      $order = DB::table('orders')->where('id', '=', $order_id)->update(['delivery_longitude' => $data['latitude'], 'delivery_latitude' => $data['longitude']]);
+      $order = DB::table('orders')->where('id', '=', $order_id)->update(['delivery_latitude' => $data['latitude'], 'delivery_longitude' => $data['longitude']]);
     }catch(Exception $e){
       return response()->json([ 'code' => '500', 'error' => $e ]);
     }
@@ -68,7 +68,7 @@ class API extends Controller
     try{
       $order = DB::table('orders')->where('id', '=', $order_id)->get();
       $coords = [ ];
-      array_push($coords, $order->delivery_location, $order->delivery_longitude);
+      array_push($coords, $order->delivery_latitude, $order->delivery_longitude);
     }catch(Exception $e){
       return response()->json([ 'code' => '500', 'error' => $e ]);
     }
