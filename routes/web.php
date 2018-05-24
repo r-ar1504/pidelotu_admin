@@ -129,4 +129,12 @@ Route::get('/orders','RestaurantController@getOrders');
 Route::post('/update','UserController@update');
 Route::get('/get_restaurants', 'API@getRestaurants');
 Route::get('/restaurant_meals/{restaurant_id}', 'API@getRestaurantMeals');
+
+
+/*------------------------------------------------------------------
+|   Delivery Coordinates Update/Get                                |                                                                                                 |
+------------------------------------------------------------------*/
+Route::get('/update_delivery_coords/{restaurant_id}', 'API@updateLocation');
+Route::get('/get_delivery_coords/{restaurant_id}', 'API@getDeliveryLocation');
+
 ?>
