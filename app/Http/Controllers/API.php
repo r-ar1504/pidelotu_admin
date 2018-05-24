@@ -66,7 +66,7 @@ class API extends Controller
   function getDeliveryLocation(Request $request, $order_id){
     $data = $request->all();
     try{
-      $order = DB::table('orders')->where('id', '=', $order_id)->get();
+      $order = DB::table('orders')->where('id', '=', $order_id)->first();
       $coords = [ ];
       array_push($coords, $order->delivery_latitude, $order->delivery_longitude);
     }catch(Exception $e){
