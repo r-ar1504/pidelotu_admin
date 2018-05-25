@@ -16,6 +16,7 @@ use App\Restaurant as Restaurant;
 use App\Categories as Categories;
 use App\deliveryMen;
 use App\Meal;
+use App\Order;
 use App\MealCategory;
 use App\Ingredient;
 /*------------------------------------------------------------------
@@ -280,7 +281,7 @@ class RestaurantController extends Controller
 
  function all_orders(Request $req){
 
-   $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id');
+   $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", meals.description as "description" from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id');
    return view('restaurant.restaurants-orders', ['orders' => $allOrders]);
  }
 
@@ -416,40 +417,38 @@ class RestaurantController extends Controller
    }
 
    public function saveOrder(Request $request) {
-     try {
-       \DB::table('orders')->insert([
-         'restaurant_id' => $request['restaurant_id'],
-         'meal_category_id' => $request['meal_category_id'],
-         'meal_id' => $request['meal_id'],
-         'user_id' => $request['user_id'],
-         'latitude' => $request['latitude'],
-         'longitude' => $request['longitude'],
-         'total' => $request['total'],
-         'created_at' => $request['created_at']
-       ]);
+    try {
+      \App\Order::create([
+        'created_at' => $request['created_at'],
+        'restaurant_id' => $request['restaurant_id'],
+        'meal_category_id' => $request['meal_category_id'],
+        'meal_id' => $request['meal_id'],
+        'user_id' => $request['user_id'],
+        'latitude' => $request['latitude'],
+        'longitude' => $request['longitude'],
+        'total' => $request['total']
+      ]);
 
-       $client = new \GuzzleHttp\Client();
+      $client = new \GuzzleHttp\Client();
 
-       $result = $client->post('https:/onesignal.com/api/v1/notifications', [
-         "headers" => [
-           "Content-Type" => "application/json; charset=utf-8",
-           "Authorization" => "Basic NThlYzVhZTAtNTI5OC00ODJmLTk3NDItMzI0NWNiN2ZkYzM0"
-         ],
-         "json" =>[
-           "app_id" => "baedd007-9325-4e3e-83fc-d8be136450bd",
-           "contents" => array("en" => "Nueva Orden"),
-           "headings" => array("en" => "Pedido Entrante")
-         ]
-       ])->getBody()->getContents();
+      $result = $client->post('https:/onesignal.com/api/v1/notifications', [
+        "headers" => [
+          "Content-Type" => "application/json; charset=utf-8",
+          "Authorization" => "Basic NThlYzVhZTAtNTI5OC00ODJmLTk3NDItMzI0NWNiN2ZkYzM0"
+        ],
+        "json" =>[
+          "app_id" => "baedd007-9325-4e3e-83fc-d8be136450bd",
+          "contents" => array("en" => "Nueva Orden"),
+          "headings" => array("en" => "Pedido Entrante")
+        ]
+      ])->getBody()->getContents();
 
-       return response('success', 200)
-               ->header('Content-Type', 'application/json');
-
-     }
-     catch (Exception $e) {
-       return response('error '+$e->message, 404)
-               ->header('Content-Type', 'application/json');
-     }
+      return response('success', 200);
+      }
+      catch (Exception $e) {
+        return response('error '+$e->message, 404)
+                ->header('Content-Type', 'application/json');
+      }
 
    }
 
