@@ -422,7 +422,7 @@ class RestaurantController extends Controller
          'latitude' => $request['latitude'],
          'longitude' => $request['longitude'],
          'total' => $request['total'],
-         'created_at' $request['date']
+         'created_at' => $request['created_at']
        ]);
 
        $client = new \GuzzleHttp\Client();
