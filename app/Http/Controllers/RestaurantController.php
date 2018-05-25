@@ -396,7 +396,6 @@ class RestaurantController extends Controller
     $order = DB::table('orders')->where('id', '=', $order_id)->first();
 
     $restaurant = DB::table('restaurants')->where('id', '=', $order->restaurant_id )->first();
-      return response()->json(['what is ' => $result]);
 
     return response()->json(['order' => $order, 'restaurant' => $restaurant]);
   }
