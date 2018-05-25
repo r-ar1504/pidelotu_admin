@@ -14,6 +14,7 @@
   <link rel="icon" href="images/favicon.png">
   <link rel="stylesheet" href="{{ asset('css/main.css') }}">
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+  <link rel="shortcut icon" type="image/x-icon" href="{{asset('/images/ic.png')}}"/>
   @yield('stylesheets')
 </head>
 

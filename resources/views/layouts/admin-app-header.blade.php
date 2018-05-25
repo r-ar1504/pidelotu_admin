@@ -9,23 +9,21 @@
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>Pídelo Tu | Dashboard</title>
+  <title>Pídelo Tu | Panel</title>
 
   <link rel="stylesheet" href="css/main.css">
   <link rel="icon" href="images/favicon.png">
   <link rel="stylesheet" href="{{ asset('css/main.css') }}">
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+  <link rel="shortcut icon" type="image/x-icon" href="{{asset('/images/ic.png')}}"/>
   @yield('stylesheets')
 </head>
 
 <body>
-
   <header class="panel-header">
-
     <img src="{{ asset('images/logo.png') }}" alt="pidelotu_logo" id="app-logo">
-    <h1 id="header-title"> @yield('section-title') </h1>
+    <h1 align="center" id="header-title"> @yield('section-title') </h1>
     <img src="{{ asset('images/notification-bell.png') }}" alt="notify-bell">
-
   </header><!-- Header End-->
 
   <div class="main-container">
@@ -45,8 +43,10 @@
         </div>
       </div><!--End of Button Holder-->
 
-      <div id="logout-container">
-        <button type="button" name="button">Cerrar Sesión</button>
+      <div id="logout-container" style="margin-left: 8px;">
+        <form action="/logout" method="get">
+          <button type="submit" name="button">Cerrar Sesión</button>
+        </form>
       </div>
     </div><!--End Left Panel-->
 
@@ -54,10 +54,8 @@
       @yield('content')
     </div>
   </div>
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script type="text/javascript" src="/js/layouts/admin-app-header.js"></script>
 </body>
   @yield('javascript')
-
 </html>

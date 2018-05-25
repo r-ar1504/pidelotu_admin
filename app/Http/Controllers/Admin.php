@@ -26,16 +26,31 @@ class Admin extends Controller
 */
 
 function checkOut(Request $request){
-  if (Auth::attempt([
-       'email' => $request->email,
-       'password' => $request->password
-       ])){
-         $user = RestaurantUsers::where('email', '=', $request->email)->first();
-         return Response::json(array("status" => "200", "role" => $user->role));
-     }
-     else {
-       return Response::json(array("status" => "403"));
-     }
+  if (Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+    $user = RestaurantUsers::where('email', '=', $request->email)->first();
+    return Response::json(array("status" => "200", "role" => $user->role));
+  }
+  else {
+    return Response::json(array("status" => "403"));
+  }
+}
+
+function create(){
+  $RestaurantUsers = new RestaurantUsers();
+  $RestaurantUsers->username = 'Admin';
+  $RestaurantUsers->email = 'admin1@hotmail.com';
+  $RestaurantUsers->password = Hash::make(123);
+  $RestaurantUsers->created_at = \Carbon\Carbon::now()->toDateTimeString();
+  $RestaurantUsers->updated_at = \Carbon\Carbon::now()->toDateTimeString();
+  $RestaurantUsers->role = 'adminR';
+
+  $RestaurantUsers->save();
+  return $RestaurantUsers;
+}
+
+function logout(){
+  \Auth::logout();
+  return view('/');
 }
 
 

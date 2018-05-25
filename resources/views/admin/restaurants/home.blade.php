@@ -1,6 +1,6 @@
 @extends('layouts.admin-app-header')
 
-@section('section-title', 'restaurant')
+@section('section-title', 'Restaurantes Registrados')
 
 @section('stylesheets')
   <link rel="stylesheet" href="{{ asset('css/admin/restaurants/main2.css') }}">

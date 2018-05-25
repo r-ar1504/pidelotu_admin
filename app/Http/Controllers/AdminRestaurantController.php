@@ -33,6 +33,10 @@ class AdminRestaurantController extends Controller
   /*Get All Categories*/
   function getCategories(Request $request, $restaurant_id){
     $restaurant = Restaurant::find($restaurant_id);
+    
+    if($restaurant === null){
+      return view('layouts.admin-app-header');
+    }
     $categories = $restaurant->categories()->get();
     return view('restaurant.home', ['restaurant' => $restaurant, 'categories' => $categories]);
     // return response()->json(['restaurant' => $restaurant, 'categories' => $categories]);

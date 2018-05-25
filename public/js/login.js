@@ -20,8 +20,11 @@ $(function(){
         if (response.role == "admin") {
           window.location.href = "/admin/restaurants";
         }else {
-          // window.location.href = "/"
+          window.location.href = "/restaurant/home";
         }
+      }
+      else{
+        return alert('Su usuario y/o contraseña estan incorrectos');
       }
     });
   });
