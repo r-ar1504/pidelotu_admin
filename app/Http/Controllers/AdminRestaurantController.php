@@ -234,54 +234,33 @@ class AdminRestaurantController extends Controller
   }
 
   function add_delivery_man(Request $req){
-    $add = new Delivery();
-    $add->name = $req['name'];
+    $add          = new Delivery();
+    $add->name    = $req['name'];
     $add->address = $req['address'];
     $add->details = $req['details'];
-    $add->age = $req['age'];
-    $add->gender = $req['gender'];
-    $add->phone = $req['phone'];
-    $add->curp = $req['curp'];
-    $add->active = 1;
+    $add->age     = $req['age'];
+    $add->gender  = $req['gender'];
+    $add->phone   = $req['phone'];
+    $add->curp    = $req['curp'];
+    $add->active  = 1;
     $add->save();
 
     return 'ok';
   }
 
   function update_delivery_man(Request $req){
-    $data = $req->all();
-    $validator = Validator::make($data, [
-      'address' => 'required',
-      'details' => 'required',
-      'name' => 'required'
-    ]);
-    if(!$validator->fails()){
-      try {
-         $public_path = public_path();
-         $delivery_man = deliveryMen::where('id', '=', $req->id)->first();
-         $delivery_man->name = $req->name;
-         $delivery_man->phone = $req->phone;
-         $delivery_man->details = $req->details;
-         $delivery_man->age = $req->age;
-         $delivery_man->curp = $req->curp;
-         $delivery_man->address = $req->address;
-         $delivery_man->gender = $req->gender;
-          if($req->hasFile("image")){
-            $bannerFile = $req->file('image');
-            $bannerName = md5($bannerFile->getClientOriginalName()."".Carbon::now()).".".$bannerFile->getClientOriginalExtension();
-            $bannerFile->move($public_path.'/images/delivery_man/', $bannerName);
-            $delivery_man->logo = $bannerName;
-          }
-         $delivery_man->active = 1;
-         $delivery_man->save();
-         return Response::json(array("status" => "200", "data" => $delivery_man));
-       } catch (Exception $e) {
-         return Response::json(array("status" => "500", "data" => $e));
-       }
-    }
-    else {
-      return Response::json(array("status" => "401", "data" => $validator->messages()));
-    }
+    $put = deliveryMen::find($req['id']);
+    $put->name       = $req['name'];
+    $put->phone      = $req['phone'];
+    $put->details    = $req['details'];
+    $put->age        = $req['age'];
+    $put->curp       = $req['curp'];
+    $put->address    = $req['address'];
+    $put->gender     = $req['gender'];
+    $put->updated_at = Carbon::now();
+
+    $put->save();
+    return 'ok';
   }
 
   function deleteDeliveryMan(Request $req){
@@ -292,19 +271,19 @@ class AdminRestaurantController extends Controller
   }
 
   function update_restaurant(Request $req){
-    $data = $req->all();
-    $validator = Validator::make($data, [
+    $data       = $req->all();
+    $validator  = Validator::make($data, [
       'address' => 'required',
       'details' => 'required',
-      'name' => 'required'
+      'name'    => 'required'
     ]);
     if(!$validator->fails()){
       try {
-         $public_path = public_path();
-         $restaurant = Restaurant::where('id', '=', $req->id)->first();
-         $restaurant->name = $req->name;
-         $restaurant->address = $req->address;
-         $restaurant->details = $req->details;
+         $public_path          = public_path();
+         $restaurant           = Restaurant::where('id', '=', $req->id)->first();
+         $restaurant->name     = $req->name;
+         $restaurant->address  = $req->address;
+         $restaurant->details  = $req->details;
          $restaurant->username = $req->user;
           if($req->hasFile("image")){
             $bannerFile = $req->file('image');

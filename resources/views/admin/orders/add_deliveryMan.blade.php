@@ -14,7 +14,7 @@
 
       {!! Form::open(['id' => 'restaurantForm', 'files' => true]) !!}
       <div id="form-fields">
-
+         <input type="text" name="id" value="{{$delivery_man->id}}" hidden="true">
         <div class="field-label">
           <p>Nombre Completo</p>
         </div>

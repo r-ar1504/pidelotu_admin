@@ -116,7 +116,7 @@ $("body").on('click', '#saveUpdate', function(){
        }
    })
    .done(function(response){
-     if (response.status == "200") {
+     if (response == "ok") {
        swal({
         title: "Excelente",
         text: "Todo se ha guardado con exito",
@@ -124,12 +124,12 @@ $("body").on('click', '#saveUpdate', function(){
         button: "Aceptar",
       })
       .then((value) => {
-        window.location.href = '/administrador/restaurantes';
+        window.location.href = '/administrador/repartidores';
       });
     }else {
       swal({
        title: "Lo sientimos",
-       text: "Al parecer hay un error, Por favor intentalo mas tarde",
+       text: "Al parecer hay un error, Por favor intentalo mas tarde ",
        icon: "Warning",
        button: "Aceptar",
      })
