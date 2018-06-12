@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Auth;
 use App\RestaurantUsers;
+use App\Restaurant;
 
 class Admin extends Controller
 {
@@ -28,7 +29,13 @@ class Admin extends Controller
 function checkOut(Request $request){
   if (Auth::attempt(['email' => $request->email, 'password' => $request->password])){
     $user = RestaurantUsers::where('email', '=', $request->email)->first();
-    return Response::json(array("status" => "200", "role" => $user->role));
+
+    if($user->role == 'restaurante'){
+      return Response::json(array("status" => "200", "role" => $user->role, "restaurant" => $user->restaurant));
+    }
+    else{
+      return Response::json(array("status" => "200", "role" => $user->role));
+    }
   }
   else {
     return Response::json(array("status" => "403"));
@@ -50,7 +57,7 @@ function create(){
 
 function logout(){
   \Auth::logout();
-  return view('/');
+  return view('/landing');
 }
 
 

@@ -1,4 +1,4 @@
-@extends('layouts.restaurant-app-header')
+@extends('layouts.admin-restaurant-app-header')
 
 @section('section-title', $restaurant->name)
 
@@ -8,28 +8,29 @@
 
 @section('content')
   <div id="index-header">
-    <a href="/restaurant/{{$restaurant->id}}/add_category"><p> <span>+</span> Agregar Categoria</p></a>
+    <a href="/restaurante/{{$restaurant->id}}/agregar-categoria"><p> <span>+</span> Agregar Categoria</p></a>
   </div>
   <div class="list-container">
 
     @if(count($categories) > 0)
       @foreach($categories as $category)
-          <div class="element-card">
+        <div class="row">
+          <div class="element-card col-md-4">
             <img src="{{'/images/restaurants/categories/'.$category->dashboard_banner }}" alt="restaurant-image">
-            <a href="/restaurant/meals/{{$category->id}}">
-            <div class="card-overlay">
-              <div class="overlay-button">
-                <p>{{$category->name}}</p>
+            <a href="/restaurante/comidas/2">
+              <div class="card-overlay">
+                <div class="overlay-button">
+                  <p>{{$category->name}}</p>
+                </div>
               </div>
-            </div>
-
-          </a>
+            </a>
           </div>
+        </div>
       @endforeach
 
     @else
       <div class="no-content">
-        <p>No existen elementos en esta categoria</p>
+        <p>No existen platillos en este restaurante</p>
       </div>
     @endif
 

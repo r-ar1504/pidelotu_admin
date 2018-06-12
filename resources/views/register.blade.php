@@ -4,7 +4,7 @@
 <div style="margin-top: 150px;"></div>
 <div class="container">
 	<h1 align="center"><i class="fa fa-users"></i> Registra tu restaurante</h1>
-	<form action="/registrando" method="POST">
+	<form action="/Enviando" method="POST">
 		<input type="hidden" name="_token" value="{{csrf_token()}}">
 		<div class="row">
 			<div class="col-md-6">

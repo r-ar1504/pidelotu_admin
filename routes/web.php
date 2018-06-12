@@ -41,6 +41,10 @@ Route::get('/create', 'Admin@create');
 
 Route::post('/checkOut', 'Admin@checkOut');
 
+Route::post('/Enviando', 'RegisterRestaurantController@seend');
+
+Route::get('/registrar', 'RegisterRestaurantController@register');
+
 
 /*------------------------------------------------------------------
 |   Admin Dashboard                                                |                                                                                                 |
@@ -55,30 +59,38 @@ Route::post('/checkOut', 'Admin@checkOut');
 
 Route::middleware(['auth'])->group(function () {
   Route::get('/logout', 'Admin@logout');
-  Route::prefix('admin')->group(function(){
+
+  Route::prefix('administrador')->group(function(){
     Route::get('/', function () {
         return view('admin.restaurants.home');
     });//Load Form
-    Route::get('restaurants', 'RestaurantController@getRestaurants');//List all
-    Route::get('orders', 'RestaurantController@orders');
-    Route::get('delivery-man', 'RestaurantController@deliveryMan');
-    Route::get('add_deliveryMan', 'RestaurantController@add_deliveryMan');
-    Route::get('update_deliveryMan/{id}', 'RestaurantController@getinfoDeliveryMan');
-    Route::get('update_restaurant/{restaurant_id}', 'RestaurantController@infoRestaurant');
+    Route::get('restaurantes', 'AdminRestaurantController@getRestaurants');
+    Route::get('restaurante/{id}', 'AdminRestaurantController@getCategories');
+    //List all
+    Route::get('repartidores', 'AdminRestaurantController@orders');
+    Route::get('delivery-man', 'AdminRestaurantController@deliveryMan');
+    Route::get('add_deliveryMan', 'AdminRestaurantController@add_deliveryMan');
+    Route::get('update_deliveryMan/{id}', 'AdminRestaurantController@getinfoDeliveryMan');
+    Route::get('modificar-restaurante/{restaurant_id}', 'AdminRestaurantController@infoRestaurant');
     Route::get('add_restaurant', function () {
         $restaurant = null;
         return view('admin.restaurants.form',['restaurant' => $restaurant]);
     });//Load Form
-    Route::post('create_restaurant', 'RestaurantController@createRestaurant');//Create
-    Route::get('restaurant/{restaurant_id}', 'RestaurantController@getRestaurant');//Get instance
 
+    /* Añadir Restaurante */
+    Route::post('agregando', 'AdminRestaurantController@add_restaurant');
+    /* Actualizar Restaurante */
+    Route::post('actualizando', 'AdminRestaurantController@editRestaurant');
+
+    Route::post('create_restaurant', 'AdminRestaurantController@createRestaurant');//Create
+    Route::get('restaurant/{restaurant_id}', 'AdminRestaurantController@getRestaurant');//Get instance
+
+    Route::post('/deleteRestaurant', 'AdminRestaurantController@deleteRestaurant');//delete
+    Route::post('/add_delivery_man', 'AdminRestaurantController@add_delivery_man');
+    Route::post('/deleteDeliveryMan', 'AdminRestaurantController@deleteDeliveryMan');
+    Route::post('/update_delivery_man', 'AdminRestaurantController@update_delivery_man');
+    Route::post('/updateRestaurant', 'AdminRestaurantController@update_restaurant');
   });
-
-  Route::post('/deleteRestaurant', 'RestaurantController@deleteRestaurant');//delete
-  Route::post('/add_delivery_man', 'RestaurantController@add_delivery_man');
-  Route::post('/deleteDeliveryMan', 'RestaurantController@deleteDeliveryMan');
-  Route::post('/update_delivery_man', 'RestaurantController@update_delivery_man');
-  Route::post('/updateRestaurant', 'RestaurantController@update_restaurant');
   /*------------------------------------------------------------------
   |   Restaurant Dashboard                                           |                                                                                                 |
   --------------------------------------------------------------------
@@ -87,16 +99,21 @@ Route::middleware(['auth'])->group(function () {
   | Create a restaurant
   | Get restaurant by @id
   ------------------------------------------------------------------*/
-  Route::prefix('restaurant')->group(function(){
+  Route::prefix('restaurante')->group(function(){
 
-    Route::get('home/{restaurant_id}', 'AdminRestaurantController@getCategories');//List all
-    Route::get('{restaurant_id}/add_category', 'AdminRestaurantController@addCategory');//Load Form
+    Route::get('inicio', 'AdminRestaurantController@getCategories');//List all
+    Route::get('{restaurant_id}/agregar-categoria', 'AdminRestaurantController@addCategory');//Load Form
     Route::post('{restaurant_id}/create_category', 'AdminRestaurantController@createCategory');//Create
     Route::post('res/{restaurant_id}/cat/{category_id}', 'RestaurantController@getCategory');//Get instance
-    Route::get('all-orders', 'RestaurantController@all_orders');
+    Route::get('ordenes', 'RestaurantController@all_orders');
     Route::get('ingredients/{id}', 'RestaurantController@ingredients');
     Route::get('meals/{id}', 'RestaurantController@meals');
     Route::get('add-meal/{id}', 'RestaurantController@addMeal');
+    /*Vista de las propiedades del restaurante*/
+    //Route::get('inicio/{restaurant_id}', 'AdminRestaurantController@getCategories');
+    Route::get('comidas/{id}', 'RestaurantController@meals');
+    Route::get('ingredientes/{id}', 'RestaurantController@ingredients');
+
   });
 
   /*------------------------------------------------------------------
@@ -130,7 +147,7 @@ Route::middleware(['auth'])->group(function () {
 
   Route::get('/getMeals','RestaurantController@getMeals');
   Route::post('/order','RestaurantController@saveOrder');
-  });
+});
 
 /*Fin de las rutas que van dentro del middleware*/
 

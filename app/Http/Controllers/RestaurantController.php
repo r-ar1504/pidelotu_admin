@@ -281,9 +281,13 @@ class RestaurantController extends Controller
  */
 
  function all_orders(Request $req){
+  $name = $req->id;
 
-   $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id');
-   return view('restaurant.restaurants-orders', ['orders' => $allOrders]);
+  $id = DB::table('restaurants')->where('name', $name)->pluck('id')->first();
+
+  $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id where restaurant_id = '.$id.'');
+
+  return view('restaurant.restaurants-orders', ['orders' => $allOrders]);
  }
 
  function meals(Request $req, $id){

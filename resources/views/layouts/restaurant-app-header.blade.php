@@ -39,10 +39,10 @@
           <img src="{{ asset('images/pedidos.png') }}" alt="pedidos" id="pedidos">
           <p>PEDIDOS</p>
         </div>
-        <div class="left-panel-element">
+        <!--<div class="left-panel-element">
           <img src="{{ asset('images/analysis.png') }}" alt="analysis" id="analysis">
           <p>ANÁLISIS GENERAL</p>
-        </div>
+        </div>-->
       </div><!--End of Button Holder-->
 
       <div id="logout-container">

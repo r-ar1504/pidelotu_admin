@@ -12,7 +12,7 @@ $(function(){
     .then((willDelete) => {
       if (willDelete) {
         $.ajax({
-          url: "/deleteDeliveryMan",
+          url: "/administrador/deleteDeliveryMan",
           type: "POST",
           data: {id: id},
           headers: {
@@ -30,7 +30,7 @@ $(function(){
 
   $("body").on('click', '.update', function(){
     $id = $(this).data('id');
-    window.location.href = "/admin/update_deliveryMan/"+$id;
+    window.location.href = "/administrador/update_deliveryMan/"+$id;
   });
 
 });

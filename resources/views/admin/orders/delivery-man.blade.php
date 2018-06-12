@@ -14,7 +14,9 @@
 
     <div class="col-md-12">
       <div class="text-right">
-        <p class="addDeliveryMan"><span class="plus">+</span>agregar repartidor</p><br><br>
+        <a href="/administrador/add_deliveryMan">
+          <p class="addDeliveryMan"><span class="plus">+</span>agregar repartidor</p><br><br>
+        </a>
       </div>
     </div>
 

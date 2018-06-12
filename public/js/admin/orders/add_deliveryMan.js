@@ -28,7 +28,7 @@ $("body").on('click', '#save', function(){
   if (restaurantData.valid()){
     var formData = new FormData($("#restaurantForm")[0]);
     $.ajax({
-       url: '/add_delivery_man',
+       url: '/administrador/add_delivery_man',
        type: 'POST',
        data: formData,
        cache: false,
@@ -47,7 +47,7 @@ $("body").on('click', '#save', function(){
         button: "Aceptar",
       })
       .then((value) => {
-        window.location.href = '/admin/delivery-man';
+        window.location.href = '/administrador/delivery-man';
       });
     }else {
       swal({
@@ -57,7 +57,7 @@ $("body").on('click', '#save', function(){
        button: "Aceptar",
      })
      .then((value) => {
-       window.location.href = '/admin/restaurants';
+       window.location.href = '/administrador/restaurantes';
      });
     }
    });
@@ -105,7 +105,7 @@ $("body").on('click', '#saveUpdate', function(){
     var formData = new FormData($("#restaurantForm")[0]);
     formData.append('id', $id);
     $.ajax({
-       url: '/update_delivery_man',
+       url: '/administrador/update_delivery_man',
        type: 'POST',
        data: formData,
        cache: false,
@@ -124,7 +124,7 @@ $("body").on('click', '#saveUpdate', function(){
         button: "Aceptar",
       })
       .then((value) => {
-        window.location.href = '/admin/restaurants';
+        window.location.href = '/administrador/restaurantes';
       });
     }else {
       swal({
@@ -134,7 +134,7 @@ $("body").on('click', '#saveUpdate', function(){
        button: "Aceptar",
      })
      .then((value) => {
-       window.location.href = '/admin/delivery-man';
+       window.location.href = '/administrador/delivery-man';
      });
     }
    });

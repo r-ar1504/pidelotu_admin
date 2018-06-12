@@ -145,8 +145,8 @@
 
   <div id="bottom-links">
 
-    <a href="/admin/restaurants">Regresar a lista de restaurantes</a>
-    <a href="/admin/restaurants">Cancelar</a>
+    <a href="/administrador/restaurantes">Regresar a lista de restaurantes</a>
+    <a href="/administrador/restaurantes">Cancelar</a>
 
   </div>
 @endsection

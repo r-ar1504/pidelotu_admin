@@ -18,9 +18,9 @@ $(function(){
     .done(function(response){
       if (response.status == "200") {
         if (response.role == "admin") {
-          window.location.href = "/admin/restaurants";
+          window.location.href = "/administrador/restaurantes";
         }else {
-          window.location.href = "/restaurant/home";
+          window.location.href = "/restaurante/inicio/" + response.restaurant + "";
         }
       }
       else{

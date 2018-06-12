@@ -7,7 +7,11 @@ use Illuminate\Support\Facades\DB;
 
 /* MODELS---------------------------------------------------------*/
 use App\Restaurant as Restaurant;
+use App\RestaurantUsers as RU;
 use App\MealCategory as Category;
+use App\deliveryMen;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 /*------------------------------------------------------------------
 | Controller for Restaurant Model                                  |                                   |                                                               |
 --------------------------------------------------------------------
@@ -106,5 +110,247 @@ class AdminRestaurantController extends Controller
     $data = $request->all();
     $restaurant = Restaurant::find($restaurant_id);
     return response()->json(['restaurant' => $restaurant]);
+  }
+
+
+
+
+
+  private $idRestaurante;
+
+  /* Funciones del administrador */
+  function getRestaurants(Request $req){
+    $restaurants = Restaurant::where('active', '=', 1)->get();
+    return view('admin.restaurants.home', ['restaurants' => $restaurants]);
+  }
+
+  function infoRestaurant(Request $req, $restaurant_id){
+    $idRestaurante = $restaurant_id;
+    $restaurant = Restaurant::where('id', '=', $restaurant_id)->first();
+    return view('admin.restaurants.form', ['restaurant' => $restaurant]);
+  }
+
+  public function add_restaurant(Request $request){
+    $rules = [
+      'name'     => 'required',
+      'user'     => 'required',
+      'password' => 'required',
+      'address'  => 'required',
+      'details'  => 'required'
+    ];
+
+    $messages = [
+      'name'     => 'Agrega el campo nombre',
+      'user'     => 'Agrega el campo usuario',
+      'password' => 'Agrega el campo de contraseña',
+      'address'  => 'Agrega el campo de dirección',
+      'details'  => 'Agrega el campo detalles'
+    ];
+
+    $this->validate($request, $rules, $messages);
+
+    $restaurante = new Restaurant();
+    $restaurante->name       = $request['name'];
+    $restaurante->active     = 1;
+    $restaurante->address    = $request['address'];
+    $restaurante->details    = $request['details'];
+    if($request['image']     == null){
+      $restaurante->logo     = null;
+    }
+    else{
+      $restaurante->logo     = $request['image'];
+    }
+    $restaurante->created_at = Carbon::now();
+    $restaurante->updated_at = Carbon::now();
+    $restaurante->save();
+
+    $id = Restaurant::where('created_at', Carbon::now())->first();
+    
+    $UserRestaurant = new RU();
+    $UserRestaurant->username   = $request['user'];
+    $UserRestaurant->email      = $request['email'];
+    $UserRestaurant->password   = Hash::make($request['password']);
+    $UserRestaurant->created_at = Carbon::now();
+    $UserRestaurant->updated_at = Carbon::now();
+    $UserRestaurant->role       = 'restaurante';
+    $UserRestaurant->restaurant = $id->id;
+    $UserRestaurant->save();
+
+    return redirect('/administrador/restaurantes');
+  }
+
+  public function editRestaurant(Request $request){
+    $edit = Restaurant::find($request['id']);
+    $edit->name    = $request['name'];
+    $edit->address = $request['address'];
+    $edit->details = $request['details'];
+    if($request['image'] == null){
+      $edit->logo  = null;
+    }
+    else{
+      $edit->logo  = $request['image'];
+    }
+    $edit->save();
+
+    $RU = DB::table('restaurant_users')->where('restaurant', $request['id'])->update(['username' => $request['user'], 'password' => Hash::make($request['password']), 'email' => $request['email'], 'updated_at' => Carbon::now()]);
+
+    return redirect('/administrador/restaurantes');
+  }
+
+  function deleteRestaurant(Request $req){
+    $delete = Restaurant::find($req['id']);
+    $delete->active = 0;
+    $delete->save();
+
+    return 'Ok';
+    /*if ($delete->save() > 0){
+      return Response::json(array("status" => "200", "data" => $delete));
+    }
+    else {
+      return Response::json(array("status" => "404", "data" => $delete));
+    }*/
+  }
+
+  function orders(Request $req){
+    //return view('admin.restaurants.orders');
+    $delivery_mans = deliveryMen::where('active', '=', 1)->get();
+    return view('admin.orders.delivery-man', ['deliveryMans' => $delivery_mans]);
+  }
+
+  function deliveryMan(Request $req){
+    $delivery_mans = deliveryMen::where('active', '=', 1)->get();
+    return view('admin.orders.delivery-man', ['deliveryMans' => $delivery_mans]);
+  }
+
+  function add_deliveryMan(Request $req){
+    $delivery_man = null;
+    return view('admin.orders.add_deliveryMan', ['delivery_man' => $delivery_man]);
+  }
+
+  function getinfoDeliveryMan(Request $req, $delMan_id){
+    $delivery_man = deliveryMen::where('id', '=', $delMan_id)->first();
+    return view('admin.orders.add_deliveryMan', ['delivery_man' => $delivery_man]);
+  }
+
+  function add_delivery_man(Request $req){
+    $data = $req->all();
+    $validator = Validator::make($data, [
+      'address' => 'required',
+      'details' => 'required',
+      'name' => 'required'
+    ]);
+    if(!$validator->fails()){
+      try {
+         $public_path = public_path();
+         $delivery_man = new deliveryMen();
+         $delivery_man->name = $req->name;
+         $delivery_man->phone = $req->phone;
+         $delivery_man->details = $req->details;
+         $delivery_man->age = $req->age;
+         $delivery_man->curp = $req->curp;
+         $delivery_man->address = $req->address;
+         $delivery_man->gender = $req->gender;
+          if(!$req->hasFile("image")){
+            $delivery_man->logo = "default.png";
+          }else{
+            $bannerFile = $req->file('image');
+            $bannerName = md5($bannerFile->getClientOriginalName()."".Carbon::now()).".".$bannerFile->getClientOriginalExtension();
+            $bannerFile->move($public_path.'/images/delivery_man/', $bannerName);
+            $delivery_man->logo = $bannerName;
+          }
+         $delivery_man->active = 1;
+         $delivery_man->save();
+         return Response::json(array("status" => "200", "data" => $delivery_man));
+       } catch (Exception $e) {
+         return Response::json(array("status" => "500", "data" => $e));
+       }
+    }
+    else {
+      return Response::json(array("status" => "401", "data" => $validator->messages()));
+    }
+  }
+
+  function update_delivery_man(Request $req){
+    $data = $req->all();
+    $validator = Validator::make($data, [
+      'address' => 'required',
+      'details' => 'required',
+      'name' => 'required'
+    ]);
+    if(!$validator->fails()){
+      try {
+         $public_path = public_path();
+         $delivery_man = deliveryMen::where('id', '=', $req->id)->first();
+         $delivery_man->name = $req->name;
+         $delivery_man->phone = $req->phone;
+         $delivery_man->details = $req->details;
+         $delivery_man->age = $req->age;
+         $delivery_man->curp = $req->curp;
+         $delivery_man->address = $req->address;
+         $delivery_man->gender = $req->gender;
+          if($req->hasFile("image")){
+            $bannerFile = $req->file('image');
+            $bannerName = md5($bannerFile->getClientOriginalName()."".Carbon::now()).".".$bannerFile->getClientOriginalExtension();
+            $bannerFile->move($public_path.'/images/delivery_man/', $bannerName);
+            $delivery_man->logo = $bannerName;
+          }
+         $delivery_man->active = 1;
+         $delivery_man->save();
+         return Response::json(array("status" => "200", "data" => $delivery_man));
+       } catch (Exception $e) {
+         return Response::json(array("status" => "500", "data" => $e));
+       }
+    }
+    else {
+      return Response::json(array("status" => "401", "data" => $validator->messages()));
+    }
+  }
+
+  function deleteDeliveryMan(Request $req){
+    $delivery_man = deliveryMen::where('id', '=', $req->id)->update(array(
+      'active' => 0
+    ));
+    if ($delivery_man > 0){
+      return Response::json(array("status" => "200", "data" => $delivery_man));
+    }
+    else {
+      return Response::json(array("status" => "404", "data" => $delivery_man));
+    }
+  }
+
+  function update_restaurant(Request $req){
+    $data = $req->all();
+    $validator = Validator::make($data, [
+      'address' => 'required',
+      'details' => 'required',
+      'name' => 'required'
+    ]);
+    if(!$validator->fails()){
+      try {
+         $public_path = public_path();
+         $restaurant = Restaurant::where('id', '=', $req->id)->first();
+         $restaurant->name = $req->name;
+         $restaurant->address = $req->address;
+         $restaurant->details = $req->details;
+         $restaurant->username = $req->user;
+          if($req->hasFile("image")){
+            $bannerFile = $req->file('image');
+            $bannerName = md5($bannerFile->getClientOriginalName()."".Carbon::now()).".".$bannerFile->getClientOriginalExtension();
+            $bannerFile->move($public_path.'/images/logos/', $bannerName);
+            $restaurant->logo = $bannerName;
+          }
+          if ($req->password) {
+            $restaurant->password = Hash::make($req->password);
+          }
+         $restaurant->active = 1;
+         $restaurant->save();
+         return Response::json(array("status" => "200", "data" => $restaurant));
+       } catch (Exception $e) {
+         return Response::json(array("status" => "500", "data" => $e));
+       }
+    }
+    else {
+      return Response::json(array("status" => "401", "data" => $validator->messages()));
+    }
   }
 }
