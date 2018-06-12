@@ -39,7 +39,7 @@ $("body").on('click', '#save', function(){
        }
    })
    .done(function(response){
-     if (response.status == "200") {
+     if (response == "ok") {
        swal({
         title: "Excelente",
         text: "Todo se ha guardado con exito",
@@ -47,7 +47,7 @@ $("body").on('click', '#save', function(){
         button: "Aceptar",
       })
       .then((value) => {
-        window.location.href = '/administrador/delivery-man';
+        window.location.href = '/administrador/repartidores';
       });
     }else {
       swal({
@@ -57,7 +57,7 @@ $("body").on('click', '#save', function(){
        button: "Aceptar",
      })
      .then((value) => {
-       window.location.href = '/administrador/restaurantes';
+       window.location.href = '/administrador/repartidores';
      });
     }
    });

@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
-/* MODELS---------------------------------------------------------*/
-use App\Restaurant as Restaurant;
-use App\RestaurantUsers as RU;
-use App\MealCategory as Category;
 use App\deliveryMen;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+
+/* MODELS---------------------------------------------------------*/
+use App\Restaurant      as Restaurant;
+use App\RestaurantUsers as RU;
+use App\MealCategory    as Category;
+use App\deliveryMen     as Delivery;
 /*------------------------------------------------------------------
 | Controller for Restaurant Model                                  |                                   |                                                               |
 --------------------------------------------------------------------
@@ -233,41 +234,18 @@ class AdminRestaurantController extends Controller
   }
 
   function add_delivery_man(Request $req){
-    $data = $req->all();
-    $validator = Validator::make($data, [
-      'address' => 'required',
-      'details' => 'required',
-      'name' => 'required'
-    ]);
-    if(!$validator->fails()){
-      try {
-         $public_path = public_path();
-         $delivery_man = new deliveryMen();
-         $delivery_man->name = $req->name;
-         $delivery_man->phone = $req->phone;
-         $delivery_man->details = $req->details;
-         $delivery_man->age = $req->age;
-         $delivery_man->curp = $req->curp;
-         $delivery_man->address = $req->address;
-         $delivery_man->gender = $req->gender;
-          if(!$req->hasFile("image")){
-            $delivery_man->logo = "default.png";
-          }else{
-            $bannerFile = $req->file('image');
-            $bannerName = md5($bannerFile->getClientOriginalName()."".Carbon::now()).".".$bannerFile->getClientOriginalExtension();
-            $bannerFile->move($public_path.'/images/delivery_man/', $bannerName);
-            $delivery_man->logo = $bannerName;
-          }
-         $delivery_man->active = 1;
-         $delivery_man->save();
-         return Response::json(array("status" => "200", "data" => $delivery_man));
-       } catch (Exception $e) {
-         return Response::json(array("status" => "500", "data" => $e));
-       }
-    }
-    else {
-      return Response::json(array("status" => "401", "data" => $validator->messages()));
-    }
+    $add = new Delivery();
+    $add->name = $req['name'];
+    $add->address = $req['address'];
+    $add->details = $req['details'];
+    $add->age = $req['age'];
+    $add->gender = $req['gender'];
+    $add->phone = $req['phone'];
+    $add->curp = $req['curp'];
+    $add->active = 1;
+    $add->save();
+
+    return 'ok';
   }
 
   function update_delivery_man(Request $req){
@@ -310,12 +288,7 @@ class AdminRestaurantController extends Controller
     $delivery_man = deliveryMen::where('id', '=', $req->id)->update(array(
       'active' => 0
     ));
-    if ($delivery_man > 0){
-      return Response::json(array("status" => "200", "data" => $delivery_man));
-    }
-    else {
-      return Response::json(array("status" => "404", "data" => $delivery_man));
-    }
+    return 'ok';
   }
 
   function update_restaurant(Request $req){
