@@ -31,18 +31,24 @@
   <div class="main-container">
     <div class="left-panel-section">
       <div id="button-container">
-        <form action="/restaurante/inicio/2" method="get">
-          <button type="submit" class="left-panel-element">
+        <form action="/administrador/restaurantes" method="get">
+          <button type="submit" class="left-panel-element" style="background-color: transparent; border: 1px solid transparent; width: 100%; cursor: pointer;">
             <img src="{{ asset('images/restaurant.png') }}" alt="restaurant" id="restaurant">
-            <p>PLATILLOS</p>
-            <input type="" name="id" hidden="true" value="@yield('section-title')">
+            <p>RESTAURANTES</p>
           </button>
         </form>
-        <form action="/restaurante/ordenes" method="get">
-          <button type="submit" class="left-panel-element">
+        <form action="/administrador/restaurante" method="get">
+          <button type="submit" class="left-panel-element" style="background-color: transparent; border: 1px solid transparent; width: 100%; cursor: pointer;">
+            <img src="{{ asset('images/restaurant.png') }}" alt="restaurant" id="restaurant">
+            <p>PLATILLOS</p>
+            <input type="text" hidden name="id" value="@yield('section-title')">
+          </button>
+        </form>
+        <form action="/administrador/ordenes" method="get">
+          <button type="submit" class="left-panel-element" style="background-color: transparent; border: 1px solid transparent; width: 100%; cursor: pointer;">
             <img src="{{ asset('images/pedidos.png') }}" alt="pedidos" id="pedidos">
             <p>PEDIDOS</p>
-            <input type="" name="id" hidden="true" value="@yield('section-title')">
+            <input type="" name="id" hidden value="@yield('section-title')">
           </button>
         </form>
         <!--<div class="left-panel-element">

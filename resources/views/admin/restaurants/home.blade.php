@@ -31,13 +31,11 @@
             </div>
           </div>
       @endforeach
-
     @else
       <div class="no-content">
         <p>No existen elementos en esta categoria</p>
       </div>
     @endif
-
   </div>
 @endsection
 

@@ -76,6 +76,10 @@ Route::middleware(['auth'])->group(function () {
         $restaurant = null;
         return view('admin.restaurants.form',['restaurant' => $restaurant]);
     });//Load Form
+    Route::get('restaurante', 'AdminRestaurantController@getCateogrie');
+    Route::get('ordenes', 'AdminRestaurantController@all_orders');
+    Route::get('restaurante/comidas/{id}', 'AdminRestaurantController@meals');
+    Route::get('restaurante/ingredientes/{id}', 'AdminRestaurantController@ingredients');
 
     /* Añadir Restaurante */
     Route::post('agregando', 'AdminRestaurantController@add_restaurant');
@@ -84,7 +88,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('create_restaurant', 'AdminRestaurantController@createRestaurant');//Create
     Route::get('restaurant/{restaurant_id}', 'AdminRestaurantController@getRestaurant');//Get instance
-
     Route::post('/deleteRestaurant', 'AdminRestaurantController@deleteRestaurant');//delete
     Route::post('/add_delivery_man', 'AdminRestaurantController@add_delivery_man');
     Route::post('/deleteDeliveryMan', 'AdminRestaurantController@deleteDeliveryMan');

@@ -13,6 +13,8 @@ use App\Restaurant      as Restaurant;
 use App\RestaurantUsers as RU;
 use App\MealCategory    as Category;
 use App\deliveryMen     as Delivery;
+use App\Meal;
+use App\Ingredient;
 /*------------------------------------------------------------------
 | Controller for Restaurant Model                                  |                                   |                                                               |
 --------------------------------------------------------------------
@@ -40,11 +42,70 @@ class AdminRestaurantController extends Controller
     $restaurant = Restaurant::find($restaurant_id);
     
     if($restaurant === null){
-      return view('layouts.admin-app-header');
+      return view('restaurants.admin-app-header');
     }
     $categories = $restaurant->categories()->get();
-    return view('restaurant.home', ['restaurant' => $restaurant, 'categories' => $categories]);
+
+    return view('admin.home', ['restaurant' => $restaurant, 'categories' => $categories]);
     // return response()->json(['restaurant' => $restaurant, 'categories' => $categories]);
+  }
+
+  function getCateogrie(Request $request){
+    $restaurant = DB::table('restaurants')
+                ->where('name', '=', $request['id'])
+                ->get();
+    
+    $categories = DB::table('meal_categories')
+                  ->where('restaurant_id', '=', $restaurant[0]->id)
+                  ->get();
+    
+    return view('admin.home', ['restaurant' => $restaurant[0], 'categories' => $categories]);
+  }
+
+   function meals(Request $req, $id){
+    $meals = Meal::where('category_id', '=', $id)->get();
+
+    $category = DB::table('meal_categories')
+                    ->select('restaurant_id')
+                    ->where('id', '=', $id)
+                    ->get();
+    
+    $restaurant = DB::table('restaurants')
+                      ->select('name')
+                      ->where('id', '=', $category[0]->restaurant_id)
+                      ->get();
+    
+
+    return view('admin.meals', ['meals' => $meals, 'name' => $restaurant]);
+   }
+
+  function ingredients(Request $req, $id){
+    $ingredients = Ingredient::where('meal_id', '=', $id)->get();
+
+    $meal = DB::table('meals')
+                ->select('category_id')
+                ->where('id', '=', $id)
+                ->get();
+
+    $restaurant = DB::table('meal_categories')
+                      ->select('restaurant_id')
+                      ->where('id', '=', $meal[0]->category_id)
+                      ->get();
+
+    $name = DB::table('restaurants')
+                ->select('name')
+                ->where('id', '=', $restaurant[0]->restaurant_id)
+                ->get();
+
+    return view('admin.ingredients', ['id' => $id, 'ingredients' => $ingredients, 'name' => $name]);
+  }
+
+  function all_orders(Request $req){
+    $id = DB::table('restaurants')->where('name', $req->id)->get();
+
+    $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id where restaurant_id = '.$id[0]->id.'');
+    
+    return view('admin.restaurants-orders', ['orders' => $allOrders, 'id' => $id]);
   }
 
   /*Load Form*/
