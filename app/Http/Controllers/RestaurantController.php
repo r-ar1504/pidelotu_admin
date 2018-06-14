@@ -14,6 +14,7 @@ use Kozz\Laravel\Facades\Guzzle;
 /* MODELS---------------------------------------------------------*/
 use App\Restaurant as Restaurant;
 use App\Categories as Categories;
+use App\RestaurantUsers as RU;
 use App\deliveryMen;
 use App\Meal;
 use App\MealCategory;
@@ -40,6 +41,101 @@ use App\Ingredient;
 ------------------------------------------------------------------*/
 class RestaurantController extends Controller
 {
+  /* Traer las categorias del restaurante iniciado */
+  function getCategories(Request $request, $id){
+    $restaurant = RU::find($id);
+
+    if($restaurant === null){
+      return view('restaurants.admin-app-header');
+    }
+      $categories = DB::table('restaurants')
+                        ->select('*')
+                        ->where('id', '=', $restaurant->restaurant)
+                        ->get();
+
+      $restaurantC = DB::table('meal_categories')
+                         ->select('*')
+                         ->where('restaurant_id', '=', $categories[0]->id)
+                         ->get();
+
+    return view('restaurant.home', ['restaurant' => $restaurant, 'categories' => $categories, 'CategoriesR' => $restaurantC]);
+  }
+
+  function addCategory(Request $request, $restaurant_id){
+    $restaurant = Restaurant::find($restaurant_id);
+    return view('restaurant.category.form', ['restaurant' => $restaurant]);
+  }
+
+  function createCategory(Request $request, $restaurant_id){
+    $data = $request->all();
+    $image = $request->file('image');
+    $id = $restaurant_id - 1;
+    $restaurant = Restaurant::find($id);
+    $category = DB::table('meal_categories')->insertGetId([
+      'name' => $data['name'],
+      'restaurant_id' => $id,
+      'created_at' => Carbon::now(),
+      'updated_at' => Carbon::now()
+    ]);
+
+    $image_name = 'res-'.$restaurant_id.'-cat-'.$category.'.'.$image->extension();
+
+    $new_category = DB::table('meal_categories')->where('id','=',$category);
+    $image_path = $image->move(public_path().'/images/restaurants/categories/', $image_name);
+    $new_category->update([
+      'dashboard_banner' => $image_name
+    ]);
+
+    return response()->json(['data' => $data, 'id' => $restaurant->id, 'file' => $image_path,'files' => $image_name]);
+  }
+
+  function meals(Request $req, $id){
+   $meals = Meal::where('category_id', '=', $id)->get();
+   return view('restaurant.meals', ['meals' => $meals, 'id' => $id]);
+ }
+
+ function addMeal(Request $req, $id){
+   return view('restaurant.addMeal', ['id' => $id]);
+ }
+
+ function addMealC(Request $req){
+ $create = DB::table('meals')->insert(
+               ['category_id' => $req->id, 
+                'description' => $req->description,
+                'preparation_time' => $req->preparation_time,
+                'name' => $req->name,
+                'image' => $req->file('image'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'active' => 1,
+                'price' => $req->price
+               ]
+          );
+ return redirect('/restaurante/comidas/'.$req->id);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /*Get All Restaurants*/
   function getRestaurants(Request $req){
     $restaurants = Restaurant::where('active', '=', 1)->get();
@@ -288,50 +384,6 @@ class RestaurantController extends Controller
   $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id where restaurant_id = '.$id.'');
 
   return view('restaurant.restaurants-orders', ['orders' => $allOrders]);
- }
-
- function meals(Request $req, $id){
-   $meals = Meal::where('category_id', '=', $id)->get();
-   return view('restaurant.meals', ['meals' => $meals, 'id' => $id]);
- }
-
- function addMeal(Request $req, $id){
-   return view('restaurant.addMeal', ['id' => $id]);
- }
-
- function createMeal(Request $req){
-   $data = $req->all();
-   $validator = Validator::make($data, [
-     'description' => 'required',
-     'name' => 'required',
-     'preparation_time' => 'required'
-   ]);
-   if(!$validator->fails()){
-     try {
-        $public_path = public_path();
-        $meal = new Meal();
-        $meal->category_id = $req->id;
-        $meal->description= $req->description;
-        $meal->preparation_time = $req->preparation_time;
-        $meal->name = $req->name;
-         if(!$req->hasFile("image")){
-           $meal->image = "default.png";
-         }else{
-           $bannerFile = $req->file('image');
-           $bannerName = md5($bannerFile->getClientOriginalName()."".Carbon::now()).".".$bannerFile->getClientOriginalExtension();
-           $bannerFile->move($public_path.'/images/meals/', $bannerName);
-           $meal->image = $bannerName;
-         }
-        $meal->active = 1;
-        $meal->save();
-        return Response::json(array("status" => "200", "data" => $meal));
-      } catch (Exception $e) {
-        return Response::json(array("status" => "500", "data" => $e));
-      }
-   }
-   else {
-     return Response::json(array("status" => "401", "data" => $validator->messages()));
-   }
  }
 
 /**

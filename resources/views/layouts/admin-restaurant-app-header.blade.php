@@ -31,12 +31,6 @@
   <div class="main-container">
     <div class="left-panel-section">
       <div id="button-container">
-        <form action="/administrador/restaurantes" method="get">
-          <button type="submit" class="left-panel-element" style="background-color: transparent; border: 1px solid transparent; width: 100%; cursor: pointer;">
-            <img src="{{ asset('images/restaurant.png') }}" alt="restaurant" id="restaurant">
-            <p>RESTAURANTES</p>
-          </button>
-        </form>
         <form action="/administrador/restaurante" method="get">
           <button type="submit" class="left-panel-element" style="background-color: transparent; border: 1px solid transparent; width: 100%; cursor: pointer;">
             <img src="{{ asset('images/restaurant.png') }}" alt="restaurant" id="restaurant">

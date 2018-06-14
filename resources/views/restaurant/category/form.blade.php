@@ -55,6 +55,5 @@
 
 @section('javascript')
   <script type="text/javascript" src="{{ asset('js/restaurant/category.js') }}">
-
   </script>
 @endsection

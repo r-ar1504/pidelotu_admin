@@ -10,9 +10,14 @@
 
 @section('content')
 <div class="container">
-<h2>Ingredientes</h2>
-<div class="text-right">
-  <a href="#" data-toggle="modal" data-target="#exampleModal"><p> <span>+</span> Agregar Ingrediente</p></a>
+  <br>
+<div class="row">
+  <div class="col-md-6" align="center">
+    <h2>Ingredientes</h2>
+  </div>
+  <div class="text-right col-md-6">
+    <a href="#" data-toggle="modal" data-target="#exampleModal"><p> <span>+</span> Agregar Ingrediente</p></a>
+  </div>
 </div>
 <input class="form-control" id="myInput" type="text" placeholder="Busqueda">
 

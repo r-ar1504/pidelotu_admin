@@ -29,9 +29,9 @@ class Admin extends Controller
 function checkOut(Request $request){
   if (Auth::attempt(['email' => $request->email, 'password' => $request->password])){
     $user = RestaurantUsers::where('email', '=', $request->email)->first();
-
+    
     if($user->role == 'restaurante'){
-      return Response::json(array("status" => "200", "role" => $user->role, "restaurant" => $user->restaurant));
+      return Response::json(array("status" => "200", "role" => $user->role, "restaurant" => $user->id));
     }
     else{
       return Response::json(array("status" => "200", "role" => $user->role));

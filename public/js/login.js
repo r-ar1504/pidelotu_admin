@@ -20,6 +20,7 @@ $(function(){
         if (response.role == "admin") {
           window.location.href = "/administrador/restaurantes";
         }else {
+          //alert(response.id)
           window.location.href = "/restaurante/inicio/" + response.restaurant + "";
         }
       }

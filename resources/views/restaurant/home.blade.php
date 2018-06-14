@@ -1,6 +1,6 @@
-@extends('layouts.admin-restaurant-app-header')
+@extends('layouts.restaurant-app-header')
 
-@section('section-title', $restaurant->name)
+@section('section-title', $categories[0]->name)
 
 @section('stylesheets')
 <link rel="stylesheet" href="{{ asset('css/restaurants/category/main.css') }}">
@@ -8,34 +8,39 @@
 @endsection
 
 @section('content')
-  <div id="index-header">
+<div class="row">
+  <div class="col-md-6" align="center">
+    <p style="color: black; font-size: 2rem;">Categorias</p>
+  </div>
+  <div id="index-header" class="col-md-6">
     <a href="/restaurante/{{$restaurant->id}}/agregar-categoria"><p> <span>+</span> Agregar Categoria</p></a>
   </div>
-  <div class="container">
+</div>
+<div class="container">
+  <div class="row">
     @if(count($categories) > 0)
-      @foreach($categories as $category)
-         <div class="row">
-           <div class="col-md-4">
-             <div class="element-card">
-              <img src="{{'/images/restaurants/categories/'.$category->dashboard_banner}}" alt="restaurant-image">
-              <a href="/restaurante/comidas/2">
-                <div class="card-overlay">
-                  <div class="overlay-button">
-                    <p>{{$category->name}}</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-           </div>
-         </div>
-      @endforeach
-    @else
-      <div class="no-content">
-        <p>No existen platillos en este restaurante</p>
-      </div>
-    @endif
-
+    @foreach($CategoriesR as $category)
+    <div class="col-md-4">
+     <div class="element-card">
+      <img src="{{'/images/restaurants/categories/'.$category->dashboard_banner}}" alt="restaurant-image">
+      <a href="/restaurante/comidas/{{$category->id}}">
+        <div class="card-overlay" align="center">
+          <div class="overlay-button" align="center">
+            <p>{{$category->name}}</p>
+          </div>
+        </div>
+      </a>
+    </div>
   </div>
+  @endforeach
+  @else
+  <div class="no-content">
+    <p>No existen platillos en este restaurante</p>
+  </div>
+  @endif
+</div>
+
+</div>
 @endsection
 
 @section('javascript')

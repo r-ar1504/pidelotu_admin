@@ -47,11 +47,11 @@ class RegisterRestaurantController extends Controller
 	public function register(Request $request){
 		Restaurant::create(array(
       'username'    => 'restaurante',
-      'email'       => 'restaurante@admin.com',
+      'email'       => 'la@admin.com',
       'password'    => Hash::make('admin2'),
       'created_at'  => Carbon::now(),
       'updated_at'  => Carbon::now(),
-      'rol'         => 'admin',
+      'role'         => 'restaurante',
       
     ));
 

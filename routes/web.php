@@ -104,14 +104,16 @@ Route::middleware(['auth'])->group(function () {
   ------------------------------------------------------------------*/
   Route::prefix('restaurante')->group(function(){
 
-    Route::get('inicio', 'AdminRestaurantController@getCategories');//List all
-    Route::get('{restaurant_id}/agregar-categoria', 'AdminRestaurantController@addCategory');//Load Form
-    Route::post('{restaurant_id}/create_category', 'AdminRestaurantController@createCategory');//Create
+    Route::get('inicio/{id}', 'RestaurantController@getCategories');//List all
+    Route::get('{restaurant_id}/agregar-categoria', 'RestaurantController@addCategory');//Load Form
+    Route::post('{restaurant_id}/create_category', 'RestaurantController@createCategory');//Create
     Route::post('res/{restaurant_id}/cat/{category_id}', 'RestaurantController@getCategory');//Get instance
     Route::get('ordenes', 'RestaurantController@all_orders');
     Route::get('ingredients/{id}', 'RestaurantController@ingredients');
     Route::get('meals/{id}', 'RestaurantController@meals');
     Route::get('add-meal/{id}', 'RestaurantController@addMeal');
+    Route::post('create-meal', 'RestaurantController@createMeal');
+    Route::post('agregando', 'RestaurantController@addMealC');
     /*Vista de las propiedades del restaurante*/
     //Route::get('inicio/{restaurant_id}', 'AdminRestaurantController@getCategories');
     Route::get('comidas/{id}', 'RestaurantController@meals');
@@ -125,7 +127,6 @@ Route::middleware(['auth'])->group(function () {
   Route::post('/register','User@register');
   Route::post('/signup', 'User@signup');
   Route::get('/checkNumber/{number}', 'User@checkNumber');
-  Route::post('/create-meal', 'RestaurantController@createMeal');
   Route::post('/create-ingredient', 'RestaurantController@createIngredient');
   Route::post('/getDelivery/{id}', 'RestaurantController@getDelivery');
 
