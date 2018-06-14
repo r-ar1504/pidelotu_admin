@@ -119,6 +119,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('comidas/{id}', 'RestaurantController@meals');
     Route::get('ingredientes/{id}', 'RestaurantController@ingredients');
 
+    Route::post('/dcomida', 'RestaurantController@deleteCategorie');
+
   });
 
   /*------------------------------------------------------------------

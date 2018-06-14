@@ -31,6 +31,8 @@
         </div>
       </a>
     </div>
+    <button class="btn btn-success">Actualizar</button>
+    <button type="button" class="btn btn-danger delete">Eliminar</button>
   </div>
   @endforeach
   @else
@@ -46,5 +48,48 @@
 @section('javascript')
 <script type="text/javascript" src="/libs/jquery-validate/jquery.validate.min.js"></script>
 <script type="text/javascript" src="/libs/jquery-validate/bootstrap.min.js"></script>
+ <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="/js/restaurant/home.js"></script>
+<script type="text/javascript">
+  $("body").on('click', '.delete', function(){
+
+    swal({
+      title: "¿Estas seguro de eliminarlo?",
+      text: "Una vez eliminado no podras recuperarlo ",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        let data = {id: $(this).data('id')};
+
+        $.ajax({
+          url: "/dcomida",
+          type: "POST",
+          data: {
+            token: csrf_token,
+            id: $(this).data('id')
+          },
+          headers: {
+           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        })
+        .done(function(response){
+          swal({
+            title: "Excelente",
+            text: "Se ha eliminado con exito ",
+            icon: "success",
+          })
+          .then((willDelete) => {
+            window.location.reload()
+          });
+        });
+      } else {
+        swal("Todo esta como lo dejaste!");
+      }
+    });
+
+  });
+</script>
 @endsection

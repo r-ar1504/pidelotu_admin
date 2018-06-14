@@ -59,11 +59,11 @@
   <script>
     $(function(){
       $("body").on('click', '#restaurantActive', function(){
-        window.location.href = '/restaurant/home/23';
+        window.location.href = '/restaurant/inicio/';
       });
 
       $("body").on('click', '#pedidosActive', function(){
-        window.location.href = '/restaurant/all-orders';
+        window.location.href = '/restaurant/inicio/';
       });
     });
   </script>

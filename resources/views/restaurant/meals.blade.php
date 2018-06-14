@@ -1,6 +1,6 @@
-@extends('layouts.admin-restaurant-app-header')
+@extends('layouts.restaurant-app-header')
 
-@section('section-title')
+@section('section-title', $categorie[0]->name)
 
 @section('stylesheets')
 <link rel="stylesheet" href="/libs/jquery-validate/bootstrap.css">
@@ -21,7 +21,6 @@
 <div class="list-container">
   <div class="row">
     @if(count($meals) > 0)
-
     @foreach($meals as $meal)
     @if($meal->active ==1)
     <div class="element-card">
@@ -30,14 +29,16 @@
         <div class="card-overlay">
           <div class="overlay-button">
             <p>{{$meal->name}}</p>
+            <div align="cetner">
+              <button class="btn btn-info">Actualizar</button>
+              <button class="btn btn-danger">Eliminar</button>
+            </div>
           </div>
         </div>
       </a>
     </div>
     @endif
     @endforeach
-
-
     @else
     <div class="no-content">
       <p>No existen elementos en esta categoria</p>

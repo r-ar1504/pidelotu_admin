@@ -1,6 +1,6 @@
 @extends('layouts.restaurant-app-header')
 
-@section('section-title')
+@section('section-title', $restaurant[0]->name)
 
 @section('stylesheets')
 <link rel="stylesheet" href="/libs/jquery-validate/bootstrap.css">

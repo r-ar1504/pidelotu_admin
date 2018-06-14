@@ -89,9 +89,26 @@ class RestaurantController extends Controller
     return response()->json(['data' => $data, 'id' => $restaurant->id, 'file' => $image_path,'files' => $image_name]);
   }
 
+  function deleteCategorie(Request $request){
+    
+
+    return 'Ok';
+  }
+
   function meals(Request $req, $id){
-   $meals = Meal::where('category_id', '=', $id)->get();
-   return view('restaurant.meals', ['meals' => $meals, 'id' => $id]);
+    $meals = Meal::where('category_id', '=', $id)->get();
+
+    $categorie = DB::table('meal_categories')
+                    ->select('id', 'name', 'restaurant_id')
+                    ->where('id', '=', $id)
+                    ->get();
+    
+    $restaurant = DB::table('restaurants')
+                    ->select('id', 'name')
+                    ->where('id', '=', $categorie[0]->restaurant_id)
+                    ->get();
+
+    return view('restaurant.meals', ['meals' => $meals, 'id' => $id, 'categorie' => $restaurant]);
  }
 
  function addMeal(Request $req, $id){
@@ -114,6 +131,51 @@ class RestaurantController extends Controller
  return redirect('/restaurante/comidas/'.$req->id);
 }
 
+function ingredients(Request $req, $id){
+   $ingredients = Ingredient::where('meal_id', '=', $id)->get();
+
+   $meal = DB::table('meals')
+              ->select('id', 'description', 'category_id')
+              ->where('id', '=', $id)
+              ->get();
+
+    $categorie = DB::table('meal_categories')
+                    ->select('id', 'name', 'restaurant_id')
+                    ->where('id', '=', $meal[0]->category_id)
+                    ->get();
+
+    $restaurant = DB::table('restaurants')
+                    ->select('id', 'name')
+                    ->where('id', '=', $categorie[0]->restaurant_id)
+                    ->get();
+
+   return view('restaurant.ingredients', ['id' => $id, 'ingredients' => $ingredients, 'restaurant' => $restaurant]);
+ }
+
+ function createIngredient(Request $req){
+   $data = $req->all();
+   $validator = Validator::make($data, [
+     'price' => 'required',
+     'name' => 'required',
+     'meal_id' => 'required'
+   ]);
+   if(!$validator->fails()){
+     try {
+        $ingredient = new Ingredient();
+        $ingredient->price = $req->price;
+        $ingredient->meal_id = $req->meal_id;
+        $ingredient->name = $req->name;
+        $ingredient->active = 1;
+        $ingredient->save();
+        return Response::json(array("status" => "200", "data" => $ingredient));
+      } catch (Exception $e) {
+        return Response::json(array("status" => "500", "data" => $e));
+      }
+   }
+   else {
+     return Response::json(array("status" => "401", "data" => $validator->messages()));
+   }
+ }
 
 
 
@@ -389,36 +451,6 @@ class RestaurantController extends Controller
 /**
  *
  */
- function ingredients(Request $req, $id){
-   $ingredients = Ingredient::where('meal_id', '=', $id)->get();
-   return view('restaurant.ingredients', ['id' => $id, 'ingredients' => $ingredients]);
- }
-
-
- function createIngredient(Request $req){
-   $data = $req->all();
-   $validator = Validator::make($data, [
-     'price' => 'required',
-     'name' => 'required',
-     'meal_id' => 'required'
-   ]);
-   if(!$validator->fails()){
-     try {
-        $ingredient = new Ingredient();
-        $ingredient->price = $req->price;
-        $ingredient->meal_id = $req->meal_id;
-        $ingredient->name = $req->name;
-        $ingredient->active = 1;
-        $ingredient->save();
-        return Response::json(array("status" => "200", "data" => $ingredient));
-      } catch (Exception $e) {
-        return Response::json(array("status" => "500", "data" => $e));
-      }
-   }
-   else {
-     return Response::json(array("status" => "401", "data" => $validator->messages()));
-   }
- }
 
  function getDelivery(Request $req, $id){
 
