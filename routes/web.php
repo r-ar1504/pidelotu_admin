@@ -157,7 +157,6 @@ Route::middleware(['auth'])->group(function () {
 
 /*Fin de las rutas que van dentro del middleware*/
 
-<<<<<<< HEAD
 Route::get('/getMeals','RestaurantController@getMeals');
 Route::post('/order','RestaurantController@saveOrder');
 Route::get('/orders','RestaurantController@getOrders');
@@ -178,6 +177,4 @@ Route::get('/get_order/{order_id}', 'RestaurantController@getOrder');
 ------------------------------------------------------------------*/
 Route::get('/openpay_order/{user_id}', 'PaymentController@createOrder');
 
-=======
->>>>>>> 8524fe006baada44ee894dc6c97284014fd40ce4
 ?>
