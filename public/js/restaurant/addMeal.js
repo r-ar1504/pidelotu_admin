@@ -28,7 +28,7 @@ var addProducts = false
     if (categoryData.valid()){
       var formData = new FormData($("#categoryForm")[0]);
       $.ajax({
-        url: "/create-meal",
+        url: "/restaurante/create-meal",
         type: "POST",
         data: formData,
         cache: false,
@@ -39,7 +39,7 @@ var addProducts = false
         }
       })
       .done(function(response){
-
+        alert(response)
       });
     }else {
       let BreakException = {};

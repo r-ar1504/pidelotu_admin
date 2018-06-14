@@ -14,7 +14,9 @@
 
     <div class="col-md-12">
       <div class="text-right">
-        <p class="addDeliveryMan"><span class="plus">+</span>agregar repartidor</p><br><br>
+        <a href="/administrador/add_deliveryMan">
+          <p class="addDeliveryMan"><span class="plus">+</span>agregar repartidor</p><br><br>
+        </a>
       </div>
     </div>
 
@@ -25,10 +27,11 @@
           <img src="/images/delivery_man/{{$deliveryMan->logo}}" class="deliveryMan-img" alt="">
           <b><p>{{$deliveryMan->name}}</p></b>
           <button type="button" class="btn btn-success update" data-id="{{$deliveryMan->id}}" name="button">Actualizar</button>
+          <button type="button" class="btn btn-danger delete" data-id="{{$deliveryMan->id}}" name="btn-delete">Dar de baja</button>
         </div>
       </div>
       <div class="col-md-8">
-        <img src="/images/error.png" class="deleteDeliveryMan" data-id="{{$deliveryMan->id}}" alt="">
+        <!--<img src="/images/error.png" class="deleteDeliveryMan" data-id="{{$deliveryMan->id}}" alt="">-->
         <span><i class="far fa-user"></i><p class="text-deliveryMan">{{$deliveryMan->details}}</p></span><br>
         <span><i class="fas fa-map-pin"></i><p class="text-deliveryMan">{{$deliveryMan->address}}</p></span><br>
         <span><i class="fas fa-mobile-alt"></i><p class="text-deliveryMan">{{$deliveryMan->phone}}</p></span>

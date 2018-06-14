@@ -11,14 +11,14 @@ categoryData.submit(function(e){
   e.preventDefault();
   var formData = new FormData(this);
   $.ajax({
-     url: "/restaurant/"+ restaurantId +"/create_category",
+     url: "/restaurante/"+ restaurantId +"/create_category",
      type: 'POST',
      data: formData,
      success: function (data) {
        if(addProducts != false){
          window.location.href = "/res/"+ restaurantId +"/cat/" + data.id;
        }else{
-         window.location.href = "/restaurant/home/"+restaurantId;
+         window.location.href = "/restaurante/inicio/"+restaurantId;
        }
      },
      cache: false,

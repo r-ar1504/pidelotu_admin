@@ -14,6 +14,7 @@ use Kozz\Laravel\Facades\Guzzle;
 /* MODELS---------------------------------------------------------*/
 use App\Restaurant as Restaurant;
 use App\Categories as Categories;
+use App\RestaurantUsers as RU;
 use App\deliveryMen;
 use App\Meal;
 use App\Order;
@@ -41,6 +42,163 @@ use App\Ingredient;
 ------------------------------------------------------------------*/
 class RestaurantController extends Controller
 {
+  /* Traer las categorias del restaurante iniciado */
+  function getCategories(Request $request, $id){
+    $restaurant = RU::find($id);
+
+    if($restaurant === null){
+      return view('restaurants.admin-app-header');
+    }
+      $categories = DB::table('restaurants')
+                        ->select('*')
+                        ->where('id', '=', $restaurant->restaurant)
+                        ->get();
+
+      $restaurantC = DB::table('meal_categories')
+                         ->select('*')
+                         ->where('restaurant_id', '=', $categories[0]->id)
+                         ->get();
+
+    return view('restaurant.home', ['restaurant' => $restaurant, 'categories' => $categories, 'CategoriesR' => $restaurantC]);
+  }
+
+  function addCategory(Request $request, $restaurant_id){
+    $restaurant = Restaurant::find($restaurant_id);
+    return view('restaurant.category.form', ['restaurant' => $restaurant]);
+  }
+
+  function createCategory(Request $request, $restaurant_id){
+    $data = $request->all();
+    $image = $request->file('image');
+    $id = $restaurant_id - 1;
+    $restaurant = Restaurant::find($id);
+    $category = DB::table('meal_categories')->insertGetId([
+      'name' => $data['name'],
+      'restaurant_id' => $id,
+      'created_at' => Carbon::now(),
+      'updated_at' => Carbon::now()
+    ]);
+
+    $image_name = 'res-'.$restaurant_id.'-cat-'.$category.'.'.$image->extension();
+
+    $new_category = DB::table('meal_categories')->where('id','=',$category);
+    $image_path = $image->move(public_path().'/images/restaurants/categories/', $image_name);
+    $new_category->update([
+      'dashboard_banner' => $image_name
+    ]);
+
+    return response()->json(['data' => $data, 'id' => $restaurant->id, 'file' => $image_path,'files' => $image_name]);
+  }
+
+  function deleteCategorie(Request $request){
+    
+
+    return 'Ok';
+  }
+
+  function meals(Request $req, $id){
+    $meals = Meal::where('category_id', '=', $id)->get();
+
+    $categorie = DB::table('meal_categories')
+                    ->select('id', 'name', 'restaurant_id')
+                    ->where('id', '=', $id)
+                    ->get();
+    
+    $restaurant = DB::table('restaurants')
+                    ->select('id', 'name')
+                    ->where('id', '=', $categorie[0]->restaurant_id)
+                    ->get();
+
+    return view('restaurant.meals', ['meals' => $meals, 'id' => $id, 'categorie' => $restaurant]);
+ }
+
+ function addMeal(Request $req, $id){
+   return view('restaurant.addMeal', ['id' => $id]);
+ }
+
+ function addMealC(Request $req){
+ $create = DB::table('meals')->insert(
+               ['category_id' => $req->id, 
+                'description' => $req->description,
+                'preparation_time' => $req->preparation_time,
+                'name' => $req->name,
+                'image' => $req->file('image'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'active' => 1,
+                'price' => $req->price
+               ]
+          );
+ return redirect('/restaurante/comidas/'.$req->id);
+}
+
+function ingredients(Request $req, $id){
+   $ingredients = Ingredient::where('meal_id', '=', $id)->get();
+
+   $meal = DB::table('meals')
+              ->select('id', 'description', 'category_id')
+              ->where('id', '=', $id)
+              ->get();
+
+    $categorie = DB::table('meal_categories')
+                    ->select('id', 'name', 'restaurant_id')
+                    ->where('id', '=', $meal[0]->category_id)
+                    ->get();
+
+    $restaurant = DB::table('restaurants')
+                    ->select('id', 'name')
+                    ->where('id', '=', $categorie[0]->restaurant_id)
+                    ->get();
+
+   return view('restaurant.ingredients', ['id' => $id, 'ingredients' => $ingredients, 'restaurant' => $restaurant]);
+ }
+
+ function createIngredient(Request $req){
+   $data = $req->all();
+   $validator = Validator::make($data, [
+     'price' => 'required',
+     'name' => 'required',
+     'meal_id' => 'required'
+   ]);
+   if(!$validator->fails()){
+     try {
+        $ingredient = new Ingredient();
+        $ingredient->price = $req->price;
+        $ingredient->meal_id = $req->meal_id;
+        $ingredient->name = $req->name;
+        $ingredient->active = 1;
+        $ingredient->save();
+        return Response::json(array("status" => "200", "data" => $ingredient));
+      } catch (Exception $e) {
+        return Response::json(array("status" => "500", "data" => $e));
+      }
+   }
+   else {
+     return Response::json(array("status" => "401", "data" => $validator->messages()));
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /*Get All Restaurants*/
   function getRestaurants(Request $req){
     $restaurants = Restaurant::where('active', '=', 1)->get();
@@ -280,88 +438,18 @@ class RestaurantController extends Controller
  */
 
  function all_orders(Request $req){
+  $name = $req->id;
 
-   $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", meals.description as "description" from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id');
-   return view('restaurant.restaurants-orders', ['orders' => $allOrders]);
- }
+  $id = DB::table('restaurants')->where('name', $name)->pluck('id')->first();
 
- function meals(Request $req, $id){
-   $meals = Meal::where('category_id', '=', $id)->get();
-   return view('restaurant.meals', ['meals' => $meals, 'id' => $id]);
- }
+  $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id where restaurant_id = '.$id.'');
 
- function addMeal(Request $req, $id){
-   return view('restaurant.addMeal', ['id' => $id]);
- }
-
- function createMeal(Request $req){
-   $data = $req->all();
-   $validator = Validator::make($data, [
-     'description' => 'required',
-     'name' => 'required',
-     'preparation_time' => 'required'
-   ]);
-   if(!$validator->fails()){
-     try {
-        $public_path = public_path();
-        $meal = new Meal();
-        $meal->category_id = $req->id;
-        $meal->description= $req->description;
-        $meal->preparation_time = $req->preparation_time;
-        $meal->name = $req->name;
-         if(!$req->hasFile("image")){
-           $meal->image = "default.png";
-         }else{
-           $bannerFile = $req->file('image');
-           $bannerName = md5($bannerFile->getClientOriginalName()."".Carbon::now()).".".$bannerFile->getClientOriginalExtension();
-           $bannerFile->move($public_path.'/images/meals/', $bannerName);
-           $meal->image = $bannerName;
-         }
-        $meal->active = 1;
-        $meal->save();
-        return Response::json(array("status" => "200", "data" => $meal));
-      } catch (Exception $e) {
-        return Response::json(array("status" => "500", "data" => $e));
-      }
-   }
-   else {
-     return Response::json(array("status" => "401", "data" => $validator->messages()));
-   }
+  return view('restaurant.restaurants-orders', ['orders' => $allOrders]);
  }
 
 /**
  *
  */
- function ingredients(Request $req, $id){
-   $ingredients = Ingredient::where('meal_id', '=', $id)->get();
-   return view('restaurant.ingredients', ['id' => $id, 'ingredients' => $ingredients]);
- }
-
-
- function createIngredient(Request $req){
-   $data = $req->all();
-   $validator = Validator::make($data, [
-     'price' => 'required',
-     'name' => 'required',
-     'meal_id' => 'required'
-   ]);
-   if(!$validator->fails()){
-     try {
-        $ingredient = new Ingredient();
-        $ingredient->price = $req->price;
-        $ingredient->meal_id = $req->meal_id;
-        $ingredient->name = $req->name;
-        $ingredient->active = 1;
-        $ingredient->save();
-        return Response::json(array("status" => "200", "data" => $ingredient));
-      } catch (Exception $e) {
-        return Response::json(array("status" => "500", "data" => $e));
-      }
-   }
-   else {
-     return Response::json(array("status" => "401", "data" => $validator->messages()));
-   }
- }
 
  function getDelivery(Request $req, $id){
 
@@ -414,38 +502,40 @@ class RestaurantController extends Controller
    }
 
    public function saveOrder(Request $request) {
-    try {
-      \App\Order::create([
-        'created_at' => $request['created_at'],
-        'restaurant_id' => $request['restaurant_id'],
-        'meal_category_id' => $request['meal_category_id'],
-        'meal_id' => $request['meal_id'],
-        'user_id' => $request['user_id'],
-        'latitude' => $request['latitude'],
-        'longitude' => $request['longitude'],
-        'total' => $request['total']
-      ]);
+     try {
+       \DB::table('orders')->insert([
+         'restaurant_id' => $request['restaurant_id'],
+         'meal_category_id' => $request['meal_category_id'],
+         'meal_id' => $request['meal_id'],
+         'user_id' => $request['user_id'],
+         'latitude' => $request['latitude'],
+         'longitude' => $request['longitude'],
+         'total' => $request['total'],
+         'created_at' => $request['date']
+       ]);
 
-      $client = new \GuzzleHttp\Client();
+       $client = new \GuzzleHttp\Client();
 
-      $result = $client->post('https:/onesignal.com/api/v1/notifications', [
-        "headers" => [
-          "Content-Type" => "application/json; charset=utf-8",
-          "Authorization" => "Basic NThlYzVhZTAtNTI5OC00ODJmLTk3NDItMzI0NWNiN2ZkYzM0"
-        ],
-        "json" =>[
-          "app_id" => "baedd007-9325-4e3e-83fc-d8be136450bd",
-          "contents" => array("en" => "Nueva Orden"),
-          "headings" => array("en" => "Pedido Entrante")
-        ]
-      ])->getBody()->getContents();
+       $result = $client->post('https:/onesignal.com/api/v1/notifications', [
+         "headers" => [
+           "Content-Type" => "application/json; charset=utf-8",
+           "Authorization" => "Basic NThlYzVhZTAtNTI5OC00ODJmLTk3NDItMzI0NWNiN2ZkYzM0"
+         ],
+         "json" =>[
+           "app_id" => "baedd007-9325-4e3e-83fc-d8be136450bd",
+           "contents" => array("en" => "Nueva Orden"),
+           "headings" => array("en" => "Pedido Entrante")
+         ]
+       ])->getBody()->getContents();
 
-      return response('success', 200);
-      }
-      catch (Exception $e) {
-        return response('error '+$e->message, 404)
-                ->header('Content-Type', 'application/json');
-      }
+       return response('success', 200)
+               ->header('Content-Type', 'application/json');
+
+     }
+     catch (Exception $e) {
+       return response('error '+$e->message, 404)
+               ->header('Content-Type', 'application/json');
+     }
 
    }
 

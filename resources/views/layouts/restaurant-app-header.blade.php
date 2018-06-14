@@ -9,11 +9,12 @@
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>Pídelo Tu | Dashboard</title>
+  <title>Pídelo Tu | Panel</title>
 
   <link rel="icon" href="images/favicon.png">
   <link rel="stylesheet" href="{{ asset('css/main.css') }}">
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+  <link rel="shortcut icon" type="image/x-icon" href="{{asset('/images/ic.png')}}"/>
   @yield('stylesheets')
 </head>
 
@@ -38,10 +39,10 @@
           <img src="{{ asset('images/pedidos.png') }}" alt="pedidos" id="pedidos">
           <p>PEDIDOS</p>
         </div>
-        <div class="left-panel-element">
+        <!--<div class="left-panel-element">
           <img src="{{ asset('images/analysis.png') }}" alt="analysis" id="analysis">
           <p>ANÁLISIS GENERAL</p>
-        </div>
+        </div>-->
       </div><!--End of Button Holder-->
 
       <div id="logout-container">
@@ -58,11 +59,11 @@
   <script>
     $(function(){
       $("body").on('click', '#restaurantActive', function(){
-        window.location.href = '/restaurant/home/23';
+        window.location.href = '/restaurant/inicio/';
       });
 
       $("body").on('click', '#pedidosActive', function(){
-        window.location.href = '/restaurant/all-orders';
+        window.location.href = '/restaurant/inicio/';
       });
     });
   </script>
