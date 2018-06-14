@@ -12,7 +12,8 @@
         "kozz/laravel-guzzle-provider": "~6.0",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
-        "laravelcollective/html": "^5.5"
+        "laravelcollective/html": "^5.5",
+        "openpay/sdk": "dev-master"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

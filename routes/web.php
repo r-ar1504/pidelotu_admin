@@ -123,7 +123,11 @@ Route::get('/restaurant_meals/{restaurant_id}', 'API@getRestaurantMeals');
 ------------------------------------------------------------------*/
 Route::get('/update_delivery_coords/{restaurant_id}', 'API@updateLocation');
 Route::get('/get_delivery_coords/{restaurant_id}', 'API@getDeliveryLocation');
+Route::get('/get_order/{order_id}', 'RestaurantController@getOrder');
 
-Route::get('/get_order/{order_id}', 'RestaurantController@getOrder')
+/*------------------------------------------------------------------
+| Payments                                                         |                                                                                                 |
+------------------------------------------------------------------*/
+Route::get('/openpay_order/{user_id}', 'PaymentController@createOrder');
 
 ?>
