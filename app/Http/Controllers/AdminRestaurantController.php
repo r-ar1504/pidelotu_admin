@@ -47,7 +47,6 @@ class AdminRestaurantController extends Controller
     $categories = $restaurant->categories()->get();
 
     return view('admin.home', ['restaurant' => $restaurant, 'categories' => $categories]);
-    // return response()->json(['restaurant' => $restaurant, 'categories' => $categories]);
   }
 
   function getCateogrie(Request $request){
@@ -246,12 +245,6 @@ class AdminRestaurantController extends Controller
     $edit->name    = $request['name'];
     $edit->address = $request['address'];
     $edit->details = $request['details'];
-    if($request['image'] == null){
-      $edit->logo  = null;
-    }
-    else{
-      $edit->logo  = $request['image'];
-    }
     $edit->save();
 
     $RU = DB::table('restaurant_users')->where('restaurant', $request['id'])->update(['username' => $request['user'], 'password' => Hash::make($request['password']), 'email' => $request['email'], 'updated_at' => Carbon::now()]);

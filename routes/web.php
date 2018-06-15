@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Restaurant      as Restaurant;
 
 Route::get('/', function () {
   return view('landing');
@@ -62,7 +63,8 @@ Route::middleware(['auth'])->group(function () {
 
   Route::prefix('administrador')->group(function(){
     Route::get('/', function () {
-        return view('admin.restaurants.home');
+      $restaurants = Restaurant::where('active', '=', 1)->get();
+      return view('admin.restaurants.home', ['restaurants' => $restaurants]);
     });//Load Form
     Route::get('restaurantes', 'AdminRestaurantController@getRestaurants');
     Route::get('restaurante/{id}', 'AdminRestaurantController@getCategories');
@@ -103,7 +105,7 @@ Route::middleware(['auth'])->group(function () {
   | Get restaurant by @id
   ------------------------------------------------------------------*/
   Route::prefix('restaurante')->group(function(){
-
+    Route::get('ini/{id}', 'RestaurantController@home');
     Route::get('inicio/{id}', 'RestaurantController@getCategories');//List all
     Route::get('{restaurant_id}/agregar-categoria', 'RestaurantController@addCategory');//Load Form
     Route::post('{restaurant_id}/create_category', 'RestaurantController@createCategory');//Create
@@ -120,6 +122,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('ingredientes/{id}', 'RestaurantController@ingredients');
 
     Route::post('/dcomida', 'RestaurantController@deleteCategorie');
+    Route::post('/dc', 'RestaurantController@deleteMeal');
+    Route::post('categoria', 'RestaurantController@deleteCategorie');
+    Route::get('modificar-categoria/{id}', function(){
+      return view('restaurant.edit-category');
+    });
 
   });
 

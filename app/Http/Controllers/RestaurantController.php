@@ -42,6 +42,25 @@ use App\Ingredient;
 class RestaurantController extends Controller
 {
   /* Traer las categorias del restaurante iniciado */
+  function home(Request $request, $id){
+    $category = DB::table('meal_categories')
+                    ->select('*')
+                    ->where('id', '=', $id)
+                    ->get();
+
+    $restaurant = DB::table('restaurants')
+                      ->select('*')
+                      ->where('id', '=', $category[0]->restaurant_id)
+                      ->get();
+
+    $user = DB::table('restaurant_users')
+                ->select('*')
+                ->where('restaurant', '=', $restaurant[0]->id)
+                ->get();
+
+    return view('restaurant.home', ['restaurant' => $user, 'categories' => $restaurant, 'CategoriesR' => $category, 'id' => $category[0]->id]);
+  }
+
   function getCategories(Request $request, $id){
     $restaurant = RU::find($id);
 
@@ -58,7 +77,7 @@ class RestaurantController extends Controller
                          ->where('restaurant_id', '=', $categories[0]->id)
                          ->get();
 
-    return view('restaurant.home', ['restaurant' => $restaurant, 'categories' => $categories, 'CategoriesR' => $restaurantC]);
+    return view('restaurant.home', ['restaurant' => $restaurant, 'categories' => $categories, 'CategoriesR' => $restaurantC, 'id' => $restaurantC[0]->id]);
   }
 
   function addCategory(Request $request, $restaurant_id){
@@ -90,9 +109,10 @@ class RestaurantController extends Controller
   }
 
   function deleteCategorie(Request $request){
-    
-
-    return 'Ok';
+    $categorie = DB::table('meal_categories')
+                     ->where('id', '=', $request->id)
+                     ->update(['active' => 0, 'updated_at' => Carbon::now()]);
+    return $request->id;
   }
 
   function meals(Request $req, $id){
@@ -113,6 +133,13 @@ class RestaurantController extends Controller
 
  function addMeal(Request $req, $id){
    return view('restaurant.addMeal', ['id' => $id]);
+ }
+
+ function deleteMeal(Request $request){
+    $categorie = DB::table('meals')
+                       ->where('id', '=', $request->id)
+                       ->update(['active' => 0, 'updated_at' => Carbon::now()]);
+    return $request->id;
  }
 
  function addMealC(Request $req){
@@ -441,11 +468,11 @@ function ingredients(Request $req, $id){
  function all_orders(Request $req){
   $name = $req->id;
 
-  $id = DB::table('restaurants')->where('name', $name)->pluck('id')->first();
+  $id = DB::table('restaurants')->where('name', $name)->get();
 
-  $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id where restaurant_id = '.$id.'');
+  $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id where restaurant_id = '.$id[0]->id.'');
 
-  return view('restaurant.restaurants-orders', ['orders' => $allOrders]);
+  return view('restaurant.restaurants-orders', ['orders' => $allOrders, 'restaurant' => $id[0]->name]);
  }
 
 /**

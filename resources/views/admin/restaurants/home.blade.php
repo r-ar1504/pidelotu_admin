@@ -3,7 +3,9 @@
 @section('section-title', 'Restaurantes Registrados')
 
 @section('stylesheets')
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="{{ asset('css/admin/restaurants/main2.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/admin/restaurants/main.css') }}">
 @endsection
 
 @section('content')
@@ -15,7 +17,6 @@
     @if(count($restaurants) > 0)
       @foreach($restaurants as $restaurant)
           <div class="element-card">
-            <!--<img src="/images/error.png" class="deleteRestaurant" data-id="{{$restaurant->id}}" alt="">-->
             <img src="{{'/images/logos/'.$restaurant->logo }}" alt="restaurant-image">
             <div class="card-overlay">
               <p>{{ $restaurant->name }}</p>
@@ -40,6 +41,6 @@
 @endsection
 
 @section('javascript')
-  <script type="text/javascript" src="/js/admin/restaurants/home.js"></script>
+  <script type="text/javascript" src="/js/admin/restaurants/home-d.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 @stop
