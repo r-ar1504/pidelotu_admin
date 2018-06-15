@@ -23,7 +23,7 @@
   <div class="row">
     @if(count($meals) > 0)
     @foreach($meals as $meal)
-    @if($meal->active ==1)
+    @if($meal->active == 1)
     <!--<div class="col-md-4" align="center">
       <div class="element-card">
         <img src="{{'/images/meals/'.$meal->image }}" alt="restaurant-image">
@@ -40,18 +40,24 @@
         <button class="btn btn-danger delete"  data-id="{{$meal->id}}">Eliminar</button>
       </div>
     </div>-->
-    <div class="element-card" style="width: 100% !important">
-      <img src="{{'/images/logos/'.$meal->image }}" alt="restaurant-image">
-      <div class="card-overlay">
-        <p>{{ $meal->name }}</p>
-        <div class="overlay-button">
-          <a href="#" data-toggle="modal" data-target="#myModal" data-id="{{$meal->name}}">Actualizar</a>
-        </div>
-        <div class="overlay-button">
-          <a data-id="{{$meal->id}}" class="delete">Eliminar</a>
-        </div>
-        <div class="overlay-button">
-          <a href="/restaurante/ingredientes/{{$meal->id}}">Ver Mas</a>
+    <div class="col-md-6">
+      <div class="element-card" style="width: 500px !important; height: 300px !important;">
+        <img src="{{'/images/logos/'.$meal->image }}" alt="restaurant-image">
+        <div class="card-overlay">
+          <div class="overlay-button">
+            <a href="#" data-toggle="modal" data-target="#myModal" data-id="{{$meal->name}}">Actualizar</a>
+          </div>
+          <div class="overlay-button">
+            <a data-id="{{$meal->id}}" class="delete">Eliminar</a>
+          </div>
+          <div class="overlay-button">
+            <a href="/restaurante/ingredientes/{{$meal->id}}">Ver Mas</a>
+          </div>
+          <br>
+          <br>
+          <br>
+          <br>
+          <p>{{ $meal->name }}</p>
         </div>
       </div>
     </div>

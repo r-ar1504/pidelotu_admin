@@ -45,12 +45,9 @@
   @if(count($categories) > 0)
   @foreach($CategoriesR as $category)
   @if($category->active == 1)
-  <div class="element-card">
+  <div class="element-card" style="width: 300px !important; height: 250px !important;">
     <img src="{{'/images/restaurants/categories/'.$category->dashboard_banner}}" alt="restaurant-image">
     <div class="card-overlay">
-      <div>
-        <p>{{$category->name}}</p>
-      </div>
       <div class="overlay-button">
         <a href="{{ '/administrador/modificar-categoria/'.$category->id }}">Actualizar</a>
       </div>
@@ -60,6 +57,11 @@
       <div class="overlay-button">
         <a href="/restaurante/meals/{{$category->id}}">Ver Mas</a>
       </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <p>{{$category->name}}</p>
     </div>
   </div>
   @endif
