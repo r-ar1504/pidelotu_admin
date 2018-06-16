@@ -6,76 +6,165 @@
   <link rel="stylesheet" href="/libs/animateCss/animate.css">
 @endsection
 
-@section('section-title', 'restaurantes')
+@section('section-title', 'Actualiza tu restaurante')
 
 @section('content')
 
 @if($restaurant)
-  <div id="form-holder">
-
-    {!! Form::open(['id' => 'restaurantForm', 'files' => true]) !!}
-    <div id="form-fields">
-
-      <div class="field-label">
-        <p>Nombre del Restaurante</p>
-      </div>
-      <div class="form-field">
-        {!! Form::text('name', $restaurant->name) !!}
-      </div>
-      <div class="field-label">
-        <p>Usuario</p>
-      </div>
-      <div class="form-field">
-        {!! Form::text('user', $restaurant->username) !!}
-      </div>
-      <div class="field-label">
-        <p>Contasena</p>
-      </div>
-      <div class="form-field">
-        {!! Form::text('password') !!}
-      </div>
-      <div class="field-label">
-        <p>Dirección del Restaurante</p>
-      </div>
-      <div class="form-field">
-        {!! Form::text('address', $restaurant->address) !!}
-      </div>
-      <div class="field-label">
-        <p>Detalles del Restaurante</p>
-      </div>
-      <div class="form-field-text">
-        {!! Form::textarea('details', $restaurant->details) !!}
-      </div>
-
-      <div class="field-label">
-        <p>Imagen para aplicación</p>
-      </div>
-      <div class="form-field-text">
-        <input type="file" name="ban" id="b">
-      </div>
-      <button type="button" style="margin-top: 2rem;" data-id="{{$restaurant->id}}" id="saveUpdate" name="save">Guardar cambios</button>
+  <div align="center">
+    <div class="row">
+      <form action="/administrador/actualizando" method="POST">
+        <div class="col-md-7">
+          @if (count($errors) > 0)
+            <div class="alert alert-danger">
+              <p>Corrige los siguientes errores:</p>
+              <ul>
+                @foreach ($errors->all() as $message)
+                <li>{{ $message }}</li>
+                @endforeach
+              </ul>
+            </div>
+          @endif
+          <br>
+          <br>
+          <div id="">
+            {!! Form::token() !!}
+            <input hidden="true" type="password" name="id" value="{{$restaurant->id}}">
+            <div class="field-label">
+              <p>Nombre del Restaurante</p>
+            </div>
+            <div class="form-field">
+              {!! Form::text('name', $restaurant->name) !!}
+            </div>
+            <div class="field-label">
+              <p>Usuario</p>
+            </div>
+            <div class="form-field">
+              {!! Form::text('user', $restaurant->username) !!}
+            </div>
+            <div class="field-label">
+              <p>Correo Electronico</p>
+            </div>
+            <div class="form-field">
+              <input type="email" name="email">
+            </div>
+            <div class="field-label">
+              <p>Contaseña</p>
+            </div>
+            <div class="form-field">
+              <!--{!! Form::text('password') !!}-->
+              <input type="text" name="password" id="password">
+            </div>
+            <div class="field-label">
+              <p>Dirección del Restaurante</p>
+            </div>
+            <div class="form-field">
+              {!! Form::text('address', $restaurant->address) !!}
+            </div>
+            <div class="field-label">
+              <p>Detalles del Restaurante</p>
+            </div>
+            <div class="form-field-text">
+              {!! Form::textarea('details', $restaurant->details) !!}
+            </div>
+            <button type="submit" style="margin-top: 2rem;" class="btn btn-success">Guardar Cambios</button>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div id="photo-field">
+            <p>Logo</p>
+            <img src="{{ asset('images/pidelo-icon.gif') }}" alt="restaurant-photo" id="restaurant-photo">
+            <div id="image-upload">
+              <label for="upload">
+                <img src="{{ asset('images/image-upload.png') }}" alt="upload-icon" id="upload-placeholder" >
+              </label>
+            </div>
+            <input type="file" name="image-logo" id="upload-logo">
+          </div>
+        </div>
+      </form>
     </div>
-    <div id="photo-field">
-      <img src="{{ asset('images/pidelo-icon.gif') }}" alt="restaurant-photo" id="restaurant-photo">
-
-      <div id="image-upload">
-
-        <label for="upload">
-          <img src="{{ asset('images/image-upload.png') }}" alt="upload-icon" id="upload-placeholder" >
-        </label>
-        <input type="file" name="image" id="upload">
-
-      </div>
-
-    </div>
-    {!! Form::close() !!}
-
   </div>
   @else
-  <div id="form-holder">
+  <div align="center">
+    <div class="row">
+      <!--<form action="/administrador/agregando" files="true" method="POST">-->
+      {{Form::open(array('url' => '/administrador/agregando', 'method' => 'post', 'files' => true))}}
+        <div class="col-md-7">
+          <br>
+          <br>
+          {!! Form::token() !!}
+          <div class="field-label">
+            <p>Nombre del Restaurante</p>
+          </div>
+          <div class="form-field">
+            <!--{!! Form::text('name') !!}-->
+            <input type="text" name="name" required>
+          </div>
+          <div class="field-label">
+            <p>Nombre de Usuario</p>
+          </div>
+          <div class="form-field">
+            <!--{!! Form::text('user') !!}-->
+            <input type="text" name="user" required>
+          </div>
+          <div class="field-label">
+            <p>Correo Electronico</p>
+          </div>
+          <div class="form-field">
+            <input type="email" name="email" required="">
+          </div>
+          <div class="field-label">
+            <p>Contaseña</p>
+          </div>
+          <div class="form-field">
+            <!--{!! Form::text('password') !!}-->
+            <input type="password" name="password" id="password" required>
+          </div>
+          <div class="field-label">
+            <p>Dirección del Restaurante</p>
+          </div>
+          <div class="form-field">
+            <!--{!! Form::text('address') !!}-->
+            <input type="text" name="address" required>
+          </div>
+          <div class="field-label">
+            <p>Detalles del Restaurante</p>
+          </div>
+          <div class="form-field-text">
+            {!! Form::textarea('details') !!}
+          </div>
+          <button type="submit" style="margin-top: 2rem;" name="save" class="btn btn-success">Guardar Cambios</button>
+        </div>
+        <div class="col-md-5">
+          <div id="photo-field">
+            <p>Logo</p>
+            <img src="{{ asset('images/pidelo-icon.gif') }}" alt="restaurant-photo" id="restaurant-photo">
+            <div id="image-upload">
+              <label for="upload">
+                <img src="{{ asset('images/image-upload.png') }}" alt="upload-icon" id="upload-placeholder" >
+              </label>
+            </div>
+            <input type="file" name="image" id="upload">
+          </div>
+        </div>
+        @if (count($errors) > 0)
+        <div class="alert alert-danger">
+          <p>Corrige los siguientes errores:</p>
+          <ul>
+            @foreach ($errors->all() as $message)
+            <li>{{ $message }}</li>
+            @endforeach
+          </ul>
+        </div>
+        @endif
+      <!--</form>-->
+      {!! Form::close() !!}
+    </div>
+  </div>
 
-    {!! Form::open(['id' => 'restaurantForm', 'files' => true]) !!}
-    <div id="form-fields">
+    <!--{!! Form::open(['id' => 'restaurantForm', 'files' => true]) !!}
+    <!--<div id="form-fields">
 
       <div class="field-label">
         <p>Nombre del Restaurante</p>
@@ -84,16 +173,16 @@
         {!! Form::text('name') !!}
       </div>
       <div class="field-label">
-        <p>Usuario</p>
+        <p>Nombre de Usuario</p>
       </div>
       <div class="form-field">
         {!! Form::text('user') !!}
       </div>
       <div class="field-label">
-        <p>Contasena</p>
+        <p>Contaseña</p>
       </div>
       <div class="form-field">
-        {!! Form::text('password') !!}
+        <input type="password" name="password" id="password">
       </div>
       <div class="field-label">
         <p>Dirección del Restaurante</p>
@@ -107,15 +196,9 @@
       <div class="form-field-text">
         {!! Form::textarea('details') !!}
       </div>
-      <div class="field-label">
-        <p>Imagen para aplicación</p>
-      </div>
-      <div class="form-field-text">
-        <input type="file" name="ban" id="b">
-      </div>
-      <button type="button" style="margin-top: 2rem;" id="save" name="save">Guardar cambios</button>
-    </div>
-    <div id="photo-field">
+      <button type="button" style="margin-top: 2rem;" name="save">Guardar cambios</button>
+    </div>-->
+    <!--<div id="photo-field">
       <img src="{{ asset('images/pidelo-icon.gif') }}" alt="restaurant-photo" id="restaurant-photo">
 
       <div id="image-upload">
@@ -127,17 +210,21 @@
 
       </div>
 
-    </div>
-    {!! Form::close() !!}
-
-  </div>
+    </div>-->
+    <!--{!! Form::close() !!}-->
   @endif
+  <br>
+  <br>
+  <br>
   <div id="bottom-links">
 
-    <a href="/admin/restaurants">Regresar a lista de restaurantes</a>
-    <a href="/admin/restaurants">Cancelar</a>
+    <a href="/administrador/restaurantes">Regresar a lista de restaurantes</a>
+    <a href="/administrador/restaurantes">Cancelar</a>
 
   </div>
+  <br>
+  <br>
+  <br>
 @endsection
 
 @section('javascript')

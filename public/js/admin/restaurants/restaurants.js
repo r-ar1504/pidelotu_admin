@@ -43,7 +43,7 @@ $("body").on('click', '#save', function(){
         button: "Aceptar",
       })
       .then((value) => {
-        window.location.href = '/admin/restaurants';
+        window.location.href = '/administrador/restaurantes';
       });
     }else {
       swal({
@@ -97,7 +97,7 @@ $("body").on('click', '#saveUpdate', function(){
     var formData = new FormData($("#restaurantForm")[0]);
     formData.append('id', $id);
     $.ajax({
-       url: '/updateRestaurant',
+       url: '/administrador/updateRestaurant',
        type: 'POST',
        data: formData,
        cache: false,
@@ -116,7 +116,7 @@ $("body").on('click', '#saveUpdate', function(){
         button: "Aceptar",
       })
       .then((value) => {
-        window.location.href = '/admin/restaurants';
+        window.location.href = '/administrador/restaurantes';
       });
     }else {
       swal({
@@ -126,7 +126,7 @@ $("body").on('click', '#saveUpdate', function(){
        button: "Aceptar",
      })
      .then((value) => {
-       window.location.href = '/admin/restaurants';
+       window.location.href = '/administrador/restaurantes';
      });
     }
    });

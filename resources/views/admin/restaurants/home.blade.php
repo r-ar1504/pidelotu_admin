@@ -1,9 +1,11 @@
 @extends('layouts.admin-app-header')
 
-@section('section-title', 'restaurant')
+@section('section-title', 'Restaurantes Registrados')
 
 @section('stylesheets')
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="{{ asset('css/admin/restaurants/main2.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/admin/restaurants/main.css') }}">
 @endsection
 
 @section('content')
@@ -15,40 +17,77 @@
     @if(count($restaurants) > 0)
       @foreach($restaurants as $restaurant)
           <div class="element-card">
-            <img src="/images/error.png" class="deleteRestaurant" data-id="{{$restaurant->id}}" alt="">
             <img src="{{'/images/logos/'.$restaurant->logo }}" alt="restaurant-image">
             <div class="card-overlay">
               <p>{{ $restaurant->name }}</p>
               <div class="overlay-button">
-                <a href="{{ '/restaurant/home/'.$restaurant->id }}">Ver Mas</a>
+                <a href="{{ '/administrador/modificar-restaurante/'.$restaurant->id }}">Actualizar</a>
               </div>
               <div class="overlay-button">
-                <a href="{{ '/admin/update_restaurant/'.$restaurant->id }}">Actualizar</a>
+                <a data-id="{{$restaurant->id}}" class="delete">Eliminar</a>
+              </div>
+              <div class="overlay-button">
+                <a href="{{ '/administrador/restaurante/'.$restaurant->id }}">Ver Mas</a>
               </div>
             </div>
           </div>
       @endforeach
-
     @else
       <div class="no-content">
         <p>No existen elementos en esta categoria</p>
       </div>
     @endif
-
   </div>
 @endsection
 
 @section('javascript')
-  <script type="text/javascript" src="/js/admin/restaurants/home.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-  <script>
+
+  <script type="text/javascript">
     var OneSignal = window.OneSignal || [];
     OneSignal.push(function() {
       OneSignal.init({
         appId: "baedd007-9325-4e3e-83fc-d8be136450bd",
       });
     });
-  </script>
+    
+    $("body").on('click', '.delete', function(){
 
+    swal({
+      title: "Estas seguro de eliminarlo?",
+      text: "Una vez eliminado no podras recuperarlo ",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        let data = {id: $(this).data('id')};
+
+        $.ajax({
+          url: "/administrador/deleteRestaurant/",
+          type: "POST",
+          data: data,
+          headers: {
+           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        })
+        .done(function(response){
+          swal({
+            title: "Excelente",
+            text: "Se ha eliminado con exito ",
+            icon: "success",
+          })
+          .then((willDelete) => {
+            window.location.reload()
+          });
+        });
+      } else {
+        swal("Todo esta como lo dejaste!");
+      }
+    });
+
+  });
+  </script>
 @stop

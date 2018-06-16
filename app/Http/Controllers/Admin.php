@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Auth;
 use App\RestaurantUsers;
+use App\Restaurant;
 
 class Admin extends Controller
 {
@@ -26,16 +27,36 @@ class Admin extends Controller
 */
 
 function checkOut(Request $request){
-  if (Auth::attempt([
-       'email' => $request->email,
-       'password' => $request->password
-       ])){
-         $user = RestaurantUsers::where('email', '=', $request->email)->first();
-         return Response::json(array("status" => "200", "role" => $user->role));
-     }
-     else {
-       return Response::json(array("status" => "403"));
-     }
+  if (Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+    $user = RestaurantUsers::where('email', '=', $request->email)->first();
+    
+    if($user->role == 'restaurante'){
+      return Response::json(array("status" => "200", "role" => $user->role, "restaurant" => $user->id));
+    }
+    else{
+      return Response::json(array("status" => "200", "role" => $user->role));
+    }
+  }
+  else {
+    return Response::json(array("status" => "403"));
+  }
+}
+
+function create(){
+  $RestaurantUsers = new RestaurantUsers();
+  $RestaurantUsers->username = 'Admin';
+  $RestaurantUsers->email = 'admin1@hotmail.com';
+  $RestaurantUsers->password = Hash::make(4789108);
+  $RestaurantUsers->created_at = \Carbon\Carbon::now()->toDateTimeString();
+  $RestaurantUsers->updated_at = \Carbon\Carbon::now()->toDateTimeString();
+  $RestaurantUsers->role = 'admin';
+  $RestaurantUsers->save();
+  return redirect('/');
+}
+
+function logout(){
+  \Auth::logout();
+  return view('/landing');
 }
 
 

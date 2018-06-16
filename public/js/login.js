@@ -18,10 +18,15 @@ $(function(){
     .done(function(response){
       if (response.status == "200") {
         if (response.role == "admin") {
-          window.location.href = "/admin/restaurants";
+          window.location.href = "/administrador/restaurantes";
         }else {
-          // window.location.href = "/"
+          //alert(response.id)
+          localStorage.setItem("user", response.restaurant);
+          window.location.href = "/restaurante/inicio/" + response.restaurant + "";
         }
+      }
+      else{
+        return alert('Su usuario y/o contraseña estan incorrectos');
       }
     });
   });

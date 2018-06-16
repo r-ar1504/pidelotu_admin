@@ -9,11 +9,12 @@
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>Pídelo Tu | Dashboard</title>
+  <title>Pídelo Tu | Panel</title>
 
   <link rel="icon" href="images/favicon.png">
   <link rel="stylesheet" href="{{ asset('css/main.css') }}">
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+  <link rel="shortcut icon" type="image/x-icon" href="{{asset('/images/ic.png')}}"/>
   @yield('stylesheets')
 </head>
 
@@ -34,18 +35,17 @@
           <img src="{{ asset('images/restaurant.png') }}" alt="restaurant" id="restaurant">
           <p>PLATILLOS</p>
         </div>
-        <div class="left-panel-element" id="pedidosActive">
-          <img src="{{ asset('images/pedidos.png') }}" alt="pedidos" id="pedidos">
-          <p>PEDIDOS</p>
-        </div>
-        <div class="left-panel-element">
-          <img src="{{ asset('images/analysis.png') }}" alt="analysis" id="analysis">
-          <p>ANÁLISIS GENERAL</p>
-        </div>
+        <form action="/restaurante/ordenes" method="get">
+          <button type="submit" class="left-panel-element" style="background-color: transparent; border: 1px solid transparent; width: 100%; cursor: pointer;">
+            <img src="{{ asset('images/pedidos.png') }}" alt="pedidos" id="pedidos">
+            <p>PEDIDOS</p>
+            <input type="" name="id" hidden value="@yield('section-title')">
+          </button>
+        </form>
       </div><!--End of Button Holder-->
 
-      <div id="logout-container">
-        <button type="button" name="button">Cerrar Sesión</button>
+      <div id="logout-container" style="margin-left: 8px;">
+        <button id="logout" type="submit" name="button" style="cursor: pointer;">Cerrar Sesión</button>
       </div>
     </div><!--End Left Panel-->
 
@@ -58,11 +58,16 @@
   <script>
     $(function(){
       $("body").on('click', '#restaurantActive', function(){
-        window.location.href = '/restaurant/home/23';
+        window.location.href = '/restaurante/inicio/'+localStorage.getItem("user");
       });
 
       $("body").on('click', '#pedidosActive', function(){
-        window.location.href = '/restaurant/all-orders';
+        window.location.href = '/restaurante/ordenes';
+      });
+
+      $("body").on('click', '#logout', function(){
+        localStorage.removeItem('user')
+        window.location.href = '/logout';
       });
     });
   </script>
