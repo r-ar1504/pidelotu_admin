@@ -137,7 +137,7 @@ class RestaurantController extends Controller
                         'image'         => $image_name
                     ]);
     }*/
-    return $request;
+
     $restaurant = DB::table('restaurant_users')
                          ->select('*')
                          ->where('id', '=', $request->id)
@@ -152,8 +152,8 @@ class RestaurantController extends Controller
     }
     else{
       $image = $request->file('image');
-      $image_name = $request['name'].'-logo'.$image->extension();
-      $image_path = $image->move(public_path().'/images/logos/', $image_name);
+      $image_name = $request['name'].'-logo.'.$image->extension();
+      $image_path = $image->move(public_path().'/images/restaurants/categories/', $image_name);
       $category->image  = $image_name;
     }
 

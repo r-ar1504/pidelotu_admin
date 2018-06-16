@@ -24,7 +24,7 @@
   @foreach($CategoriesR as $category)
   @if($category->active == 1)
   <div class="element-card" style="width: 300px !important; height: 250px !important;">
-    <img src="{{'/images/restaurants/categories/'.$category->dashboard_banner}}" alt="restaurant-image">
+    <img src="{{'/images/restaurants/categories/'.$category->image}}" alt="restaurant-image">
     <div class="card-overlay">
       <!--<div class="overlay-button">
         <form action="{{ '/restaurante/modificar-categoria/'.$category->id }}" method="POST">
