@@ -43,34 +43,78 @@ use App\Ingredient;
 class RestaurantController extends Controller
 {
   /* Traer las categorias del restaurante iniciado */
+  function home(Request $request, $id){
+    $category = DB::table('meal_categories')
+                    ->select('*')
+                    ->where('id', '=', $id)
+                    ->get();
+
+    $restaurant = DB::table('restaurants')
+                      ->select('*')
+                      ->where('id', '=', $category[0]->restaurant_id)
+                      ->get();
+
+    $user = DB::table('restaurant_users')
+                ->select('*')
+                ->where('restaurant', '=', $restaurant[0]->id)
+                ->get();
+
+    return view('restaurant.home', ['restaurant' => $user, 'categories' => $restaurant, 'CategoriesR' => $category, 'id' => $category[0]->id]);
+  }
+
   function getCategories(Request $request, $id){
+    /*Usuario de restaurante*/
     $restaurant = RU::find($id);
 
     if($restaurant === null){
       return view('restaurants.admin-app-header');
     }
-      $categories = DB::table('restaurants')
+    /*Restaurante*/
+    $categories = DB::table('restaurants')
+                    ->select('*')
+                    ->where('id', '=', $restaurant->restaurant)
+                    ->get();
+
+    /*Categorias del restaurante*/
+    $restaurantC = DB::table('meal_categories')
+                      ->select('*')
+                      ->where('restaurant_id', '=', $categories[0]->id)
+                      ->get();
+
+    //return $categories;
+    if(count($restaurantC) == 0){
+      $restaurantC = DB::table('meal_categories')
                         ->select('*')
-                        ->where('id', '=', $restaurant->restaurant)
+                        ->where('restaurant_id', '=', $restaurant->id)
                         ->get();
 
-      $restaurantC = DB::table('meal_categories')
-                         ->select('*')
-                         ->where('restaurant_id', '=', $categories[0]->id)
-                         ->get();
-
-    return view('restaurant.home', ['restaurant' => $restaurant, 'categories' => $categories, 'CategoriesR' => $restaurantC]);
+      return view('restaurant.home', ['restaurant' => $restaurant, 'categories' => $categories, 'CategoriesR' => $restaurantC, 'id' => $restaurantC[0]->id]);
+    }
+    else{
+      return view('restaurant.home', ['restaurant' => $restaurant, 'categories' => $categories, 'CategoriesR' => $restaurantC, 'id' => $restaurantC[0]->id]);
+    }
   }
 
   function addCategory(Request $request, $restaurant_id){
-    $restaurant = Restaurant::find($restaurant_id);
+    $restaurant = RU::find($restaurant_id);
+    
     return view('restaurant.category.form', ['restaurant' => $restaurant]);
+  }
+
+  function editCategorie(Request $request){
+    $restaurant = DB::table('meal_categories')
+                      ->select('*')
+                      ->where('name', '=', $request->id)
+                      ->get();
+
+    return view('restaurant.category.edit-category', ['restaurant' => $restaurant]);
   }
 
   function createCategory(Request $request, $restaurant_id){
     $data = $request->all();
     $image = $request->file('image');
     $id = $restaurant_id - 1;
+
     $restaurant = Restaurant::find($id);
     $category = DB::table('meal_categories')->insertGetId([
       'name' => $data['name'],
@@ -82,18 +126,22 @@ class RestaurantController extends Controller
     $image_name = 'res-'.$restaurant_id.'-cat-'.$category.'.'.$image->extension();
 
     $new_category = DB::table('meal_categories')->where('id','=',$category);
+
     $image_path = $image->move(public_path().'/images/restaurants/categories/', $image_name);
+
     $new_category->update([
-      'dashboard_banner' => $image_name
+      'dashboard_banner' => $image_name,
+      'active' => 1
     ]);
 
     return response()->json(['data' => $data, 'id' => $restaurant->id, 'file' => $image_path,'files' => $image_name]);
   }
 
   function deleteCategorie(Request $request){
-    
-
-    return 'Ok';
+    $categorie = DB::table('meal_categories')
+                     ->where('id', '=', $request->id)
+                     ->update(['active' => 0, 'updated_at' => Carbon::now()]);
+    return $request->id;
   }
 
   function meals(Request $req, $id){
@@ -112,12 +160,90 @@ class RestaurantController extends Controller
     return view('restaurant.meals', ['meals' => $meals, 'id' => $id, 'categorie' => $restaurant]);
  }
 
+ function editMeal(Request $request){
+  $rules = [
+      'name'                 => 'required',
+      'time'                 => 'required | int',
+      'description'          => 'required',
+      'price'                => 'required | int'
+    ];
+
+  $messages = [
+    'name.required'           => 'Agrega el campo nombre',
+    'time.required'           => 'Agrega el campo Tiempo de preparación',
+    'time.int'                => 'Necesita ser datos numericos en tiempo de preparación',
+    'description.required'    => 'Agrega el campo de descripsion',
+    'price.required'          => 'Agrega el campo de precio',
+    'price.int'               => 'Necesita ser datos numericos en el campo de precio'
+  ];
+
+  $this->validate($request, $rules, $messages);
+
+  $UPDATE = DB::table('meals')
+                ->where('id', '=', $request->id)
+                ->update([
+                  'name' => $request->name,
+                  'preparation_time' => $request->time,
+                  'description' => $request->description,
+                  'price' => $request->price,
+                  'updated_at' => Carbon::now()
+                ]);
+
+  $meals = DB::table('meals')
+               ->select('*')
+               ->where('id', '=', $request->id)
+               ->get();
+
+  $categorie = DB::table('meal_categories')
+            ->select('*')
+            ->where('id', '=', $meals[0]->category_id)
+            ->get();
+
+  $restaurant = DB::table('restaurants')
+                    ->select('*')
+                    ->where('id', '=', $categorie[0]->restaurant_id)
+                    ->get();
+
+  $ru = RU::find($restaurant[0]->id+1);
+
+  $mealsAll = DB::table('meals')
+                  ->select('*')
+                  ->where('category_id', '=', $categorie[0]->id)
+                  ->get();
+
+  return view('restaurant.meals', ['categorie' => $restaurant, 'id' => $ru->id, 'meals' => $mealsAll]);
+ }
+
  function addMeal(Request $req, $id){
    return view('restaurant.addMeal', ['id' => $id]);
  }
 
+ function deleteMeal(Request $request){
+    $categorie = DB::table('meals')
+                       ->where('id', '=', $request->id)
+                       ->update(['active' => 0, 'updated_at' => Carbon::now()]);
+    return $request->id;
+ }
+
  function addMealC(Request $req){
- $create = DB::table('meals')->insert(
+    $rules = [
+      'name'                 => 'required',
+      'preparation_time'     => 'required | int',
+      'description'          => 'required',
+      'price'                => 'required | int'
+    ];
+
+    $messages = [
+      'name.required'                 => 'Agrega el campo nombre',
+      'preparation_time.required'     => 'Agrega el campo Tiempo de preparación',
+      'preparation_time.int'       => 'Necesita ser datos numericos en tiempo de preparación',
+      'description.required'          => 'Agrega el campo de descripsion',
+      'price.required'                => 'Agrega el campo de precio',
+      'price.int'                  => 'Necesita ser datos numericos en el campo de precio'
+    ];
+
+    $this->validate($req, $rules, $messages);
+      $create = DB::table('meals')->insert(
                ['category_id' => $req->id, 
                 'description' => $req->description,
                 'preparation_time' => $req->preparation_time,
@@ -440,11 +566,11 @@ function ingredients(Request $req, $id){
  function all_orders(Request $req){
   $name = $req->id;
 
-  $id = DB::table('restaurants')->where('name', $name)->pluck('id')->first();
+  $id = DB::table('restaurants')->where('name', $name)->get();
 
-  $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id where restaurant_id = '.$id.'');
+  $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id where restaurant_id = '.$id[0]->id.'');
 
-  return view('restaurant.restaurants-orders', ['orders' => $allOrders]);
+  return view('restaurant.restaurants-orders', ['orders' => $allOrders, 'restaurant' => $id[0]->name]);
  }
 
 /**

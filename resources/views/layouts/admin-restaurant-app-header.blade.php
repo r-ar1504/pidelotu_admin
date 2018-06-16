@@ -31,6 +31,13 @@
   <div class="main-container">
     <div class="left-panel-section">
       <div id="button-container">
+        <form action="/administrador" method="get">
+          <button type="submit" class="left-panel-element" style="background-color: transparent; border: 1px solid transparent; width: 100%; cursor: pointer;">
+            <img src="{{ asset('images/restaurant.png') }}" alt="restaurant" id="restaurant">
+            <p>Restaurantes</p>
+            <input type="text" hidden name="id" value="@yield('section-title')">
+          </button>
+        </form>
         <form action="/administrador/restaurante" method="get">
           <button type="submit" class="left-panel-element" style="background-color: transparent; border: 1px solid transparent; width: 100%; cursor: pointer;">
             <img src="{{ asset('images/restaurant.png') }}" alt="restaurant" id="restaurant">
@@ -45,14 +52,12 @@
             <input type="" name="id" hidden value="@yield('section-title')">
           </button>
         </form>
-        <!--<div class="left-panel-element">
-          <img src="{{ asset('images/analysis.png') }}" alt="analysis" id="analysis">
-          <p>ANÁLISIS GENERAL</p>
-        </div>-->
       </div><!--End of Button Holder-->
 
-      <div id="logout-container">
-        <button type="button" name="button">Cerrar Sesión</button>
+      <div id="logout-container" style="margin-left: 8px;">
+        <form action="/logout" method="get">
+          <button type="submit" name="button">Cerrar Sesión</button>
+        </form>
       </div>
     </div><!--End Left Panel-->
 

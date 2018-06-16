@@ -47,7 +47,6 @@ class AdminRestaurantController extends Controller
     $categories = $restaurant->categories()->get();
 
     return view('admin.home', ['restaurant' => $restaurant, 'categories' => $categories]);
-    // return response()->json(['restaurant' => $restaurant, 'categories' => $categories]);
   }
 
   function getCateogrie(Request $request){
@@ -238,20 +237,40 @@ class AdminRestaurantController extends Controller
     $UserRestaurant->restaurant = $id->id;
     $UserRestaurant->save();
 
+    $category = DB::table('meal_categories')->insert([
+                    [
+                      'name'          => 'oculto',
+                      'active'        => 0,
+                      'restaurant_id' => $id->id
+                    ],
+                ]);
+
     return redirect('/administrador/restaurantes');
   }
 
   public function editRestaurant(Request $request){
+    $rules = [
+      'name'              => 'required',
+      'email'             => 'required',
+      'password'          => 'required',
+      'address'           => 'required',
+      'details'           => 'required'
+    ];
+
+    $messages = [
+      'name.required'     => 'Agrega el campo Nombre.',
+      'email.required'    => 'Agrega el campo de email.',
+      'password.required' => 'Agrega el campo de contraseña.',
+      'address.required'  => 'Agrega el campo de dirección.',
+      'details.required'  => 'Agrega el campo de detalles.',
+    ];
+
+    $this->validate($request, $rules, $messages);
+
     $edit = Restaurant::find($request['id']);
     $edit->name    = $request['name'];
     $edit->address = $request['address'];
     $edit->details = $request['details'];
-    if($request['image'] == null){
-      $edit->logo  = null;
-    }
-    else{
-      $edit->logo  = $request['image'];
-    }
     $edit->save();
 
     $RU = DB::table('restaurant_users')->where('restaurant', $request['id'])->update(['username' => $request['user'], 'password' => Hash::make($request['password']), 'email' => $request['email'], 'updated_at' => Carbon::now()]);

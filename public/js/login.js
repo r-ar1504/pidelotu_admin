@@ -21,6 +21,7 @@ $(function(){
           window.location.href = "/administrador/restaurantes";
         }else {
           //alert(response.id)
+          localStorage.setItem("user", response.restaurant);
           window.location.href = "/restaurante/inicio/" + response.restaurant + "";
         }
       }

@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="/libs/animateCss/animate.css">
 @endsection
 
-@section('section-title', 'restaurantes')
+@section('section-title', 'Actualiza tu restaurante')
 
 @section('content')
 
@@ -15,6 +15,16 @@
     <div class="row">
       <form action="/administrador/actualizando" method="POST">
         <div class="col-md-7">
+          @if (count($errors) > 0)
+            <div class="alert alert-danger">
+              <p>Corrige los siguientes errores:</p>
+              <ul>
+                @foreach ($errors->all() as $message)
+                <li>{{ $message }}</li>
+                @endforeach
+              </ul>
+            </div>
+          @endif
           <br>
           <br>
           <div id="">
@@ -57,18 +67,19 @@
             <div class="form-field-text">
               {!! Form::textarea('details', $restaurant->details) !!}
             </div>
-            <button type="submit" style="margin-top: 2rem;">Guardar cambios</button>
+            <button type="submit" style="margin-top: 2rem;" class="btn btn-success">Guardar Cambios</button>
           </div>
         </div>
         <div class="col-md-5">
           <div id="photo-field">
+            <p>Logo</p>
             <img src="{{ asset('images/pidelo-icon.gif') }}" alt="restaurant-photo" id="restaurant-photo">
             <div id="image-upload">
               <label for="upload">
                 <img src="{{ asset('images/image-upload.png') }}" alt="upload-icon" id="upload-placeholder" >
               </label>
             </div>
-            <input type="file" name="image" id="upload">
+            <input type="file" name="image-logo" id="upload-logo">
           </div>
         </div>
       </form>
@@ -86,13 +97,15 @@
             <p>Nombre del Restaurante</p>
           </div>
           <div class="form-field">
-            {!! Form::text('name') !!}
+            <!--{!! Form::text('name') !!}-->
+            <input type="text" name="name" required>
           </div>
           <div class="field-label">
             <p>Nombre de Usuario</p>
           </div>
           <div class="form-field">
-            {!! Form::text('user') !!}
+            <!--{!! Form::text('user') !!}-->
+            <input type="text" name="user" required>
           </div>
           <div class="field-label">
             <p>Correo Electronico</p>
@@ -105,13 +118,14 @@
           </div>
           <div class="form-field">
             <!--{!! Form::text('password') !!}-->
-            <input type="password" name="password" id="password">
+            <input type="password" name="password" id="password" required>
           </div>
           <div class="field-label">
             <p>Dirección del Restaurante</p>
           </div>
           <div class="form-field">
-            {!! Form::text('address') !!}
+            <!--{!! Form::text('address') !!}-->
+            <input type="text" name="address" required>
           </div>
           <div class="field-label">
             <p>Detalles del Restaurante</p>
@@ -119,19 +133,30 @@
           <div class="form-field-text">
             {!! Form::textarea('details') !!}
           </div>
-          <button type="submit" style="margin-top: 2rem;" name="save">Guardar cambios</button>
+          <button type="submit" style="margin-top: 2rem;" name="save" class="btn btn-success">Guardar Cambios</button>
         </div>
         <div class="col-md-5">
           <div id="photo-field">
+            <p>Logo</p>
             <img src="{{ asset('images/pidelo-icon.gif') }}" alt="restaurant-photo" id="restaurant-photo">
             <div id="image-upload">
               <label for="upload">
-              <img src="{{ asset('images/image-upload.png') }}" alt="upload-icon" id="upload-placeholder" >
+                <img src="{{ asset('images/image-upload.png') }}" alt="upload-icon" id="upload-placeholder" >
               </label>
-              <input type="file" name="image" id="upload">
             </div>
+            <input type="file" name="image-logo" id="upload-logo">
           </div>
         </div>
+        @if (count($errors) > 0)
+        <div class="alert alert-danger">
+          <p>Corrige los siguientes errores:</p>
+          <ul>
+            @foreach ($errors->all() as $message)
+            <li>{{ $message }}</li>
+            @endforeach
+          </ul>
+        </div>
+        @endif
       </form>
     </div>
   </div>

@@ -13,6 +13,16 @@
   <div id="form-holder">
     <div class="row">
       <div class="col-md-12">
+        @if (count($errors) > 0)
+        <div class="alert alert-danger">
+          <p>Corrige los siguientes errores:</p>
+          <ul>
+            @foreach ($errors->all() as $message)
+            <li>{{ $message }}</li>
+            @endforeach
+          </ul>
+        </div>
+        @endif
         <form action="/restaurante/agregando" method="POST">
           <div id="photo-field">
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
