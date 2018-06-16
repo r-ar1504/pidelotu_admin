@@ -110,30 +110,58 @@ class RestaurantController extends Controller
   }
 
   function createCategory(Request $request, $restaurant_id){
-    $data = $request->all();
-    $image = $request->file('image');
-    $id = $restaurant_id - 1;
+    /*if(!$request->hasFile("image")){
+      $category = DB::table('meal_categories')
+                    ->insert([
+                        'name'          => $request['name'],
+                        'restaurant_id' => $restaurant_id,
+                        'active'        => 1,
+                        'created_at'    => Carbon::now(),
+                        'updated_at'    => Carbon::now(),
+                        'image'         => null
+                    ]);
+    }
+    else{
+      $image = $request->file('image');
+      $image_name = $request['name'].'-logo'.$image->extension();
+      $image_path = $image->move(public_path().'/images/logos/', $image_name);
+      $category->image  = $image_name;
 
-    $restaurant = Restaurant::find($id);
-    $category = DB::table('meal_categories')->insertGetId([
-      'name' => $data['name'],
-      'restaurant_id' => $id,
-      'created_at' => Carbon::now(),
-      'updated_at' => Carbon::now()
-    ]);
+      $category = DB::table('meal_categories')
+                    ->insert([
+                        'name'          => $request['name'],
+                        'restaurant_id' => $restaurant_id,
+                        'active'        => 1,
+                        'created_at'    => Carbon::now(),
+                        'updated_at'    => Carbon::now(),
+                        'image'         => $image_name
+                    ]);
+    }*/
+    return $request;
+    $restaurant = DB::table('restaurant_users')
+                         ->select('*')
+                         ->where('id', '=', $request->id)
+                         ->get();
 
-    $image_name = 'res-'.$restaurant_id.'-cat-'.$category.'.'.$image->extension();
+    $category = new Categories();
+    $category->name              = $request['name'];
+    $category->restaurant_id     = $restaurant[0]->restaurant;
+    $category->active            = 1;
+    if(!$request->hasFile("image")){
+      $category->image           = null;
+    }
+    else{
+      $image = $request->file('image');
+      $image_name = $request['name'].'-logo'.$image->extension();
+      $image_path = $image->move(public_path().'/images/logos/', $image_name);
+      $category->image  = $image_name;
+    }
 
-    $new_category = DB::table('meal_categories')->where('id','=',$category);
+    $category->created_at        = Carbon::now();
+    $category->updated_at        = Carbon::now();
+    $category->save();
 
-    $image_path = $image->move(public_path().'/images/restaurants/categories/', $image_name);
-
-    $new_category->update([
-      'dashboard_banner' => $image_name,
-      'active' => 1
-    ]);
-
-    return response()->json(['data' => $data, 'id' => $restaurant->id, 'file' => $image_path,'files' => $image_name]);
+    return redirect('/restaurante/inicio/'. $request->id);
   }
 
   function deleteCategorie(Request $request){

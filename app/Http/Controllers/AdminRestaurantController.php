@@ -188,7 +188,12 @@ class AdminRestaurantController extends Controller
   function infoRestaurant(Request $req, $restaurant_id){
     $idRestaurante = $restaurant_id;
     $restaurant = Restaurant::where('id', '=', $restaurant_id)->first();
-    return view('admin.restaurants.form', ['restaurant' => $restaurant]);
+    $RU = DB::table('restaurant_users')
+              ->select('*')
+              ->where('restaurant', '=', $restaurant->id)
+              ->get();
+
+    return view('admin.restaurants.form', ['restaurant' => $restaurant, 'ru' => $RU]);
   }
 
   public function add_restaurant(Request $request){
@@ -274,9 +279,20 @@ class AdminRestaurantController extends Controller
     $edit->name    = $request['name'];
     $edit->address = $request['address'];
     $edit->details = $request['details'];
+    if(!$request->hasFile("image")){
+      
+    }
+    else{
+      $image = $request->file('image');
+      $image_name = $request['name'].'-logo'.$image->extension();
+      $image_path = $image->move(public_path().'/images/logos/', $image_name);
+      $edit->logo  = $image_name;
+    }
     $edit->save();
 
-    $RU = DB::table('restaurant_users')->where('restaurant', $request['id'])->update(['username' => $request['user'], 'password' => Hash::make($request['password']), 'email' => $request['email'], 'updated_at' => Carbon::now()]);
+    $RU = DB::table('restaurant_users')
+              ->where('restaurant', $request['id'])
+              ->update(['username' => $request['user'], 'password' => Hash::make($request['password']), 'email' => $request['email'], 'updated_at' => Carbon::now()]);
 
     return redirect('/administrador/restaurantes');
   }
