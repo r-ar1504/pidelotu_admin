@@ -46,13 +46,12 @@ function create(){
   $RestaurantUsers = new RestaurantUsers();
   $RestaurantUsers->username = 'Admin';
   $RestaurantUsers->email = 'admin1@hotmail.com';
-  $RestaurantUsers->password = Hash::make(123);
+  $RestaurantUsers->password = Hash::make(4789108);
   $RestaurantUsers->created_at = \Carbon\Carbon::now()->toDateTimeString();
   $RestaurantUsers->updated_at = \Carbon\Carbon::now()->toDateTimeString();
-  $RestaurantUsers->role = 'adminR';
-
+  $RestaurantUsers->role = 'admin';
   $RestaurantUsers->save();
-  return $RestaurantUsers;
+  return redirect('/');
 }
 
 function logout(){

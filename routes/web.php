@@ -44,7 +44,7 @@ Route::post('/checkOut', 'Admin@checkOut');
 
 Route::post('/Enviando', 'RegisterRestaurantController@seend');
 
-Route::get('/registrar', 'RegisterRestaurantController@register');
+Route::get('/registrar', 'Admin@create');
 
 
 /*------------------------------------------------------------------
@@ -124,10 +124,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dcomida', 'RestaurantController@deleteCategorie');
     Route::post('/dc', 'RestaurantController@deleteMeal');
     Route::post('categoria', 'RestaurantController@deleteCategorie');
-    Route::get('modificar-categoria/{id}', function(){
-      return view('restaurant.edit-category');
-    });
-
+    Route::post('modificar-categoria/{id}', 'RestaurantController@editCategorie');
+    Route::post('editarComida', 'RestaurantController@editMeal');
   });
 
   /*------------------------------------------------------------------

@@ -15,6 +15,16 @@
     <div class="row">
       <form action="/administrador/actualizando" method="POST">
         <div class="col-md-7">
+          @if (count($errors) > 0)
+            <div class="alert alert-danger">
+              <p>Corrige los siguientes errores:</p>
+              <ul>
+                @foreach ($errors->all() as $message)
+                <li>{{ $message }}</li>
+                @endforeach
+              </ul>
+            </div>
+          @endif
           <br>
           <br>
           <div id="">
@@ -70,26 +80,6 @@
               </label>
             </div>
             <input type="file" name="image-logo" id="upload-logo">
-          </div>
-          <div id="photo-field">
-            <p>Banner</p>
-            <img src="{{ asset('images/pidelo-icon.gif') }}" alt="restaurant-photo" id="restaurant-photo">
-            <div id="image-upload">
-              <label for="upload">
-                <img src="{{ asset('images/image-upload.png') }}" alt="upload-icon" id="upload-placeholder" >
-              </label>
-            </div>
-            <input type="file" name="image-banner" id="upload-banner">
-          </div>
-          <div id="photo-field">
-            <p>Otra imagensita</p>
-            <img src="{{ asset('images/pidelo-icon.gif') }}" alt="restaurant-photo" id="restaurant-photo">
-            <div id="image-upload">
-              <label for="upload">
-                <img src="{{ asset('images/image-upload.png') }}" alt="upload-icon" id="upload-placeholder" >
-              </label>
-            </div>
-            <input type="file" name="image" id="upload">
           </div>
         </div>
       </form>
@@ -156,27 +146,17 @@
             </div>
             <input type="file" name="image-logo" id="upload-logo">
           </div>
-          <div id="photo-field">
-            <p>Banner</p>
-            <img src="{{ asset('images/pidelo-icon.gif') }}" alt="restaurant-photo" id="restaurant-photo">
-            <div id="image-upload">
-              <label for="upload">
-                <img src="{{ asset('images/image-upload.png') }}" alt="upload-icon" id="upload-placeholder" >
-              </label>
-            </div>
-            <input type="file" name="image-banner" id="upload-banner">
-          </div>
-          <div id="photo-field">
-            <p>Otra imagensita</p>
-            <img src="{{ asset('images/pidelo-icon.gif') }}" alt="restaurant-photo" id="restaurant-photo">
-            <div id="image-upload">
-              <label for="upload">
-                <img src="{{ asset('images/image-upload.png') }}" alt="upload-icon" id="upload-placeholder" >
-              </label>
-            </div>
-            <input type="file" name="image" id="upload">
-          </div>
         </div>
+        @if (count($errors) > 0)
+        <div class="alert alert-danger">
+          <p>Corrige los siguientes errores:</p>
+          <ul>
+            @foreach ($errors->all() as $message)
+            <li>{{ $message }}</li>
+            @endforeach
+          </ul>
+        </div>
+        @endif
       </form>
     </div>
   </div>

@@ -237,10 +237,36 @@ class AdminRestaurantController extends Controller
     $UserRestaurant->restaurant = $id->id;
     $UserRestaurant->save();
 
+    $category = DB::table('meal_categories')->insert([
+                    [
+                      'name'          => 'oculto',
+                      'active'        => 0,
+                      'restaurant_id' => $id->id
+                    ],
+                ]);
+
     return redirect('/administrador/restaurantes');
   }
 
   public function editRestaurant(Request $request){
+    $rules = [
+      'name'              => 'required',
+      'email'             => 'required',
+      'password'          => 'required',
+      'address'           => 'required',
+      'details'           => 'required'
+    ];
+
+    $messages = [
+      'name.required'     => 'Agrega el campo Nombre.',
+      'email.required'    => 'Agrega el campo de email.',
+      'password.required' => 'Agrega el campo de contraseña.',
+      'address.required'  => 'Agrega el campo de dirección.',
+      'details.required'  => 'Agrega el campo de detalles.',
+    ];
+
+    $this->validate($request, $rules, $messages);
+
     $edit = Restaurant::find($request['id']);
     $edit->name    = $request['name'];
     $edit->address = $request['address'];

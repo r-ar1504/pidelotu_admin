@@ -1,5 +1,5 @@
 @extends('layouts.restaurant-app-header')
-@section('section-title', $restaurant->name)
+@section('section-title', $restaurant[0]->name)
 
 @section('stylesheets')
 <link rel="stylesheet" href="{{ asset('css/restaurants/category/form.css') }}">
@@ -11,7 +11,7 @@
   <div id="form-holder">
 
     {!! Form::open(['id' => 'categoryForm', 'files' => true]) !!}
-    {{ Form::hidden('id', $restaurant->id) }}
+    {{ Form::hidden('id', $restaurant[0]->id) }}
 
     <div id="photo-field">
       <img src="{{ asset('images/bg-cat.png')}}" alt="category-photo" id="category-photo">
@@ -47,8 +47,8 @@
   </div>
   <div id="bottom-links">
 
-    <a href="/restaurant/home/{{$restaurant->id}}">Regresar a lista de categorias</a>
-    <a href="/restaurant/home/{{$restaurant->id}}">Cancelar</a>
+    <a href="/restaurante/inicio">Regresar a lista de categorias</a>
+    <a href="/restaurante/ordenes">Cancelar</a>
 
   </div>
 @endsection

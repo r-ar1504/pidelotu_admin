@@ -45,7 +45,7 @@
         <img src="{{'/images/logos/'.$meal->image }}" alt="restaurant-image">
         <div class="card-overlay">
           <div class="overlay-button">
-            <a href="#" data-toggle="modal" data-target="#myModal" data-id="{{$meal->name}}">Actualizar</a>
+            <a href="#" class="editar" accesskey="{{$meal->id}}">Actualizar</a>
           </div>
           <div class="overlay-button">
             <a data-id="{{$meal->id}}" class="delete">Eliminar</a>
@@ -75,44 +75,58 @@
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" align="center">
         <p>Actualiza tu comida</p>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
-        <div class="row">
-          <div id="photo-field" align="center" class="col-md-5">
-            <img src="{{ asset('images/pidelo-icon.gif') }}" alt="restaurant-photo" id="restaurant-photo">
-            <div id="image-upload">
-              <label for="upload">
-                <img src="{{ asset('images/image-upload.png') }}" alt="upload-icon" id="upload-placeholder" >
-              </label>
+        @if (count($errors) > 0)
+        <div class="alert alert-danger">
+          <p>Corrige los siguientes errores:</p>
+          <ul>
+            @foreach ($errors->all() as $message)
+            <li>{{ $message }}</li>
+            @endforeach
+          </ul>
+        </div>
+        @endif
+        <form action="/restaurante/editarComida" method="POST">
+          <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+          <div class="row">
+            <div id="photo-field" align="center" class="col-md-5">
+              <img src="{{ asset('images/pidelo-icon.gif') }}" alt="restaurant-photo" id="restaurant-photo">
+              <div id="image-upload">
+                <label for="upload">
+                  <img src="{{ asset('images/image-upload.png') }}" alt="upload-icon" id="upload-placeholder" >
+                </label>
+              </div>
+              <input type="file" name="image-logo" id="upload-logo">
             </div>
-            <input type="file" name="image-logo" id="upload-logo">
-          </div>
-          <div class="col-md-7">
-            <input type="text" name="name" placeholder="Nombre">
-            <br>
-            <br>
-            <br>
-            <input type="text" name="description" placeholder="Descripcion">
-            <br>
-            <br>
-            <br>
-            <input type="text" name="time" placeholder="Tiempo de preparación">
-            <br>
-            <br>
-            <br>
-            <input type="text" name="price" placeholder="Precio">
-            <br>
-            <br>
-            <br>
+            <div class="col-md-7">
+              <input type="hidden" name="id" id="meal_id">
+              <input type="text" name="name" placeholder="Nombre">
+              <br>
+              <br>
+              <br>
+              <input type="text" name="description" placeholder="Descripcion">
+              <br>
+              <br>
+              <br>
+              <input type="text" name="time" placeholder="Tiempo de preparación">
+              <br>
+              <br>
+              <br>
+              <input type="text" name="price" placeholder="Precio">
+              <br>
+              <br>
+              <br>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Actualizar</button>
-      </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-default">Actualizar</button>
+        </div>
+        </form>
     </div>
 
   </div>
@@ -167,6 +181,11 @@
       }
     });
 
+  });
+
+  $('a.editar').click(function(event) {
+    $('#meal_id').val($(this).attr('accesskey'));
+    $('#myModal').modal('show');
   });
 </script>
 @endsection

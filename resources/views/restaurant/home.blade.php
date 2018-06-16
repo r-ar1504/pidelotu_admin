@@ -20,37 +20,19 @@
 </div>
 <div class="container" align="center">
   <div class="row">
-    <!--@if(count($categories) > 0)
-    @foreach($CategoriesR as $category)
-    <div class="col-md-4">
-     <div class="element-card">
-      <img src="{{'/images/restaurants/categories/'.$category->dashboard_banner}}" alt="restaurant-image">
-      <a href="/restaurante/comidas/{{$category->id}}">
-        <div class="card-overlay" align="center">
-          <div class="overlay-button" align="center">
-            <p>{{$category->name}}</p>
-          </div>
-        </div>
-      </a>
-    </div>
-    <button class="btn btn-success">Actualizar</button>
-    <button type="submit" class="btn btn-danger delete">Eliminar</button>
-  </div>
-  @endforeach
-  @else
-  <div class="no-content">
-    <p>No existen platillos en este restaurante</p>
-  </div>
-  @endif-->
   @if(count($categories) > 0)
   @foreach($CategoriesR as $category)
   @if($category->active == 1)
   <div class="element-card" style="width: 300px !important; height: 250px !important;">
     <img src="{{'/images/restaurants/categories/'.$category->dashboard_banner}}" alt="restaurant-image">
     <div class="card-overlay">
-      <div class="overlay-button">
-        <a href="{{ '/administrador/modificar-categoria/'.$category->id }}">Actualizar</a>
-      </div>
+      <!--<div class="overlay-button">
+        <form action="{{ '/restaurante/modificar-categoria/'.$category->id }}" method="POST">
+          <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+          <input type="submit" value="Actualizar" style="background-color: transparent; cursor: pointer;border: 1px solid transparent;">
+          <input type="text" name="id" value="{{$category->name}}" hidden>
+        </form>
+      </div>-->
       <div class="overlay-button">
         <a data-id="{{$category->id}}" class="delete">Eliminar</a>
       </div>
