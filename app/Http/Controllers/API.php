@@ -39,7 +39,7 @@ class API extends Controller
 
     return response()->json(['restaurants' => $restaurants ]);
   }   
-  }
+  
 
   function indexRestaurantMeals(Request $request, $restaurant_id){
     $categories = DB::table('meal_categories')->where('restaurant_id', '=', $restaurant_id)->get();
