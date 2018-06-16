@@ -42,7 +42,7 @@
     </div>-->
     <div class="col-md-6">
       <div class="element-card" style="width: 500px !important; height: 300px !important;">
-        <img src="{{'/images/logos/'.$meal->image }}" alt="restaurant-image">
+        <img src="{{'/images/meals/'.$meal->image }}" alt="restaurant-image">
         <div class="card-overlay">
           <div class="overlay-button">
             <a href="#" class="editar" accesskey="{{$meal->id}}">Actualizar</a>
