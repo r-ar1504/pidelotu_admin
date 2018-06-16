@@ -88,7 +88,8 @@
   @else
   <div align="center">
     <div class="row">
-      <form action="/administrador/agregando" method="POST">
+      <!--<form action="/administrador/agregando" files="true" method="POST">-->
+      {{Form::open(array('url' => '/administrador/agregando', 'method' => 'post', 'files' => true))}}
         <div class="col-md-7">
           <br>
           <br>
@@ -144,7 +145,7 @@
                 <img src="{{ asset('images/image-upload.png') }}" alt="upload-icon" id="upload-placeholder" >
               </label>
             </div>
-            <input type="file" name="image-logo" id="upload-logo">
+            <input type="file" name="image" id="upload">
           </div>
         </div>
         @if (count($errors) > 0)
@@ -157,7 +158,8 @@
           </ul>
         </div>
         @endif
-      </form>
+      <!--</form>-->
+      {!! Form::close() !!}
     </div>
   </div>
 
