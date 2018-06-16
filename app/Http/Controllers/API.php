@@ -23,7 +23,22 @@ class API extends Controller
   /** Restaurant **/  
   function getRestaurants(Request $request){
     $restaurants = DB::table('restaurants')->get();
-    return response()->json(['restaurants' => $restaurants ]);    
+
+    foreach( $restaurants as $restaurant){
+      $main_foods = [ ];
+      /* return response()->json(['restaurant' => $restaurant->id ]); */
+      $category = DB::table('meal_categories')->where('restaurant_id','=',$restaurant->id)->first();
+      /* return response()->json(['restaurants' => $category->id]); */
+      /* return response()->json(['dump'=> var_dump($category->id)]); */
+      $meals = DB::table('meals')->where('category_id', "=", $category->id)->get();
+      foreach( $meals as $meal){
+        array_push($main_foods, $meal->image);
+      }
+      $restaurant->meals = $main_foods;
+    }
+
+    return response()->json(['restaurants' => $restaurants ]);
+  }   
   }
 
   function indexRestaurantMeals(Request $request, $restaurant_id){
@@ -44,6 +59,7 @@ class API extends Controller
     }
     return $categories;
   }
+  
   /** **/
   /** Meals **/
   public function indexMeals($filter,$meal)
