@@ -215,11 +215,14 @@ class AdminRestaurantController extends Controller
     $restaurante->active     = 1;
     $restaurante->address    = $request['address'];
     $restaurante->details    = $request['details'];
-    if($request['image']     == null){
-      $restaurante->logo     = null;
+    if(!$request->hasFile("image")){
+      $restaurante->logo   = null;
     }
     else{
-      $restaurante->logo     = $request['image'];
+      $image = $request->file('image');
+      $image_name = $request['name'].'-logo'.$image->extension();
+      $image_path = $image->move(public_path().'/images/logos/', $image_name);
+      $restaurante->logo  = $image_name;
     }
     $restaurante->created_at = Carbon::now();
     $restaurante->updated_at = Carbon::now();
@@ -243,7 +246,7 @@ class AdminRestaurantController extends Controller
                       'active'        => 0,
                       'restaurant_id' => $id->id
                     ],
-                ]);
+                ]);   
 
     return redirect('/administrador/restaurantes');
   }
