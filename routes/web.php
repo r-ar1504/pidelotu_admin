@@ -162,12 +162,14 @@ Route::middleware(['auth'])->group(function () {
 
 /*Fin de las rutas que van dentro del middleware*/
 
-Route::get('/getMeals','RestaurantController@getMeals');
+
+/* Route::get('/getMeals','RestaurantController@getMeals');
 Route::post('/order','RestaurantController@saveOrder');
 Route::get('/orders','RestaurantController@getOrders');
 Route::post('/update','UserController@update');
 Route::get('/get_restaurants', 'API@getRestaurants');
 Route::get('/restaurant_meals/{restaurant_id}', 'API@getRestaurantMeals');
+ */
 
 
 /*------------------------------------------------------------------
@@ -176,6 +178,38 @@ Route::get('/restaurant_meals/{restaurant_id}', 'API@getRestaurantMeals');
 Route::get('/update_delivery_coords/{restaurant_id}', 'API@updateLocation');
 Route::get('/get_delivery_coords/{restaurant_id}', 'API@getDeliveryLocation');
 Route::get('/get_order/{order_id}', 'RestaurantController@getOrder');
+
+
+/*------------------------------------------------------------------
+|   API ROUTES                                                     |
+------------------------------------------------------------------*/
+
+/** Restaurant **/
+Route::get('restaurant_meals/{restaurant_id}', 'API@indexRestaurantMeals');
+Route::get('/get_restaurants', 'API@getRestaurants');
+/** Meals **/
+Route::get('/getMealsBy/{filter}/{meal}','API@indexMeals');
+/** **/
+/** User **/
+Route::post('/user','API@storeUser');
+Route::get('/user/{id}','API@showUser');
+Route::put('/user','API@updateUser');
+Route::get('/checkNumber/{number}', 'API@checkNumber');
+/** **/
+/** Payment **/
+Route::post('payment','API@storePaymentMethod');
+/** **/
+/** Cart Shop **/
+Route::get('cart/{id}','API@indexCart');
+Route::post('cart','API@storeCart');
+Route::delete('cart/{id}/{user_id}','API@destroyCart');
+/** **/
+/** Order **/
+Route::get('/orders/{user_id}','API@indexOrder');
+Route::post('order','API@storeOrder');
+/** **/
+
+
 
 /*------------------------------------------------------------------
 | Payments                                                         |                                                                                                 |
