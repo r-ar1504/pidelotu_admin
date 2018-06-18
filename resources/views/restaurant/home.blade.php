@@ -26,13 +26,6 @@
   <div class="element-card" style="width: 300px !important; height: 250px !important;">
     <img src="{{'/images/restaurants/categories/'.$category->image}}" alt="restaurant-image">
     <div class="card-overlay">
-      <!--<div class="overlay-button">
-        <form action="{{ '/restaurante/modificar-categoria/'.$category->id }}" method="POST">
-          <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-          <input type="submit" value="Actualizar" style="background-color: transparent; cursor: pointer;border: 1px solid transparent;">
-          <input type="text" name="id" value="{{$category->name}}" hidden>
-        </form>
-      </div>-->
       <div class="overlay-button">
         <a data-id="{{$category->id}}" class="delete">Eliminar</a>
       </div>

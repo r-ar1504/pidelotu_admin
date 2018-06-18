@@ -333,15 +333,26 @@ class AdminRestaurantController extends Controller
   }
 
   function add_delivery_man(Request $req){
-    $add          = new Delivery();
-    $add->name    = $req['name'];
-    $add->address = $req['address'];
-    $add->details = $req['details'];
-    $add->age     = $req['age'];
-    $add->gender  = $req['gender'];
-    $add->phone   = $req['phone'];
-    $add->curp    = $req['curp'];
-    $add->active  = 1;
+    $add             = new Delivery();
+    $add->name       = $req['name'];
+    $add->address    = $req['address'];
+    $add->details    = $req['details'];
+    $add->age        = $req['age'];
+    $add->gender     = $req['gender'];
+    $add->phone      = $req['phone'];
+    $add->curp       = $req['curp'];
+    if(!$req->hasFile("image")){
+      $add->logo     = null;
+    }
+    else{
+      $image = $req->file('image');
+      $image_name    = $req['name'].'-logo'.$image->extension();
+      $image_path    = $image->move(public_path().'/images/delivery_man/', $image_name);
+      $add->logo     = $image_name;
+    }
+    $add->created_at = Carbon::now();
+    $add->updated_at = Carbon::now();
+    $add->active     = 1;
     $add->save();
 
     return 'ok';
@@ -356,6 +367,15 @@ class AdminRestaurantController extends Controller
     $put->curp       = $req['curp'];
     $put->address    = $req['address'];
     $put->gender     = $req['gender'];
+    if(!$req->hasFile("image")){
+      $put->logo     = null;
+    }
+    else{
+      $image = $req->file('image');
+      $image_name    = $req['name'].'-logo'.$image->extension();
+      $image_path    = $image->move(public_path().'/images/delivery_man/', $image_name);
+      $put->logo     = $image_name;
+    }
     $put->updated_at = Carbon::now();
 
     $put->save();
