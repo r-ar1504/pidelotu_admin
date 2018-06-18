@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Categories extends Model
 {
-  protected $fillable = array('name', 'address', 'details');
+  protected $table = 'meal_categories'; 
+  protected $fillable = ['name','image','dashboard_banner','restaurant_id','created_at', 'updated_at', 'active' ];
 }

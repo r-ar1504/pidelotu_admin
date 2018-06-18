@@ -5,12 +5,12 @@
 <link rel="stylesheet" href="{{ asset('css/restaurants/category/form.css') }}">
 @endsection
 
-@section('section-title', 'restaurantes')
+@section('section-title', 'Añade tu nueva categoria')
 
 @section('content')
   <div id="form-holder">
 
-    {!! Form::open(['id' => 'categoryForm', 'files' => true]) !!}
+    {!! Form::open(['url' => '/restaurante/$restaurant->id/create_category', 'method' => 'post', 'files' => true]) !!}
     {{ Form::hidden('id', $restaurant->id) }}
 
     <div id="photo-field">

@@ -16,9 +16,9 @@ categoryData.submit(function(e){
      data: formData,
      success: function (data) {
        if(addProducts != false){
-         window.location.href = "/res/"+ restaurantId +"/cat/" + data.id;
+         window.location.href = '/'
        }else{
-         window.location.href = "/restaurante/inicio/"+restaurantId;
+         window.location.href = '/'
        }
      },
      cache: false,

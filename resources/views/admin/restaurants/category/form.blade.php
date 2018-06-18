@@ -47,8 +47,8 @@
   </div>
   <div id="bottom-links">
 
-    <a href="/restaurant/home/{{$restaurant->id}}">Regresar a lista de categorias</a>
-    <a href="/restaurant/home/{{$restaurant->id}}">Cancelar</a>
+    <!--<a href="/restaurante/inicio/{{$restaurant->id}}">Regresar a lista de categorias</a>
+    <a href="/restaurant/{{$restaurant->id}}">Cancelar</a>-->
 
   </div>
 @endsection

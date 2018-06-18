@@ -13,7 +13,7 @@
 @if($restaurant)
   <div align="center">
     <div class="row">
-      <form action="/administrador/actualizando" method="POST">
+      {{Form::open(array('url' => '/administrador/actualizando', 'method' => 'post', 'files' => true))}}
         <div class="col-md-7">
           @if (count($errors) > 0)
             <div class="alert alert-danger">
@@ -40,13 +40,13 @@
               <p>Usuario</p>
             </div>
             <div class="form-field">
-              {!! Form::text('user', $restaurant->username) !!}
+              {!! Form::text('user', $ru[0]->username) !!}
             </div>
             <div class="field-label">
               <p>Correo Electronico</p>
             </div>
             <div class="form-field">
-              <input type="email" name="email">
+              <input type="email" name="email" value="{{$ru[0]->email}}">
             </div>
             <div class="field-label">
               <p>Contaseña</p>
@@ -79,10 +79,10 @@
                 <img src="{{ asset('images/image-upload.png') }}" alt="upload-icon" id="upload-placeholder" >
               </label>
             </div>
-            <input type="file" name="image-logo" id="upload-logo">
+            <input type="file" name="image" id="upload">
           </div>
         </div>
-      </form>
+      {!! Form::close() !!}
     </div>
   </div>
   @else
