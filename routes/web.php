@@ -159,7 +159,6 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/getMeals','RestaurantController@getMeals');
   Route::post('/order','RestaurantController@saveOrder');
 });
-
 /*Fin de las rutas que van dentro del middleware*/
 
 
@@ -218,12 +217,12 @@ Route::get('/openpay_order/{user_id}', 'PaymentController@createOrder');
 
 
 Route::get('terms', function(){
-  return view('terms');
+ return view('terms');
 });
 
 
 Route::get('privacy', function(){
-  return view('privacy');
+ return view('privacy');
 });
 
 ?>

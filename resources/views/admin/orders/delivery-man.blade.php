@@ -24,7 +24,7 @@
       <div class="col-md-4">
         <div class="text-center">
           <span></span>
-          <img src="/images/delivery_man/{{$deliveryMan->logo}}" class="deliveryMan-img" alt="">
+          <img src="/images/  /{{$deliveryMan->logo}}" class="deliveryMan-img" alt="">
           <b><p>{{$deliveryMan->name}}</p></b>
           <button type="button" class="btn btn-success update" data-id="{{$deliveryMan->id}}" name="button">Actualizar</button>
           <button type="button" class="btn btn-danger delete" data-id="{{$deliveryMan->id}}" name="btn-delete">Dar de baja</button>
