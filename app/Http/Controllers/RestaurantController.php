@@ -612,19 +612,22 @@ function ingredients(Request $req, $id){
    $order = DB::table('orders')->where('id', '=', $id)->get();
    // OneSignalFacade::sendNotificationToUser("Orden Entrante", "676d30df-4dd9-43d6-a0ce-2bb842d6a1c6"	, $url = null, $data = array(['id' => $id, 'user_lat' => $order->latitude, 'user_lng' => $order->longitude,'res_lat' => 25.524224, 'res_lng' => -103.415248, ]), $buttons = null, $schedule = null);
 
+   $dataa = array(['id' => $id, 'user_lat' => $order[0]->latitude, 'user_lng' => $order[0]->longitude,'res_lat' => 25.524224, 'res_lng' => -103.415248]);
 
+   $dataa = json_encode($dataa);
+
+       // return response()->json(['what is ' => $dataa]);
      $client = new \GuzzleHttp\Client();
 
      $result = $client->post('https:/onesignal.com/api/v1/notifications', [
        "headers" => [
          "Content-Type" => "application/json; charset=utf-8",
-         "Authorization" => "Basic ZjVmODBlZGYtNTdkOC00N2ZmLThkMjEtNzBjM2ZlN2FjNDlh"
+         "Authorization" => "Basic NThlYzVhZTAtNTI5OC00ODJmLTk3NDItMzI0NWNiN2ZkYzM0"
        ],
        "json" =>[
-         "app_id" => "643b522d-743e-4c85-aa8f-ff6fcc5a08b1",
-         "filters" =>  array(array("field" => "tag","key" => "fireID", "relation" => "=", "value" => "FIREid")),
-         "data" => array(
-           "order" => "order_data"),
+         "app_id" => "baedd007-9325-4e3e-83fc-d8be136450bd",
+         "filters" =>  array(array("field" => "tag","key" => "user_type", "relation" => "=", "value" => "delivery")),
+         "data" => array('data' => $dataa),
          "contents" => array("en" => "Nueva Orden"),
          "headings" => array("en" => "Pedido Entrante")
        ]

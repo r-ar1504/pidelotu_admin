@@ -42,7 +42,16 @@
 
 @section('javascript')
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+
   <script type="text/javascript">
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: "baedd007-9325-4e3e-83fc-d8be136450bd",
+      });
+    });
+    
     $("body").on('click', '.delete', function(){
 
     swal({

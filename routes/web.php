@@ -216,4 +216,14 @@ Route::post('order','API@storeOrder');
 ------------------------------------------------------------------*/
 Route::get('/openpay_order/{user_id}', 'PaymentController@createOrder');
 
+
+Route::get('terms', function(){
+  return view('terms');
+});
+
+
+Route::get('privacy', function(){
+  return view('privacy');
+});
+
 ?>
