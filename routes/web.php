@@ -159,7 +159,15 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/getMeals','RestaurantController@getMeals');
   Route::post('/order','RestaurantController@saveOrder');
 });
-
 /*Fin de las rutas que van dentro del middleware*/
+
+Route::get('terms', function(){
+ return view('terms');
+});
+
+
+Route::get('privacy', function(){
+ return view('privacy');
+});
 
 ?>

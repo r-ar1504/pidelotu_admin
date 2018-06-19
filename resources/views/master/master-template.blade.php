@@ -45,11 +45,17 @@
 				  			<i class="fa fa-search"></i>
 				  		</button>
 		      	</li>
-			      <li class="nav-item btn btn-in">
+			      <li class="nav-item">
 			        <a class="nav-link l" href="/login">Iniciar Sesión</a>
 			      </li>
-			      <li class="nav-item btn">
+			      <li class="nav-item">
 			        <a class="nav-link l" href="/unete-a-nosotros">Registrarse</a>
+			      </li>
+			      <li class="nav-item">
+			        <a class="nav-link l" href="/privacy">Privcidad</a>
+			      </li>
+			      <li class="nav-item">
+			        <a class="nav-link l" href="/terms">Terminos y condiciones</a>
 			      </li>
 			    </ul>
 		    </form>
