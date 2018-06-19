@@ -597,7 +597,7 @@ function ingredients(Request $req, $id){
 
   $id = DB::table('restaurants')->where('name', $name)->get();
 
-  $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders.ingredients from orders LEFT JOIN meals ON orders.meal_id = meals.id LEFT JOIN users ON orders.user_id = users.firebase_id where restaurant_id = '.$id[0]->id.'');
+  $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders_items.ingredients from orders LEFT JOIN users ON orders.user_id = users.firebase_id INNER JOIN orders_items ON order_id = orders.id LEFT JOIN meals ON orders_items.meal_id = meals.id where restaurant_id = '.$id[0]->id.'');
 
   return view('restaurant.restaurants-orders', ['orders' => $allOrders, 'restaurant' => $id[0]->name]);
  }
