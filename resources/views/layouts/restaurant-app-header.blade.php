@@ -42,6 +42,15 @@
             <input type="" name="id" hidden value="@yield('section-title')">
           </button>
         </form>
+        <form action="/restaurante/cerrar" method="post">
+          <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+          <button type="submit" class="left-panel-element" style="background-color: transparent; border: 1px solid transparent; width: 100%; cursor: pointer;">
+            <img src="{{ asset('images/tiempo.png') }}" alt="pedidos" id="pedidos">
+            <p>@yield('status')</p>
+            <input type="" name="id" hidden value="@yield('section-title')">
+            <input type="" name="status" hidden value="@yield('status')">
+          </button>
+        </form>
       </div><!--End of Button Holder-->
 
       <div id="logout-container" style="margin-left: 8px;">

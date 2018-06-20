@@ -198,19 +198,19 @@ class AdminRestaurantController extends Controller
 
   public function add_restaurant(Request $request){
     $rules = [
-      'name'     => 'required',
-      'user'     => 'required',
-      'password' => 'required',
-      'address'  => 'required',
-      'details'  => 'required'
+      'name'       => 'required',
+      'user'       => 'required',
+      'password'   => 'required',
+      'address'    => 'required',
+      'details'    => 'required',
     ];
 
     $messages = [
-      'name'     => 'Agrega el campo nombre',
-      'user'     => 'Agrega el campo usuario',
-      'password' => 'Agrega el campo de contraseña',
-      'address'  => 'Agrega el campo de dirección',
-      'details'  => 'Agrega el campo detalles'
+      'name'       => 'Agrega el campo nombre',
+      'user'       => 'Agrega el campo usuario',
+      'password'   => 'Agrega el campo de contraseña',
+      'address'    => 'Agrega el campo de dirección',
+      'details'    => 'Agrega el campo detalles',
     ];
 
     $this->validate($request, $rules, $messages);
@@ -229,8 +229,11 @@ class AdminRestaurantController extends Controller
       $image_path = $image->move(public_path().'/images/logos/', $image_name);
       $restaurante->logo  = $image_name;
     }
+    $restaurante->open_time  = $request['open_time'];
+    $restaurante->close_time = $request['close_time'];
     $restaurante->created_at = Carbon::now();
     $restaurante->updated_at = Carbon::now();
+    $restaurante->not_working= 1;
     $restaurante->save();
 
     $id = Restaurant::where('created_at', Carbon::now())->first();
@@ -276,9 +279,11 @@ class AdminRestaurantController extends Controller
     $this->validate($request, $rules, $messages);
 
     $edit = Restaurant::find($request['id']);
-    $edit->name    = $request['name'];
-    $edit->address = $request['address'];
-    $edit->details = $request['details'];
+    $edit->name       = $request['name'];
+    $edit->address    = $request['address'];
+    $edit->details    = $request['details'];
+    $edit->open_time  = $request['open_time'];
+    $edit->close_time = $request['close_time'];
     if(!$request->hasFile("image")){
       
     }
