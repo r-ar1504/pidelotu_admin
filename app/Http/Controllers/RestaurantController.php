@@ -599,7 +599,12 @@ function ingredients(Request $req, $id){
 
   $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders_items.ingredients from orders LEFT JOIN users ON orders.user_id = users.firebase_id INNER JOIN orders_items ON order_id = orders.id LEFT JOIN meals ON orders_items.meal_id = meals.id where restaurant_id = '.$id[0]->id.'');
 
-  return view('restaurant.restaurants-orders', ['orders' => $allOrders, 'restaurant' => $id[0]->name]);
+  if($id[0]->not_working === 0){
+    return view('restaurant.restaurants-orders', ['orders' => $allOrders, 'restaurant' => $id[0]->name, 'status' => 'Cerrado']);
+  }
+  else{
+    return view('restaurant.restaurants-orders', ['orders' => $allOrders, 'restaurant' => $id[0]->name, 'status' => 'Abierto']);
+  }
  }
 
 /**
@@ -685,5 +690,42 @@ function ingredients(Request $req, $id){
      }
 
    }
+
+   /* Funcion del tiempo del restaurante*/
+
+  public function time(Request $request){
+    $name = $request->id;
+
+    if($request->status == 'Cerrado'){
+      DB::table('restaurants')->where('name', $name)->update(['not_working' => 1]);
+      $name = $request->id;
+
+      $id = DB::table('restaurants')->where('name', $name)->get();
+
+      $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders_items.ingredients from orders LEFT JOIN users ON orders.user_id = users.firebase_id INNER JOIN orders_items ON order_id = orders.id LEFT JOIN meals ON orders_items.meal_id = meals.id where restaurant_id = '.$id[0]->id.'');
+
+      if($id[0]->not_working === 0){
+        return view('restaurant.restaurants-orders', ['orders' => $allOrders, 'restaurant' => $id[0]->name, 'status' => 'Cerrado']);
+      }
+      else{
+        return view('restaurant.restaurants-orders', ['orders' => $allOrders, 'restaurant' => $id[0]->name, 'status' => 'Abierto']);
+      }
+    }
+    else{
+      DB::table('restaurants')->where('name', $name)->update(['not_working' => 0]);
+      $name = $request->id;
+
+      $id = DB::table('restaurants')->where('name', $name)->get();
+
+      $allOrders = DB::select('select orders.created_at as "order_date", orders.id as "order_id", users.name, meals.name as "meal_name", orders_items.ingredients from orders LEFT JOIN users ON orders.user_id = users.firebase_id INNER JOIN orders_items ON order_id = orders.id LEFT JOIN meals ON orders_items.meal_id = meals.id where restaurant_id = '.$id[0]->id.'');
+
+      if($id[0]->not_working === 0){
+        return view('restaurant.restaurants-orders', ['orders' => $allOrders, 'restaurant' => $id[0]->name, 'status' => 'Cerrado']);
+      }
+      else{
+        return view('restaurant.restaurants-orders', ['orders' => $allOrders, 'restaurant' => $id[0]->name, 'status' => 'Abierto']);
+      }
+    }
+  }
 
 }

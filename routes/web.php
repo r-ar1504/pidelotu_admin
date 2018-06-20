@@ -126,6 +126,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('categoria', 'RestaurantController@deleteCategorie');
     Route::post('modificar-categoria/{id}', 'RestaurantController@editCategorie');
     Route::post('editarComida', 'RestaurantController@editMeal');
+    Route::post('cerrar', 'RestaurantController@time');
   });
 
   /*------------------------------------------------------------------
