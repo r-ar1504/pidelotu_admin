@@ -279,9 +279,11 @@ class AdminRestaurantController extends Controller
     $this->validate($request, $rules, $messages);
 
     $edit = Restaurant::find($request['id']);
-    $edit->name    = $request['name'];
-    $edit->address = $request['address'];
-    $edit->details = $request['details'];
+    $edit->name       = $request['name'];
+    $edit->address    = $request['address'];
+    $edit->details    = $request['details'];
+    $edit->open_time  = $request['open_time'];
+    $edit->close_time = $request['close_time'];
     if(!$request->hasFile("image")){
       
     }
