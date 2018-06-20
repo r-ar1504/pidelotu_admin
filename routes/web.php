@@ -42,7 +42,7 @@ Route::get('/create', 'Admin@create');
 
 Route::post('/checkOut', 'Admin@checkOut');
 
-Route::post('/Enviando', 'RegisterRestaurantController@seend');
+Route::post('/Enviando', 'Admin@email');
 
 Route::get('/registrar', 'Admin@create');
 

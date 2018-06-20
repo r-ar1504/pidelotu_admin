@@ -59,6 +59,41 @@ function logout(){
   return view('/landing');
 }
 
+function email(Request $request){
+
+  $data       = [
+      "name"             => $request["name"            ],
+      "phone"            => $request["phone"           ],
+      "cp"               => $request["cp"              ],
+      "city"             => $request["city"            ],
+      "address"          => $request["address"         ],
+      "number"           => $request["number"          ],
+      "number-r"         => $request["number-r"        ],
+      "details"          => $request["details"         ],
+      "contact_name"     => $request["contact_name"    ],
+      "contact_lastname" => $request["contact_lastname"],
+      "contact_email"    => $request["contact_email"   ],
+      "contact_phone"    => $request["contact_phone"   ],
+      "time"             => $request["time"            ],
+      "count_month"      => $request["count_month"     ],
+      "count_rep"        => $request["count_rep"       ],
+      "type_rep"         => $request["type_rep"        ],
+      "subject"          => "Un restaurante quiere unirse a ti, revisa su información",
+      "to"               => "irving_alejandro_34@hotmail.com"
+    ];
+
+    try {
+      \Mail::send('email.register',[
+        'data'  => $data], function($message) use ($data){
+          $message->from('alejandro@hotmail.com','Pídelo Tú');
+          $message->subject($data['subject']);
+          $message->to($data['to'], $data['name']);
+        });
+    } catch (Exception $e) {
+      console.log('error');
+    }
+}
+
 
 }
 
