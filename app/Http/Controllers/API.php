@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use Kozz\Laravel\Facades\Guzzle;
+
 /** Models **/
 use App\MealSubtype as Subtype;
 use \App\Payment as Payment;

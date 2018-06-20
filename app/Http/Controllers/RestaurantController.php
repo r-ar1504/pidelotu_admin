@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
-use Berkayk\OneSignal\OneSignalFacade;
+/* use Berkayk\OneSignal\OneSignalFacade; */
 
 use Kozz\Laravel\Facades\Guzzle;
 /* MODELS---------------------------------------------------------*/
@@ -607,7 +607,7 @@ function ingredients(Request $req, $id){
 
  function getDelivery(Request $req, $id){
 
-   $data = $id;
+/*    $data = $id;
 
    $order = DB::table('orders')->where('id', '=', $id)->get();
    // OneSignalFacade::sendNotificationToUser("Orden Entrante", "676d30df-4dd9-43d6-a0ce-2bb842d6a1c6"	, $url = null, $data = array(['id' => $id, 'user_lat' => $order->latitude, 'user_lng' => $order->longitude,'res_lat' => 25.524224, 'res_lng' => -103.415248, ]), $buttons = null, $schedule = null);
@@ -633,7 +633,7 @@ function ingredients(Request $req, $id){
        ]
      ])->getBody()->getContents();
 
-     return response()->json(['what is ' => $result]);
+     return response()->json(['what is ' => $result]); */
 }
 
   function getOrder(Request $req, $order_id){
