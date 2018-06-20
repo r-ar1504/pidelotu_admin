@@ -61,6 +61,24 @@
             <div class="form-field">
               {!! Form::text('address', $restaurant->address) !!}
             </div>
+            <div class="row" align="center">
+              <div class="col-md-6" align="center">
+                <div class="field-label">
+                  <p>Apertura</p>
+                </div>
+                <div class="form-field">
+                  <input type="time" class="form-control" style="height: 30px;" name="open_time" value="{{$restaurant->open_time}}" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="field-label">
+                  <p>Cierre</p>
+                </div>
+                <div class="form-field">
+                  <input type="time" class="form-control" style="height: 30px;" name="close_time" value="{{$restaurant->close_time}}" value="$07:00" required>
+                </div>
+              </div>
+            </div>
             <div class="field-label">
               <p>Detalles del Restaurante</p>
             </div>
@@ -127,6 +145,24 @@
           <div class="form-field">
             <!--{!! Form::text('address') !!}-->
             <input type="text" name="address" required>
+          </div>
+          <div class="row" align="center">
+            <div class="col-md-6" align="center">
+              <div class="field-label">
+                <p>Apertura</p>
+              </div>
+              <div class="form-field">
+                <input type="time" class="form-control" style="height: 30px;" name="open_time" placeholder="12:00:00" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="field-label">
+                <p>Cierre</p>
+              </div>
+              <div class="form-field">
+                <input type="time" class="form-control" style="height: 30px;" name="close_time" placeholder="12:00:00" required>
+              </div>
+            </div>
           </div>
           <div class="field-label">
             <p>Detalles del Restaurante</p>
