@@ -36,7 +36,7 @@
 
 </head>
 <body>
-	<div class="container" style="background-color: rgba(69, 111, 176, .6); width: 100%; height: 680px;">
+	<div class="container">
 		<div class="row">
 			<div class="col-md-12" align="center">
 				<img class="img" src="{{asset('images/icons/icon-logo-login.png')}}">
