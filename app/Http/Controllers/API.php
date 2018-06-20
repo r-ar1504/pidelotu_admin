@@ -197,7 +197,7 @@ class API extends Controller
       
       \DB::table('cart')->where('user_id','=',$request['user_id'])->delete();
 
-      $client = new \GuzzleHttp\Client();
+/*       $client = new \GuzzleHttp\Client();
 
       $result = $client->post('https:/onesignal.com/api/v1/notifications', [
         "headers" => [
@@ -209,7 +209,7 @@ class API extends Controller
           "contents" => array("en" => "Nueva Orden"),
           "headings" => array("en" => "Pedido Entrante")
         ]
-      ])->getBody()->getContents();
+      ])->getBody()->getContents(); */
 
       return response()->json(['message' => 'Tu pedido se ha procesado con éxito.'],201);
     }
