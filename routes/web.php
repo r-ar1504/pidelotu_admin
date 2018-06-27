@@ -226,4 +226,9 @@ Route::get('privacy', function(){
  return view('privacy');
 });
 
+
+Route::get('check_delivery/{access_code}', 'API@loginDeliveryMan');
+Route::get('sign_out/{access_code}', 'API@signOutDeliveryMan');
+Route::get('check_status/{access_code}', 'API@checkUserState');
+
 ?>

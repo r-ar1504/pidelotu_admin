@@ -23,7 +23,7 @@
           </ul>
         </div>
         @endif
-        <form action="/restaurante/agregando" method="POST">
+        <form action="/restaurante/agregando" method="POST" enctype="multipart/form-data">
           <div id="photo-field">
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
             <input type="text" name="id" hidden value="{{$id}}">

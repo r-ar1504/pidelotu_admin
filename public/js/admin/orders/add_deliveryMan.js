@@ -11,6 +11,7 @@ $("body").on('click', '#save', function(){
         age : {required: true},
         address  : {required: true},
         details : {required: true},
+        app_code: {required: true},
         gender : {required: true},
         curp : {required: true},
         phone : {required: true}
@@ -21,6 +22,7 @@ $("body").on('click', '#save', function(){
       details: {required: "Ingresa los detalles del repartidor"},
       age: {required: "Ingresa la edad del repartidor"},
       gender: {required: "Ingresa el sexo del repartidor"},
+      app_code: {required: "Ingresa el codigo de acceso"},
       phone: {required: "Ingresa el telefono del repartidor"},
       curp: {required: "Ingresa la CURP del repartidor"}
     }
@@ -78,7 +80,6 @@ $("body").on('click', '#save', function(){
   }
 });
 
-
 $("body").on('click', '#saveUpdate', function(){
   $id = $(this).data('id');
   restaurantData.validate({
@@ -87,6 +88,7 @@ $("body").on('click', '#saveUpdate', function(){
         age : {required: true},
         address  : {required: true},
         details : {required: true},
+        app_code: {required: true},
         gender : {required: true},
         curp : {required: true},
         phone : {required: true}
@@ -95,6 +97,7 @@ $("body").on('click', '#saveUpdate', function(){
       name: {required: "Ingresa el nombre del repartidor"},
       address: {required: "Ingresa del nombre del repartidor"},
       details: {required: "Ingresa los detalles del repartidor"},
+      app_code: {required: "Ingresa el codigo de acceso"},
       age: {required: "Ingresa la edad del repartidor"},
       gender: {required: "Ingresa el sexo del repartidor"},
       phone: {required: "Ingresa el telefono del repartidor"},

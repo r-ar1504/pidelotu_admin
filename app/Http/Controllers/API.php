@@ -17,7 +17,7 @@ use \App\Meal as Meal;
 use \App\CartShop as Cart;
 use \App\User as User;
 use \App\Restaurant as Restaurant;
-/** **/
+
 
 
 class API extends Controller
@@ -62,7 +62,7 @@ class API extends Controller
     return $categories;
   }
   
-  /** **/
+  
   /** Meals **/
   public function indexMeals($filter,$meal)
    {
@@ -81,7 +81,7 @@ class API extends Controller
          break;
      }
    }
-   /** **/
+   
 
   /** Delivery **/
   function requestDelivery(){
@@ -103,7 +103,7 @@ class API extends Controller
 
     return response()->json(['what is ' => $result]);
   }
-  /** **/
+  
   /** Payment **/
   function storePaymentMethod(Request $request){
     try {
@@ -113,7 +113,7 @@ class API extends Controller
       return response()->json(['error' => $ex->message],404);
     }
   }
-  /** **/
+  
   /** Cart **/
   function indexCart($userId) {
     $cartshop = Cart::where('user_id','=',$userId)->get();    
@@ -150,7 +150,7 @@ class API extends Controller
       return Response::json(array("status" => "500", "messages" => $ex));
     }
   }
-  /** **/
+ 
   /** Order **/
  function indexOrder($user_id){
     try {
@@ -161,7 +161,9 @@ class API extends Controller
     catch(Exception $ex) {
       return response()->json($ex->message);
     }
-   }
+  }
+
+
   
   function storeOrder(Request $request) {
     /** Get the token with $request['token'] **/
@@ -198,7 +200,7 @@ class API extends Controller
       
       \DB::table('cart')->where('user_id','=',$request['user_id'])->delete();
 
-/*       $client = new \GuzzleHttp\Client();
+   /*  $client = new \GuzzleHttp\Client();
 
       $result = $client->post('https:/onesignal.com/api/v1/notifications', [
         "headers" => [
@@ -218,7 +220,7 @@ class API extends Controller
       return response()->json(['message' => $e->message],404);     
     }
   }
-  /** **/
+  
   /** User **/
   function storeUser(Request $request) {
     try {
@@ -257,4 +259,57 @@ class API extends Controller
   function updateUser(Request $request) {
     return User::where('firebase_id','=',$request['firebaseId'])->update(['email' => $request['email'],'password' => Crypt::encryptString($request['password'])]);
   }
+
+
+  function loginDeliveryMan(Request $request, $acces_code){
+
+    $delivery = DB::table('delivery_mens')->where('app_code', '=', $acces_code)->first();
+
+    if ($delivery != null){      
+
+      DB::table('delivery_mens')->where('app_code', '=', $acces_code)->update(['logged' => 1]);
+      $logged_user = DB::table('delivery_mens')->where('app_code', '=', $acces_code)->first();
+      
+      return response()->json(['delivery_object' => $logged_user,'code' => 202]);
+
+    }else{
+     
+     return response()->json(['delivery_object' => null, 'code' => 404]);
+     
+    }
+  }
+
+  function signOutDeliveryMan(Request $request, $acces_code){
+
+    $delivery = DB::table('delivery_mens')->where('app_code', '=', $acces_code)->first();
+
+    if ($delivery != null){      
+
+      DB::table('delivery_mens')->where('app_code', '=', $acces_code)->update(['logged' => 0]);
+      $logged_user = DB::table('delivery_mens')->where('app_code', '=', $acces_code)->first();
+      
+      return response()->json(['delivery_object' => $logged_user,'code' => 202]);
+
+    }else{
+     
+     return response()->json(['delivery_object' => null, 'code' => 404]);
+     
+    }
+  }
+
+  function checkUserState(Request $request, $acces_code){
+
+    $user = DB::table('delivery_mens')->where('app_code', '=', $acces_code)->first();
+
+    if ($user != null) {
+      if ( $user->logged != 0) {
+        return response()->json(['logged' => $user->logged ,'code' => 202]);
+      }else{
+        return response()->json(['logged' => $user->logged ,'code' => 202]);
+      }
+    }else{
+      return response()->json(['logged' => 3 ,'code' => 302]);
+    }
+  }
+
 }

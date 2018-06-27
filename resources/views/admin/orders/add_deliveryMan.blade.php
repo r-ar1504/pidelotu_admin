@@ -40,6 +40,12 @@
     {!! Form::text('address', $delivery_man->address) !!}
   </div>
   <div class="field-label">
+    <p>código de Acceso (App)</p>
+  </div>
+  <div class="form-field">
+    {!! Form::text('app_code', $delivery_man->app_code) !!}
+  </div>
+  <div class="field-label">
     <p>CURP</p>
   </div>
   <div class="form-field">
@@ -112,6 +118,12 @@
           </div>
           <div class="form-field">
             {!! Form::text('curp') !!}
+          </div>
+          <div class="field-label">
+            <p>Código de Acceso(App)</p>
+          </div>
+          <div class="form-field">
+            {!! Form::text('app_code') !!}
           </div>
           <div class="field-label">
             <p>Celular</p>

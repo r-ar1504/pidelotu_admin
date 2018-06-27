@@ -207,13 +207,15 @@ class RestaurantController extends Controller
 
   $this->validate($request, $rules, $messages);
 
+  $added_price = $request->price+(($request->price)*.18);
+
   $UPDATE = DB::table('meals')
                 ->where('id', '=', $request->id)
                 ->update([
                   'name' => $request->name,
                   'preparation_time' => $request->time,
                   'description' => $request->description,
-                  'price' => $request->price,
+                  'price' => $added_price,
                   'updated_at' => Carbon::now()
                 ]);
 
@@ -239,7 +241,8 @@ class RestaurantController extends Controller
                   ->where('category_id', '=', $categorie[0]->id)
                   ->get();
 
-  return view('restaurant.meals', ['categorie' => $restaurant, 'id' => $ru->id, 'meals' => $mealsAll]);
+  return back();
+
  }
 
  function addMeal(Request $req, $id){
@@ -265,10 +268,17 @@ class RestaurantController extends Controller
       'name.required'                 => 'Agrega el campo nombre',
       'preparation_time.required'     => 'Agrega el campo Tiempo de preparación',
       'preparation_time.int'       => 'Necesita ser datos numericos en tiempo de preparación',
-      'description.required'          => 'Agrega el campo de descripsion',
+      'description.required'          => 'Agrega el campo de descripción',
       'price.required'                => 'Agrega el campo de precio',
       'price.int'                  => 'Necesita ser datos numericos en el campo de precio'
     ];
+
+    $added_price = $req->price+(($req->price)*.18);
+    $image = $req->file('image');
+    
+    $image_name = $req->name.'-logo'.$image->extension();
+    $image_path = $image->move(public_path().'/images/meals/', $image_name);
+  
 
     $this->validate($req, $rules, $messages);
       $create = DB::table('meals')->insert(
@@ -276,11 +286,11 @@ class RestaurantController extends Controller
                 'description' => $req->description,
                 'preparation_time' => $req->preparation_time,
                 'name' => $req->name,
-                'image' => $req->file('image'),
+                'image' => $image_name,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'active' => 1,
-                'price' => $req->price
+                'price' => $added_price
                ]
           );
  return redirect('/restaurante/comidas/'.$req->id);
