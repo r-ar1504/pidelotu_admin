@@ -281,11 +281,6 @@ class API extends Controller
     return [$data];
   }
 
-  function updateUser(Request $request) {
-    return User::where('firebase_id','=',$request['firebaseId'])->update(['email' => $request['email'],'password' => Crypt::encryptString($request['password'])]);
-  }
-
-
   function loginDeliveryMan(Request $request, $acces_code){
 
     $delivery = DB::table('delivery_mens')->where('app_code', '=', $acces_code)->first();
