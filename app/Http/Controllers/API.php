@@ -65,6 +65,34 @@ class API extends Controller
   
   /** Meals **/
   public function indexMeals($filter,$meal)
+  {
+    switch ($filter) {
+     case 'restaurants':
+       return Restaurant::where('name','like','%'.$meal.'%')->get();
+     break;
+     case 'food':
+       $query = Meal::select('meals.id as id','category_id','has_subtype','has_ingredients','description','preparation_time','meals.name as name','meals.image as image','price','restaurant_id','logo','restaurants.name as restaurant','restaurants.open_time','restaurants.close_time','restaurants.not_working')->join('meal_categories','meal_categories.id','=','meals.category_id')->join('restaurants','restaurants.id','=','meal_categories.restaurant_id')->where('meals.name','like','%'.$meal.'%')->get();        
+       foreach ($query as $m) {      
+         if ($m->has_subtype != 0) {          
+           $sub_types = DB::table('meal_subtype')->where('meal_id', '=', $m->id)->get();
+           $m->sub_type = $sub_types;  
+         }
+         if ($m->has_ingredients) {
+           $ingredients = DB::table('ingredients')->where('meal_id','=',$m->id)->get();
+           $m->ingredients = $ingredients;
+         }
+       }      
+       return $query;
+               
+     break;
+     case 'world':
+       return \App\MealCategory::join('restaurants','restaurants.id','=','meal_categories.restaurant_id')->where('meal_categories.name','like','%'.$meal.'%')->get();
+     break;
+    default:
+      # code...
+     break;
+    }
+  }
    {
      switch ($filter) {
        case 'restaurants':
@@ -83,7 +111,9 @@ class API extends Controller
    }
    
 
-  /** Delivery **/
+  
+  
+   /** Delivery **/
   function requestDelivery(){
     $client = new \GuzzleHttp\Client();
 
