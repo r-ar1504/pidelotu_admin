@@ -114,17 +114,6 @@ class API extends Controller
     }
   }
   
-  /** Cart **/
-  function indexCart($userId) {
-    $cartshop = Cart::where('user_id','=',$userId)->get();    
-    $data = ['carshop' => [],'payments' => Payment::where('user_id','=',$userId)->get(), 'subtotal' => 0];      
-    foreach ($cartshop as $item) {
-      $item->meal = Meal::find($item['meal_id']);
-      array_push($data['carshop'],['id' => $item['id'],'meal_id' => $item['meal_id'],'sub_type' => $item['sub_type_id'] , 'quantity' => $item['quantity'], 'description' => $item['meal']->description, 'ingredients' => $item['ingredients'], 'total' => $item['total']]);               
-      $data['subtotal'] = $data['subtotal'] + ($item['total'] * $item['quantity']);
-    }               
-    return $data;
-  }
 
   function storeCart(Request $request) {
     try {
@@ -136,26 +125,28 @@ class API extends Controller
     }
   }
 
-  function destroyCart($id,$userId) {
-    try {
-      if (User::where('firebase_id','=',$userId)->count() > 0) {
+  function destroyCart(Request $request,$id) {    
+    try {      
+      if (User::where('firebase_id','=',$request->header('token'))->count() > 0) {
         $item = Cart::find($id);
         if($item->delete()){
-          return Response::json(array("status" => "201", "messages" => "Success"));
+          return response()->json(["message" => "Success", 201]);
         }
-        return Response::json(array("status" => "401", "messages" => "Not Authorized"));
-      }            
+      }
+      else {
+        return response()->json(["message" => "Not Authorized",401]);            
+      }
     }
     catch (Exception $ex) {
-      return Response::json(array("status" => "500", "messages" => $ex));
+      return response()->json(["message" => $ex->message]);
     }
   }
  
-  /** Order **/
+ /** Order **/
  function indexOrder($user_id){
     try {
-      $orders = DB::table('orders')->select('meal_id as id','meal_category_id as category_id','preparation_time','restaurant_id','restaurants.name as restaurant','meals.name as name','orders.created_at as date','orders.id as order_id','meals.image as image','description','price','total','status')->join('restaurants','restaurant_id','=','restaurants.id')->join('meals','meal_id','=','meals.id')->where('user_id','=',$user_id)->get();
- 
+      $orders = \DB::table('orders_items')->select('meal_id as id','preparation_time','restaurant_id','restaurants.name as restaurant','meals.name as name','orders.created_at as date','orders.id as order_id','meals.image as image','description','price','total','status','quantity')->join('meals','meal_id','=','meals.id')->join('orders','orders_items.order_id','=','orders.id')->join('restaurants','orders.restaurant_id','=','restaurants.id')->where('user_id','=',$user_id)->get();
+
       return $orders;
     }
     catch(Exception $ex) {
@@ -163,7 +154,25 @@ class API extends Controller
     }
   }
 
+  function indexCart($userId) {
+    $cartshop = Cart::where('user_id','=',$userId)->get();    
+    $data = ['carshop' => [],'payments' => Payment::where('user_id','=',$userId)->get()];      
+    foreach ($cartshop as $item) {
+      $item->meal = Meal::find($item['meal_id']);
+      array_push($data['carshop'],['id' => $item['id'],'meal_id' => $item['meal_id'],'sub_type' => $item['sub_type_id'] , 'quantity' => $item['quantity'], 'name' => $item['meal']->name, 'description' => $item['meal']->description, 'ingredients' => $item['ingredients'], 'total' => $item['total']]);              
+    }              
+    return $data;
+  }
+  function updateUser(Request $request, $id) {
+    try {
+      User::where('firebase_id','=',$id)->update(['email' => $request['email'],'password' => Crypt::encryptString($request['password'])]);
 
+      return response()->json(['message' => 'Se han actualizado tus datos.'],200);
+    }
+    catch(Exception $ex) {
+      return response()->json(['message' => $ex->message],404);
+    }
+  }
   
   function storeOrder(Request $request) {
     /** Get the token with $request['token'] **/

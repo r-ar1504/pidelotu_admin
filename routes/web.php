@@ -21,6 +21,8 @@ Route::get('/unete-a-nosotros', function(){
   return view('register');
 });
 
+Route::delete('cart/{id}','API@destroyCart');
+
 Route::post('/registrando', 'RegisterController@register');
 /*End*/
 
