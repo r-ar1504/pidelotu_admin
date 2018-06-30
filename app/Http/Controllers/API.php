@@ -159,10 +159,19 @@ class API extends Controller
   }
  
  /** Order **/
- function indexOrder($user_id){
+  function indexOrder($user_id){
     try {
-      $orders = \DB::table('orders_items')->select('meal_id as id','preparation_time','restaurant_id','restaurants.name as restaurant','meals.name as name','orders.created_at as date','orders.id as order_id','meals.image as image','description','price','total','status','quantity')->join('meals','meal_id','=','meals.id')->join('orders','orders_items.order_id','=','orders.id')->join('restaurants','orders.restaurant_id','=','restaurants.id')->where('user_id','=',$user_id)->get();
-
+      $orders = \DB::table('orders_items')->select('meal_id as id','preparation_time','restaurant_id','restaurants.name as restaurant','meals.name as name','orders.created_at as date','orders.id as order_id','meals.image as image','description','price','total','status','quantity','open_time','close_time','not_working','meals.has_subtype','meals.has_ingredients')->join('meals','meal_id','=','meals.id')->join('orders','orders_items.order_id','=','orders.id')->join('restaurants','orders.restaurant_id','=','restaurants.id')->where('user_id','=',$user_id)->get();
+      foreach ($orders as $m) {        
+        if ($m->has_subtype != 0) {          
+          $sub_types = DB::table('meal_subtype')->where('meal_id', '=', $m->id)->get();
+          $m->sub_type = $sub_types;  
+        }
+        if ($m->has_ingredients) {
+          $ingredients = DB::table('ingredients')->where('meal_id','=',$m->id)->get();
+          $m->ingredients = $ingredients;
+        }
+      }
       return $orders;
     }
     catch(Exception $ex) {

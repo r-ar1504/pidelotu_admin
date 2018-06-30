@@ -195,7 +195,7 @@ Route::get('/getMealsBy/{filter}/{meal}','API@indexMeals');
 /** User **/
 Route::post('/user','API@storeUser');
 Route::get('/user/{id}','API@showUser');
-Route::put('/user','API@updateUser');
+Route::put('/user/{id}','API@updateUser');
 Route::get('/checkNumber/{number}', 'API@checkNumber');
 /** **/
 /** Payment **/
@@ -204,7 +204,6 @@ Route::post('payment','API@storePaymentMethod');
 /** Cart Shop **/
 Route::get('cart/{id}','API@indexCart');
 Route::post('cart','API@storeCart');
-Route::delete('cart/{id}/{user_id}','API@destroyCart');
 /** **/
 /** Order **/
 Route::get('/orders/{user_id}','API@indexOrder');
